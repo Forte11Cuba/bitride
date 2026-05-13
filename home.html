@@ -1,0 +1,2109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bitride — Explora Cuba en Moto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,700;1,800&family=Barlow:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #080806;
+      --bg2:     #0d0d0b;
+      --card:    #141414;
+      --card2:   #1a1a1a;
+      --border:  #222222;
+      --accent:  #f7931a;
+      --red:     #e63946;
+      --white:   #ffffff;
+      --text:    rgba(255,255,255,0.82);
+      --muted:   rgba(255,255,255,0.42);
+      --muted2:  rgba(255,255,255,0.22);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ─────────────────────────────── */
+    #nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 300;
+      height: 64px;
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s, backdrop-filter 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+      background: linear-gradient(to bottom, rgba(8,8,6,0.82) 0%, rgba(8,8,6,0.0) 100%);
+    }
+    #nav.scrolled {
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(18px);
+      border-color: var(--border);
+    }
+    .nav-logo img { height: 36px; display: block; }
+    .nav-links { display: flex; gap: 28px; list-style: none; white-space: nowrap; }
+    .nav-links a {
+      font-size: 13px; font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 14px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 9px 24px;
+      background: var(--accent); color: var(--bg);
+      text-decoration: none; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ── STATS BAR ────────────────────────── */
+    #stats-bar {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 0 52px;
+    }
+    .stats-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: stretch;
+    }
+    .stat-block {
+      flex: 1; padding: 28px 0 28px 40px;
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .stat-block:first-child { padding-left: 0; }
+    .stat-block:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 36px; font-weight: 800; line-height: 1;
+      color: var(--white);
+    }
+    .stat-num .unit { font-size: 18px; color: var(--muted); font-weight: 500; }
+    .stat-acc { color: var(--accent); }
+    .stat-lbl { font-size: 12px; color: var(--muted); letter-spacing: 0.03em; }
+
+    /* ── TICKER ─────────────────────────────── */
+    #ticker {
+      background: var(--accent);
+      overflow: hidden; padding: 10px 0;
+    }
+    .ticker-track {
+      display: flex; gap: 0; width: max-content;
+      animation: tick 36s linear infinite;
+    }
+    .ticker-item {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--bg); padding: 0 28px; white-space: nowrap;
+    }
+    .ticker-sep {
+      color: rgba(0,0,0,0.35); font-weight: 400;
+      align-self: center;
+    }
+    @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── HERO ────────────────────────────── */
+    #hero {
+      position: relative;
+      height: 100dvh; min-height: 640px;
+      display: flex; align-items: flex-end;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center 35%;
+      background-image: url('https://images.unsplash.com/photo-1519723264671-8b7a4d7e66e0?auto=format&fit=crop&w=1920&q=80');
+      transform: scale(1.04);
+      transition: transform 10s ease;
+      filter: brightness(0.65) saturate(1.1);
+    }
+    #hero.loaded .hero-bg { transform: scale(1); }
+    .hero-grain {
+      position: absolute; inset: 0; z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.05; pointer-events: none;
+    }
+    .hero-vignette {
+      position: absolute; inset: 0; z-index: 1;
+      background:
+        linear-gradient(110deg, rgba(0,0,0,0.86) 0%, rgba(0,0,0,0.46) 55%, rgba(0,0,0,0.14) 100%),
+        linear-gradient(to top, rgba(8,8,6,1) 0%, transparent 42%);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 0 56px 96px;
+      max-width: 820px;
+    }
+    .hero-award {
+      display: inline-flex; align-items: center; gap: 12px;
+      border: 1px solid rgba(247,147,26,0.3);
+      padding: 8px 14px;
+      margin-bottom: 28px;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      opacity: 0; transform: translateY(10px);
+      animation: fadeUp 0.6s ease 0.15s forwards;
+    }
+    .hero-award-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 22px;
+      opacity: 0; transform: translateY(10px);
+      animation: fadeUp 0.6s ease 0.3s forwards;
+    }
+    .hero-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+    h1.hero-hl {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(76px, 11.5vw, 148px);
+      font-weight: 800; line-height: 0.87;
+      text-transform: uppercase; letter-spacing: -0.025em;
+      margin-bottom: 28px;
+      opacity: 0; transform: translateY(24px);
+      animation: fadeUp 0.75s ease 0.45s forwards;
+    }
+    h1.hero-hl .acc { color: var(--accent); }
+    h1.hero-hl .ita { font-style: italic; }
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 20px); font-weight: 400;
+      color: rgba(255,255,255,0.62);
+      max-width: 460px; line-height: 1.55; margin-bottom: 40px;
+      opacity: 0; transform: translateY(16px);
+      animation: fadeUp 0.65s ease 0.6s forwards;
+    }
+    .hero-btns {
+      display: flex; gap: 14px; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.75s forwards;
+    }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Buttons */
+    .btn-solid {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 16px;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      padding: 14px 32px;
+      background: var(--accent); color: var(--bg);
+      text-decoration: none; border: none; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .btn-solid:hover { opacity: 0.88; transform: translateY(-2px); }
+    .btn-solid:disabled {
+      background: var(--border); color: var(--muted);
+      cursor: not-allowed; transform: none; opacity: 1;
+    }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 16px;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 13px 32px;
+      border: 1px solid rgba(255,255,255,0.28); color: var(--white);
+      text-decoration: none; cursor: pointer; background: transparent;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--white); transform: translateY(-2px); }
+
+    /* ── SECTION COMMONS ─────────────────── */
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 52px; }
+    .eyebrow {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 14px;
+    }
+    .sec-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(46px, 6.5vw, 80px);
+      font-weight: 800; line-height: 0.9;
+      text-transform: uppercase; letter-spacing: -0.015em;
+      margin-bottom: 20px;
+    }
+    .sec-desc { font-size: 16px; color: var(--muted); line-height: 1.72; max-width: 480px; }
+
+    /* Reveal */
+    .rev {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .rev.in { opacity: 1; transform: none; }
+    .rev.d1 { transition-delay: 0.1s; }
+    .rev.d2 { transition-delay: 0.2s; }
+    .rev.d3 { transition-delay: 0.3s; }
+
+    /* ── FLOTA ───────────────────────────── */
+    #flota {
+      padding: 120px 0;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .fleet-tabs {
+      display: flex; gap: 2px;
+      margin-top: 52px; margin-bottom: 2px;
+    }
+    .fleet-tab {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 12px 28px;
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .fleet-tab:hover:not(:disabled) { color: var(--white); border-color: rgba(255,255,255,0.2); }
+    .fleet-tab.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .fleet-tab:disabled { opacity: 0.35; cursor: not-allowed; }
+    .fleet-tab .coming-label {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); margin-left: 8px;
+      background: var(--border); padding: 2px 7px;
+    }
+
+    .fleet-showcase {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+      min-height: 480px;
+    }
+    .fleet-img-panel {
+      background: #edeae5;
+      position: relative; overflow: hidden;
+      clip-path: polygon(0 0, 93% 0, 100% 100%, 0 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .fleet-img-panel img {
+      width: 92%; padding: 32px 0 48px;
+      position: relative; z-index: 2;
+      transition: transform 0.5s ease;
+    }
+    .fleet-img-panel:hover img { transform: scale(1.03); }
+    .fleet-img-glow {
+      position: absolute; bottom: 20px; left: 5%; right: 5%; height: 80px;
+      background: radial-gradient(ellipse at center, rgba(247,147,26,0.5) 0%, transparent 70%);
+      filter: blur(14px); z-index: 1; pointer-events: none;
+    }
+    .fleet-img-shadow {
+      position: absolute; bottom: 42px; left: 20%; right: 20%; height: 20px;
+      background: rgba(0,0,0,0.2); filter: blur(10px);
+      border-radius: 50%; z-index: 1; pointer-events: none;
+    }
+    .fleet-img-tag {
+      position: absolute; top: 0; right: 0; z-index: 3;
+      background: var(--bg); color: var(--accent);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      padding: 6px 16px;
+    }
+    .fleet-ghost-num {
+      position: absolute; bottom: 8px; left: 16px; z-index: 1;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 96px; font-weight: 800;
+      color: rgba(0,0,0,0.07); line-height: 1;
+      pointer-events: none; user-select: none;
+    }
+
+    .fleet-info-panel {
+      padding: 44px 48px;
+      display: flex; flex-direction: column; gap: 24px;
+      border-left: 1px solid var(--border);
+    }
+    .fleet-model-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 800; line-height: 0.9;
+      text-transform: uppercase; letter-spacing: -0.01em;
+    }
+    .fleet-model-name .acc { color: var(--accent); }
+    .fleet-model-desc {
+      font-size: 14px; color: var(--muted); line-height: 1.7;
+      max-width: 380px;
+    }
+    .fleet-specs {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+    }
+    .fleet-spec-cell {
+      padding: 14px 18px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .fleet-spec-cell:nth-child(2n) { border-right: none; }
+    .fleet-spec-cell:nth-last-child(-n+2) { border-bottom: none; }
+    .fleet-spec-lbl {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 4px;
+    }
+    .fleet-spec-val {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px; font-weight: 700;
+    }
+    .fleet-units {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 20px;
+      background: rgba(247,147,26,0.05);
+      border: 1px solid rgba(247,147,26,0.2);
+    }
+    .fleet-units-dots { display: flex; gap: 7px; }
+    .fleet-unit-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px rgba(247,147,26,0.6);
+    }
+    .fleet-unit-dot.unavail { background: var(--border); box-shadow: none; }
+    .fleet-units-label {
+      font-size: 12px; font-weight: 600;
+      color: var(--accent);
+    }
+    .fleet-includes {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .fleet-include-tag {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 5px 12px;
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .fleet-include-tag.yes { border-color: rgba(247,147,26,0.3); color: var(--accent); }
+    .fleet-price-row {
+      display: flex; align-items: baseline; gap: 10px;
+      padding-top: 4px;
+    }
+    .fleet-price {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 48px; font-weight: 800; line-height: 1;
+    }
+    .fleet-price-unit { font-size: 16px; color: var(--muted); }
+    .fleet-price-long { font-size: 13px; color: var(--muted); }
+
+    /* ── CALCULADORA ─────────────────────── */
+    #precios {
+      padding: 120px 0;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .calc-top {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+      margin-bottom: 52px;
+    }
+    .tarifas { display: flex; flex-direction: column; gap: 10px; margin-top: 44px; }
+    .tarifa {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 16px;
+      padding: 18px 24px;
+      background: var(--card); border: 1px solid var(--border);
+    }
+    .tarifa.best {
+      border-color: var(--accent);
+      background: rgba(247,147,26,0.05);
+    }
+    .tarifa-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+    .tarifa-right { display: flex; align-items: center; gap: 12px; }
+    .tarifa-price {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 38px; font-weight: 800; white-space: nowrap;
+    }
+    .tarifa-price small {
+      font-size: 16px; font-weight: 500; color: var(--muted);
+    }
+    .tarifa-badge {
+      background: var(--accent); color: var(--bg);
+      font-size: 9px; font-weight: 800;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 4px 10px; white-space: nowrap;
+    }
+
+    /* Calendar widget */
+    .cal-widget { background: var(--card); border: 1px solid var(--border); }
+    .cal-head {
+      padding: 24px 32px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .cal-head-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .cal-hint { font-size: 12px; color: var(--muted); }
+    .cal-body { display: grid; grid-template-columns: 1fr 1fr; }
+    .cal-month { padding: 28px 32px; }
+    .cal-month:first-child { border-right: 1px solid var(--border); }
+    .cal-mhead {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 20px;
+    }
+    .cal-mnav {
+      width: 28px; height: 28px;
+      background: none; border: 1px solid var(--border);
+      color: var(--white); cursor: pointer; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.15s;
+    }
+    .cal-mnav:hover { border-color: var(--accent); color: var(--accent); }
+    .cal-mnav:disabled { opacity: 0.2; cursor: default; pointer-events: none; }
+    .cal-mname {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .cal-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+    }
+    .cal-dow {
+      text-align: center; padding: 4px 0;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted2); margin-bottom: 4px;
+    }
+    .cal-cell {
+      aspect-ratio: 1;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 500;
+      cursor: pointer; position: relative;
+      transition: background 0.1s, color 0.1s;
+      color: var(--text); max-height: 38px;
+    }
+    .cal-cell.emp { cursor: default; }
+    .cal-cell.past { color: var(--muted2); cursor: default; }
+    .cal-cell.avail:hover { background: rgba(247,147,26,0.18); color: var(--accent); }
+    .cal-cell.s-start, .cal-cell.s-end {
+      background: var(--accent); color: var(--bg); font-weight: 700;
+    }
+    .cal-cell.in-range { background: rgba(247,147,26,0.13); }
+    .cal-cell.is-today::after {
+      content: ''; position: absolute;
+      bottom: 3px; left: 50%; transform: translateX(-50%);
+      width: 3px; height: 3px; border-radius: 50%;
+      background: var(--accent);
+    }
+    .cal-cell.s-start.is-today::after,
+    .cal-cell.s-end.is-today::after { background: var(--bg); }
+
+    /* Price result */
+    .cal-result {
+      border-top: 1px solid var(--border);
+      padding: 28px 32px;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 24px;
+      flex-wrap: wrap; min-height: 100px;
+    }
+    .result-empty { font-size: 14px; color: var(--muted); }
+    .result-info { display: flex; gap: 40px; flex-wrap: wrap; align-items: flex-end; }
+    .result-days-col { display: flex; flex-direction: column; gap: 4px; }
+    .result-date-str { font-size: 13px; color: var(--muted); }
+    .result-days-big {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 56px; font-weight: 800; line-height: 1;
+    }
+    .result-days-big span { font-size: 20px; font-weight: 500; color: var(--muted); }
+    .result-rate { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .result-discount {
+      display: inline-block;
+      background: rgba(247,147,26,0.14); color: var(--accent);
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 3px 9px; margin-bottom: 6px;
+    }
+    .result-price-col { display: flex; flex-direction: column; gap: 4px; }
+    .result-usd {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 42px; font-weight: 800; line-height: 1;
+    }
+    .result-usd .cur { font-size: 20px; font-weight: 500; color: var(--muted); }
+    .result-btc { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--accent); }
+    .result-sats { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); }
+
+    /* ── COMO FUNCIONA ───────────────────── */
+    #como {
+      padding: 120px 0;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    #como::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1519723264671-8b7a4d7e66e0?auto=format&fit=crop&w=1200&q=40');
+      background-size: cover; background-position: center;
+      opacity: 0.04; pointer-events: none;
+    }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; margin-top: 60px;
+    }
+    .step-card {
+      background: var(--card); padding: 48px 36px;
+      position: relative; overflow: hidden;
+    }
+    .step-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: var(--accent);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.35s ease;
+    }
+    .step-card:hover::before { transform: scaleX(1); }
+    .step-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 100px; font-weight: 800; line-height: 1;
+      color: var(--border); margin-bottom: 20px;
+      user-select: none; transition: color 0.3s;
+    }
+    .step-card:hover .step-num { color: rgba(247,147,26,0.18); }
+    .step-icon {
+      width: 44px; height: 44px;
+      border: 1px solid rgba(247,147,26,0.3);
+      background: rgba(247,147,26,0.06);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent); margin-bottom: 20px;
+    }
+    .step-icon svg { width: 20px; height: 20px; }
+    .step-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+    .step-body { font-size: 14px; color: var(--muted); line-height: 1.68; }
+
+    /* ── POR QUE BITCOIN ─────────────────── */
+    #bitcoin {
+      padding: 120px 0; border-top: 1px solid var(--border);
+      background: var(--bg); position: relative; overflow: hidden;
+    }
+    .bitcoin-bolt-bg {
+      position: absolute;
+      right: -80px; top: 50%; transform: translateY(-50%);
+      opacity: 0.025; pointer-events: none; color: var(--white);
+    }
+    .bitcoin-bolt-bg svg { width: 560px; height: 560px; }
+    .btc-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; margin-top: 64px;
+    }
+    .btc-card {
+      background: var(--card); border: 1px solid var(--border);
+      padding: 36px 28px;
+      transition: border-color 0.25s;
+    }
+    .btc-card:hover { border-color: rgba(247,147,26,0.4); }
+    .btc-icon { color: var(--accent); margin-bottom: 20px; }
+    .btc-icon svg { width: 26px; height: 26px; }
+    .btc-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 19px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+    .btc-body { font-size: 14px; color: var(--muted); line-height: 1.68; }
+
+    /* ── CONTACTO ────────────────────────── */
+    #contacto {
+      padding: 140px 0;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      position: relative; overflow: hidden; text-align: center;
+    }
+    .cta-photo {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1499810631641-541e76d678a2?auto=format&fit=crop&w=1920&q=80');
+      background-size: cover; background-position: center;
+      opacity: 0.12;
+    }
+    .cta-photo-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, var(--bg2) 0%, transparent 25%, transparent 75%, var(--bg2) 100%);
+    }
+    .cta-inner { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; padding: 0 52px; }
+    .cta-pretitle {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px; font-weight: 600; font-style: italic;
+      color: var(--muted); margin-bottom: 20px;
+      letter-spacing: 0.04em;
+    }
+    .cta-rule { width: 40px; height: 3px; background: var(--accent); margin: 0 auto 28px; }
+    .cta-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(64px, 9.5vw, 120px);
+      font-weight: 800; line-height: 0.86;
+      text-transform: uppercase; margin-bottom: 28px;
+    }
+    .cta-title .acc { color: var(--accent); }
+    .cta-sub {
+      font-size: 17px; color: var(--muted);
+      line-height: 1.6; max-width: 420px;
+      margin: 0 auto 48px;
+    }
+    .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── FOOTER ──────────────────────────── */
+    footer {
+      background: #060606;
+      border-top: 1px solid var(--border);
+      padding: 36px 52px;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 20px;
+    }
+    .footer-logo img { height: 24px; display: block; }
+    .footer-copy { font-size: 12px; color: var(--muted); }
+    .footer-nav { display: flex; gap: 24px; list-style: none; }
+    .footer-nav a {
+      font-size: 12px; color: var(--muted);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-nav a:hover { color: var(--white); }
+
+    /* ── TWEAKS ──────────────────────────── */
+    #tweaks {
+      display: none; position: fixed;
+      bottom: 24px; right: 24px; z-index: 999;
+      width: 256px;
+      background: var(--card2);
+      border: 1px solid #333;
+      box-shadow: 0 12px 48px rgba(0,0,0,0.7);
+    }
+    #tweaks.show { display: block; }
+    .tw-head {
+      padding: 13px 16px;
+      border-bottom: 1px solid #333;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .tw-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .tw-close {
+      background: none; border: none;
+      color: var(--muted); cursor: pointer; font-size: 15px;
+      line-height: 1; padding: 0;
+    }
+    .tw-close:hover { color: var(--white); }
+    .tw-body { padding: 16px; display: flex; flex-direction: column; gap: 18px; }
+    .tw-row { display: flex; flex-direction: column; gap: 8px; }
+    .tw-lbl {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .tw-swatches { display: flex; gap: 6px; }
+    .tw-sw {
+      width: 28px; height: 28px; cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.15s, transform 0.1s;
+    }
+    .tw-sw.on { border-color: white; transform: scale(1.12); }
+    .tw-toggle-row {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .tw-toggle-lbl { font-size: 13px; color: var(--text); }
+    .tw-pill {
+      width: 38px; height: 20px;
+      background: #333; border-radius: 10px;
+      position: relative; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .tw-pill.on { background: var(--accent); }
+    .tw-pill::after {
+      content: ''; position: absolute;
+      width: 14px; height: 14px; background: white; border-radius: 50%;
+      top: 3px; left: 3px; transition: transform 0.2s;
+    }
+    .tw-pill.on::after { transform: translateX(18px); }
+    .tw-photo-grid { display: flex; gap: 6px; }
+    .tw-photo {
+      width: 60px; height: 40px;
+      background-size: cover; background-position: center;
+      cursor: pointer; border: 2px solid transparent;
+      transition: border-color 0.15s;
+    }
+    .tw-photo.on { border-color: white; }
+
+    /* ── TOURS ──────────────────────────── */
+    #tours {
+      padding: 120px 0;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+    .tours-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 2px; margin-top: 60px;
+    }
+    .tour-card {
+      background: var(--card); border: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .tour-card:hover { border-color: rgba(247,147,26,0.5); transform: translateY(-4px); }
+    .tour-img {
+      height: 180px;
+      background-size: cover; background-position: center;
+      position: relative; overflow: hidden;
+    }
+    .tour-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(8,8,6,0.85) 100%);
+    }
+    .tour-badge {
+      position: absolute; top: 14px; left: 14px; z-index: 2;
+      background: var(--accent); color: var(--bg);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px; font-weight: 800;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 4px 10px;
+    }
+    .tour-body { padding: 24px 24px 20px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+    .tour-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.02em;
+      line-height: 1.1;
+    }
+    .tour-desc { font-size: 13px; color: var(--muted); line-height: 1.6; flex: 1; }
+    .tour-meta {
+      display: flex; gap: 14px; flex-wrap: wrap;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .tour-meta-item {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 11px; color: var(--muted);
+    }
+    .tour-meta-item svg { color: var(--accent); flex-shrink: 0; }
+    .tour-foot {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .tour-price {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px; font-weight: 700;
+      color: var(--muted); letter-spacing: 0.04em;
+    }
+    .tour-cta {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent); text-decoration: none;
+      display: flex; align-items: center; gap: 5px;
+      transition: gap 0.2s;
+    }
+    .tour-cta:hover { gap: 9px; }
+
+    /* ── REVIEWS ─────────────────────────── */
+    #reviews {
+      padding: 120px 0;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+    }
+    .reviews-header {
+      display: flex; align-items: flex-end;
+      justify-content: space-between; gap: 24px;
+      margin-bottom: 52px; flex-wrap: wrap;
+    }
+    .reviews-score {
+      display: flex; align-items: center; gap: 20px;
+    }
+    .score-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 72px; font-weight: 800; line-height: 1;
+      color: var(--accent);
+    }
+    .score-meta { display: flex; flex-direction: column; gap: 4px; }
+    .score-stars { display: flex; gap: 3px; color: var(--accent); }
+    .score-stars svg { width: 16px; height: 16px; }
+    .score-label { font-size: 12px; color: var(--muted); }
+    .reviews-carousel {
+      display: flex; gap: 16px;
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 12px; margin-top: 0;
+      scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+    }
+    .reviews-carousel::-webkit-scrollbar { height: 4px; }
+    .reviews-carousel::-webkit-scrollbar-track { background: transparent; }
+    .reviews-carousel::-webkit-scrollbar-thumb { background: var(--border); }
+    .review-card {
+      flex: 0 0 340px; scroll-snap-align: start;
+    }
+    .review-card {
+      background: var(--card); border: 1px solid var(--border);
+      padding: 32px 28px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .review-stars { display: flex; gap: 3px; color: var(--accent); }
+    .review-stars svg { width: 14px; height: 14px; }
+    .review-text {
+      font-size: 14px; color: var(--text);
+      line-height: 1.72; font-style: italic; flex: 1;
+    }
+    .review-text::before { content: ''; }
+    .review-author {
+      display: flex; align-items: center; gap: 12px;
+      padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .review-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--card2);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 15px;
+      color: var(--accent); flex-shrink: 0;
+    }
+    .review-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .review-origin { font-size: 11px; color: var(--muted); }
+    .review-platform {
+      margin-left: auto; font-size: 10px; color: var(--muted2);
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .reviews-more {
+      text-align: center; margin-top: 40px;
+    }
+    .reviews-more a {
+      font-size: 13px; color: var(--muted);
+      text-decoration: none; border-bottom: 1px solid var(--border);
+      padding-bottom: 2px; transition: color 0.2s, border-color 0.2s;
+    }
+    .reviews-more a:hover { color: var(--white); border-color: var(--white); }
+
+    /* ── BTCMAP ──────────────────────────── */
+    .btcmap-band {
+      margin-top: 64px;
+      background: var(--card);
+      border: 1px solid rgba(247,147,26,0.25);
+      display: flex; align-items: center;
+      gap: 0; overflow: hidden;
+    }
+    .btcmap-left {
+      padding: 40px 44px;
+      flex: 1;
+    }
+    .btcmap-eyebrow {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 12px;
+    }
+    .btcmap-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 28px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.01em;
+      margin-bottom: 10px;
+    }
+    .btcmap-desc { font-size: 14px; color: var(--muted); line-height: 1.65; max-width: 480px; }
+    .btcmap-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 20px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent); text-decoration: none;
+      border: 1px solid rgba(247,147,26,0.35);
+      padding: 10px 20px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btcmap-link:hover { background: rgba(247,147,26,0.08); border-color: var(--accent); }
+    .btcmap-right {
+      width: 380px; height: 220px; flex-shrink: 0;
+      border-left: 1px solid rgba(247,147,26,0.2);
+      overflow: hidden; position: relative;
+    }
+    .btcmap-right iframe {
+      width: 100%; height: 100%;
+      border: none; filter: invert(1) hue-rotate(180deg) saturate(0.6) brightness(0.85);
+      pointer-events: none;
+    }
+    .btcmap-right::after {
+      content: 'Ver en BTCMap →';
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      background: rgba(8,8,6,0.0);
+      cursor: pointer; opacity: 0;
+      transition: opacity 0.2s, background 0.2s;
+    }
+    .btcmap-right:hover::after { opacity: 1; background: rgba(8,8,6,0.55); pointer-events: all; }
+
+    /* ── FLOAT WHATSAPP ──────────────────── */
+    #wa-float {
+      position: fixed; bottom: 28px; right: 28px; z-index: 200;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: #25D366;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.45);
+      cursor: pointer; text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    #wa-float:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.6); }
+    #wa-float svg { width: 28px; height: 28px; color: white; }
+
+    /* ── SOCIAL FOOTER ───────────────────── */
+    .footer-social { display: flex; gap: 16px; align-items: center; }
+    .footer-social a {
+      width: 34px; height: 34px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .footer-social a:hover { border-color: var(--accent); color: var(--accent); }
+    .footer-social svg { width: 16px; height: 16px; }
+
+    /* ── RESPONSIVE ──────────────────────── */
+    @media (max-width: 960px) {
+      #nav { padding: 0 24px; }
+      #stats-bar { padding: 0 24px; }
+      .stats-inner { flex-wrap: wrap; }
+      .stat-block { flex: 1 1 40%; }
+      .wrap { padding: 0 24px; }
+      .hero-content { padding: 0 24px 80px; }
+      .fleet-showcase { grid-template-columns: 1fr; }
+      .fleet-img-panel { clip-path: none; min-height: 280px; }
+      .fleet-info-panel { border-left: none; border-top: 1px solid var(--border); padding: 32px 24px; }
+      .moto-grid, .calc-top { grid-template-columns: 1fr; gap: 44px; }
+      .cal-body { grid-template-columns: 1fr; }
+      .cal-month:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+      .steps-grid { grid-template-columns: 1fr; gap: 2px; }
+      .btc-grid { grid-template-columns: 1fr 1fr; }
+      .btcmap-maps { flex-direction: column !important; }
+      .tours-grid { grid-template-columns: 1fr 1fr; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .btcmap-band { flex-direction: column; }
+      .btcmap-right { width: 100%; height: 200px; border-left: none; border-top: 1px solid rgba(247,147,26,0.2); }
+      footer { flex-direction: column; text-align: center; }
+      .footer-nav { justify-content: center; }
+      .footer-social { justify-content: center; }
+      .cta-inner { padding: 0 24px; }
+    }
+    @media (max-width: 540px) {
+      .nav-links { display: none; }
+      .btc-grid { grid-template-columns: 1fr; }
+      .tours-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══════════════════════════════ -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">
+    <img src="assets/bitride-logo-transparent.png" alt="Bitride">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#flota">Nuestra flota</a></li>
+    <li><a href="#tours">Tours</a></li>
+    <li><a href="#precios">Precios</a></li>
+    <li><a href="#como">Cómo funciona</a></li>
+    <li><a href="#bitcoin">Bitcoin</a></li>
+    <li><a href="#rrss">Redes</a></li>
+    <li><a href="#reviews">Reseñas</a></li>
+  </ul>
+  <a href="#precios" class="nav-cta">Reservar</a>
+</nav>
+
+<!-- ═══ HERO ══════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-content">
+    <h1 class="hero-hl">
+      Recorre<br>
+      <span class="acc ita">Cuba</span><br>
+      en moto
+    </h1>
+    <p class="hero-sub">Descubre La Habana y sus alrededores a lomos de una Hurricane 250cc. Paga en Bitcoin — sin bancos, sin fronteras.</p>
+    <div class="hero-btns">
+      <a href="#precios" class="btn-solid">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg>
+        Empieza la aventura
+      </a>
+      <a href="#flota" class="btn-ghost">Ver la flota</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS BAR ════════════════════════════ -->
+<div id="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-block">
+      <div class="stat-num">250<span class="unit">cc</span></div>
+      <div class="stat-lbl">Motor naked deportivo</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num"><span class="stat-acc">$35</span><span class="unit">/día</span></div>
+      <div class="stat-lbl">Precio desde (larga estadía)</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg></div>
+      <div class="stat-lbl">Pago Bitcoin Lightning instantáneo</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num" style="font-style:italic">Cuba<span class="unit"> entera</span></div>
+      <div class="stat-lbl">Rutas sin límite desde La Habana</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TICKER ════════════════════════════════ -->
+<div id="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">El Malecón</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Viñales</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Trinidad</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Varadero</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Cienfuegos</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Las Terrazas</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Santa Clara</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Pinar del Río</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Playas del Este</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Santiago de Cuba</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">El Malecón</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Viñales</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Trinidad</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Varadero</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Cienfuegos</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Las Terrazas</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Santa Clara</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Pinar del Río</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Playas del Este</span><span class="ticker-sep"> · </span>
+    <span class="ticker-item">Santiago de Cuba</span><span class="ticker-sep"> · </span>
+  </div>
+</div>
+
+<!-- ═══ NUESTRA FLOTA ════════════════════════════ -->
+<section id="flota">
+  <div class="wrap">
+    <div class="rev">
+      <div class="eyebrow">Nuestra flota</div>
+      <h2 class="sec-title">Elige tu<br>montura</h2>
+      <p class="sec-desc">Cada moto de nuestra flota está revisada y lista para rodar. Selecciona el modelo que más se adapte a tu aventura.</p>
+    </div>
+
+    <!-- Tabs selector de modelos -->
+    <div class="fleet-tabs rev">
+      <button class="fleet-tab active" data-fleet="hurricane">Hurricane 250cc</button>
+      <button class="fleet-tab" data-fleet="bera">Bera SBR 150cc</button>
+      <button class="fleet-tab" disabled>Más modelos <span class="coming-label">Próximamente</span></button>
+    </div>
+
+    <!-- Showcase del modelo activo -->
+    <div class="fleet-showcase rev" id="fleet-showcase">
+
+      <!-- Imagen izquierda -->
+      <div class="fleet-img-panel">
+        <div class="fleet-img-glow"></div>
+        <div class="fleet-img-shadow"></div>
+        <div class="fleet-img-tag" id="fleet-tag">Serpenti Hurricane 250</div>
+        <img id="fleet-img" src="assets/hurricane-negra.webp" alt="Hurricane 250cc">
+        <div class="fleet-ghost-num" id="fleet-ghost">250</div>
+      </div>
+
+      <!-- Info derecha -->
+      <div class="fleet-info-panel">
+
+        <div>
+          <div class="eyebrow" id="fleet-eyebrow">Disponible ahora</div>
+          <div class="fleet-model-name" id="fleet-name">Hurricane<br><span class="acc">250cc</span></div>
+        </div>
+
+        <p class="fleet-model-desc" id="fleet-desc">
+          Naked deportiva con el carácter justo para cada ruta cubana. Ágil en el tráfico habanero, estable en carretera. La elección perfecta para el viajero que quiere libertad real.
+        </p>
+
+        <!-- Specs grid -->
+        <div class="fleet-specs" id="fleet-specs">
+          <div class="fleet-spec-cell"><div class="fleet-spec-lbl">Motor</div><div class="fleet-spec-val">250 cc</div></div>
+          <div class="fleet-spec-cell"><div class="fleet-spec-lbl">Estilo</div><div class="fleet-spec-val">Naked</div></div>
+          <div class="fleet-spec-cell"><div class="fleet-spec-lbl">Frenos</div><div class="fleet-spec-val">Disco</div></div>
+          <div class="fleet-spec-cell"><div class="fleet-spec-lbl">Transmisión</div><div class="fleet-spec-val">Manual</div></div>
+          <div class="fleet-spec-cell"><div class="fleet-spec-lbl">Arranque</div><div class="fleet-spec-val">Eléctrico</div></div>
+          <div class="fleet-spec-cell"><div class="fleet-spec-lbl">Color</div><div class="fleet-spec-val">Negro/Rojo</div></div>
+        </div>
+
+        <!-- Unidades disponibles -->
+        <div class="fleet-units">
+          <div class="fleet-units-dots" id="fleet-dots">
+            <div class="fleet-unit-dot"></div>
+            <div class="fleet-unit-dot"></div>
+            <div class="fleet-unit-dot"></div>
+          </div>
+          <div class="fleet-units-label" id="fleet-avail">3 unidades disponibles</div>
+        </div>
+
+        <!-- Incluye -->
+        <div class="fleet-includes">
+          <div class="fleet-include-tag yes">✓ Casco incluido</div>
+          <div class="fleet-include-tag yes">✓ Revisión técnica</div>
+          <div class="fleet-include-tag">⛽ Combustible aparte</div>
+        </div>
+
+        <!-- Precio y CTA -->
+        <div class="fleet-price-row">
+          <div class="fleet-price" id="fleet-price">$40</div>
+          <div>
+            <div class="fleet-price-unit">USD / día</div>
+            <div class="fleet-price-long">$35/día a partir de 14 días</div>
+          </div>
+        </div>
+
+        <a href="#precios" class="btn-solid" style="align-self:flex-start">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Reservar esta moto
+        </a>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TOURS ══════════════════════════════ -->
+<section id="tours">
+  <div class="wrap">
+    <div class="rev">
+      <div class="eyebrow">Tours guiados</div>
+      <h2 class="sec-title">Rutas que<br>no olvidarás</h2>
+      <p class="sec-desc">Te guiamos en moto por los rincones más icónicos de Cuba. Con guía local, sin perderte nada.</p>
+    </div>
+    <div class="tours-grid">
+
+      <!-- Tour 1 -->
+      <div class="tour-card rev d1">
+        <div class="tour-img" style="background-image:url('https://images.unsplash.com/photo-1519677100203-a0e668c92439?auto=format&fit=crop&w=800&q=80')">
+          <div class="tour-badge">Medio día</div>
+        </div>
+        <div class="tour-body">
+          <div class="tour-name">La Habana Clásica</div>
+          <p class="tour-desc">Malecón, Habana Vieja, el Capitolio y el Vedado. El circuito perfecto para conocer la capital sobre dos ruedas.</p>
+          <div class="tour-meta">
+            <div class="tour-meta-item">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              3–4 horas
+            </div>
+            <div class="tour-meta-item">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+              ~25 km
+            </div>
+            <div class="tour-meta-item">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              Fácil
+            </div>
+          </div>
+        </div>
+        <div class="tour-foot">
+          <div class="tour-price">Consultar precio</div>
+          <a href="https://wa.me/5355555555?text=Hola%2C+me+interesa+el+tour+La+Habana+Cl%C3%A1sica" target="_blank" class="tour-cta">
+            Reservar
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Tour 2 -->
+      <div class="tour-card rev d1">
+        <div class="tour-img" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80')">
+          <div class="tour-badge">Día completo</div>
+        </div>
+        <div class="tour-body">
+          <div class="tour-name">Viñales y los Mogotes</div>
+          <p class="tour-desc">Escapa a Pinar del Río entre campos de tabaco, mogotes y aire limpio. La ruta más espectacular del occidente cubano.</p>
+          <div class="tour-meta">
+            <div class="tour-meta-item">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              8–10 horas
+            </div>
+            <div class="tour-meta-item">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+              ~180 km
+            </div>
+            <div class="tour-meta-item">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              Moderado
+            </div>
+          </div>
+        </div>
+        <div class="tour-foot">
+          <div class="tour-price">Consultar precio</div>
+          <a href="https://wa.me/5355555555?text=Hola%2C+me+interesa+el+tour+Vi%C3%B1ales" target="_blank" class="tour-cta">
+            Reservar
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Tour 3 -->
+      <div class="tour-card rev d2">
+        <div class="tour-img" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80')">
+          <div class="tour-badge">Medio día</div>
+        </div>
+        <div class="tour-body">
+          <div class="tour-name">Playas del Este</div>
+          <p class="tour-desc">Arena blanca, agua turquesa y la brisa del Atlántico. A solo 30 km de La Habana, el destino de playa más fácil de alcanzar.</p>
+          <div class="tour-meta">
+            <div class="tour-meta-item">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              4–5 horas
+            </div>
+            <div class="tour-meta-item">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+              ~60 km
+            </div>
+            <div class="tour-meta-item">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              Fácil
+            </div>
+          </div>
+        </div>
+        <div class="tour-foot">
+          <div class="tour-price">Consultar precio</div>
+          <a href="https://wa.me/5355555555?text=Hola%2C+me+interesa+el+tour+Playas+del+Este" target="_blank" class="tour-cta">
+            Reservar
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Tour 4 -->
+      <div class="tour-card rev d2">
+        <div class="tour-img" style="background-image:url('https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=800&q=80')">
+          <div class="tour-badge">2 días</div>
+        </div>
+        <div class="tour-body">
+          <div class="tour-name">Trinidad Colonial</div>
+          <p class="tour-desc">La ciudad más bella de Cuba te espera. Calles empedradas, arquitectura colonial y el Valle de los Ingenios al fondo.</p>
+          <div class="tour-meta">
+            <div class="tour-meta-item">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              2 días
+            </div>
+            <div class="tour-meta-item">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+              ~350 km
+            </div>
+            <div class="tour-meta-item">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              Avanzado
+            </div>
+          </div>
+        </div>
+        <div class="tour-foot">
+          <div class="tour-price">Consultar precio</div>
+          <a href="https://wa.me/5355555555?text=Hola%2C+me+interesa+el+tour+Trinidad" target="_blank" class="tour-cta">
+            Reservar
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CALCULADORA ════════════════════════ -->
+<section id="precios">
+  <div class="wrap">
+    <div class="calc-top">
+      <div class="rev">
+        <div class="eyebrow">Precios</div>
+        <h2 class="sec-title">Elige<br>tus días</h2>
+        <p class="sec-desc">Mientras más tiempo explores, mejor precio obtienes. Paga directamente en Bitcoin — el precio es el precio.</p>
+      </div>
+      <div class="tarifas rev d1">
+        <div class="tarifa">
+          <div class="tarifa-label">1 – 13 días</div>
+          <div class="tarifa-price">$40 <small>/ día</small></div>
+        </div>
+        <div class="tarifa best">
+          <div class="tarifa-label">14 días o más</div>
+          <div class="tarifa-right">
+            <div class="tarifa-price">$35 <small>/ día</small></div>
+            <div class="tarifa-badge">Mejor precio</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cal-widget rev">
+      <div class="cal-head">
+        <div class="cal-head-title">Selecciona tus fechas de renta</div>
+        <div class="cal-hint" id="cal-hint">Clic en una fecha para comenzar</div>
+      </div>
+      <div class="cal-body">
+        <div class="cal-month" id="cal-l"></div>
+        <div class="cal-month" id="cal-r"></div>
+      </div>
+      <div class="cal-result">
+        <div id="cal-out"><div class="result-empty">Selecciona las fechas para calcular el precio</div></div>
+        <button class="btn-solid" id="btn-res" disabled>Reservar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COMO FUNCIONA ══════════════════════ -->
+<section id="como">
+  <div class="wrap">
+    <div class="rev">
+      <div class="eyebrow">El proceso</div>
+      <h2 class="sec-title">En tres pasos<br>estás en ruta</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card rev d1">
+        <div class="step-num">01</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="step-name">Elige tu aventura</div>
+        <p class="step-body">Selecciona los días que quieres explorar. La calculadora te muestra el precio exacto en USD y Bitcoin al instante.</p>
+      </div>
+      <div class="step-card rev d2">
+        <div class="step-num">02</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg>
+        </div>
+        <div class="step-name">Confirma en segundos</div>
+        <p class="step-body">Recibes una factura Lightning Network. Pagas desde cualquier wallet, desde cualquier país. Tu reserva queda confirmada al instante.</p>
+      </div>
+      <div class="step-card rev d3">
+        <div class="step-num">03</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="step-name">Descubre Cuba libre</div>
+        <p class="step-body">Coordina la entrega en La Habana. Recoge tu Hurricane 250cc y empieza a escribir tu propia historia en Cuba.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ POR QUE BITCOIN ════════════════════ -->
+<section id="bitcoin">
+  <div class="bitcoin-bolt-bg">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg>
+  </div>
+  <div class="wrap">
+    <div class="rev">
+      <div class="eyebrow">Sin barreras para explorar</div>
+      <h2 class="sec-title">Paga en segundos,<br>explora sin límites</h2>
+    </div>
+    <div class="btc-grid">
+      <div class="btc-card rev d1">
+        <div class="btc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        </div>
+        <div class="btc-name">Múltiples métodos de pago</div>
+        <p class="btc-body">Aceptamos efectivo en USD, Bitcoin (Lightning y on-chain) y otras criptomonedas. Nos adaptamos a ti — sin complicaciones.</p>
+      </div>
+      <div class="btc-card rev d1">
+        <div class="btc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <div class="btc-name">Sin trámites bancarios</div>
+        <p class="btc-body">Cero formularios, cero intermediarios. Enfoca tu energía en la aventura, no en el pago.</p>
+      </div>
+      <div class="btc-card rev d2">
+        <div class="btc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="btc-name">Tu reserva, garantizada</div>
+        <p class="btc-body">Una vez pagado, es tuyo. Sin reversiones ni bloqueos bancarios. Tu aventura no tiene fecha de cancelación.</p>
+      </div>
+    </div>
+
+    <!-- BTCMap + Google Maps band -->
+    <div class="btcmap-band rev">
+      <div class="btcmap-left">
+        <div class="btcmap-eyebrow">Dónde encontrarnos</div>
+        <div class="btcmap-title">Verificados en BTCMap — y en Google</div>
+        <p class="btcmap-desc">Somos un negocio Bitcoin verificado en BTCMap, el directorio global de negocios que aceptan BTC. También nos encuentras en Google Maps para llegar sin complicaciones.</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:20px;">
+          <a href="https://btcmap.org/map#13/23.1136/-82.3666" target="_blank" rel="noopener" class="btcmap-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Ver en BTCMap
+          </a>
+          <a href="https://maps.google.com/?q=Reparto+Aldabo,+Boyeros,+La+Habana,+Cuba" target="_blank" rel="noopener" class="btcmap-link" style="border-color:rgba(66,133,244,0.4); color:#4285F4;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 00-8 8c0 5.25 8 14 8 14s8-8.75 8-14a8 8 0 00-8-8z"/></svg>
+            Ver en Google Maps
+          </a>
+        </div>
+      </div>
+      <div class="btcmap-right" style="display:flex; flex-direction:row; width:520px;">
+        <div style="flex:1; position:relative; overflow:hidden; border-right:1px solid rgba(247,147,26,0.2);">
+          <div style="position:absolute; top:6px; left:8px; z-index:2; font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; background:rgba(8,8,6,0.75); color:var(--accent); padding:3px 8px;">BTCMap</div>
+          <iframe
+            src="https://btcmap.org/map#13/23.1136/-82.3666"
+            title="BTCMap La Habana"
+            loading="lazy"
+            style="width:100%; height:100%; border:none; filter:invert(1) hue-rotate(180deg) saturate(0.6) brightness(0.85);"
+            sandbox="allow-scripts allow-same-origin">
+          </iframe>
+        </div>
+        <div style="flex:1; position:relative; overflow:hidden;">
+          <div style="position:absolute; top:6px; left:8px; z-index:2; font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; background:rgba(8,8,6,0.75); color:#4285F4; padding:3px 8px;">Google Maps</div>
+          <iframe
+            src="https://maps.google.com/maps?q=Reparto+Aldabo,+Boyeros,+La+Habana,+Cuba&z=14&output=embed"
+            title="Bitride en Google Maps"
+            loading="lazy"
+            style="width:100%; height:100%; border:none; filter:invert(1) hue-rotate(180deg) saturate(0.5) brightness(0.82);"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ REVIEWS ════════════════════════════ -->
+<section id="reviews">
+  <div class="wrap">
+    <div class="reviews-header">
+      <div class="rev">
+        <div class="eyebrow">Lo que dicen nuestros viajeros</div>
+        <h2 class="sec-title">Reseñas de<br>nuestros clientes</h2>
+      </div>
+      <div class="reviews-score rev">
+        <div class="score-num">5.0</div>
+        <div class="score-meta">
+          <div class="score-stars">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div class="score-label">Basado en reseñas verificadas</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reviews-carousel">
+
+      <div class="review-card rev d1">
+        <div class="review-stars">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="review-text">La experiencia más auténtica que he tenido en Cuba. La Hurricane es potente y confiable, recorrimos el Malecón al atardecer y fue mágico. El servicio es de primera.</p>
+        <div class="review-author">
+          <div class="review-avatar">MR</div>
+          <div>
+            <div class="review-name">Marco Rossi</div>
+            <div class="review-origin">Italia · Enero 2026</div>
+          </div>
+          <div class="review-platform">Google</div>
+        </div>
+      </div>
+
+      <div class="review-card rev d1">
+        <div class="review-stars">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="review-text">Paid with Lightning in seconds — so smooth. The bike was in perfect condition and the guided tour to Viñales was absolutely breathtaking. Would 100% do it again.</p>
+        <div class="review-author">
+          <div class="review-avatar">SJ</div>
+          <div>
+            <div class="review-name">Sarah Johnson</div>
+            <div class="review-origin">USA · Febrero 2026</div>
+          </div>
+          <div class="review-platform">TripAdvisor</div>
+        </div>
+      </div>
+
+      <div class="review-card rev d2">
+        <div class="review-stars">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="review-text">Service impeccable. La moto était en parfait état, le casque inclus, et le processus de réservation via WhatsApp super simple. J'ai même payé en Bitcoin — génial.</p>
+        <div class="review-author">
+          <div class="review-avatar">PD</div>
+          <div>
+            <div class="review-name">Pierre Dubois</div>
+            <div class="review-origin">Francia · Marzo 2026</div>
+          </div>
+          <div class="review-platform">Google</div>
+        </div>
+      </div>
+
+      <div class="review-card rev d2">
+        <div class="review-stars">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="review-text">Hicimos el tour a Trinidad en dos días y fue lo mejor del viaje. Noel conoce cada curva del camino. La moto nunca dio problemas. Depósito devuelto al instante.</p>
+        <div class="review-author">
+          <div class="review-avatar">CM</div>
+          <div>
+            <div class="review-name">Carlos Méndez</div>
+            <div class="review-origin">Argentina · Abril 2026</div>
+          </div>
+          <div class="review-platform">TripAdvisor</div>
+        </div>
+      </div>
+
+      <div class="review-card rev d3">
+        <div class="review-stars">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="review-text">Fantastic experience. Easy booking on WhatsApp, honest pricing, great bike. Rode to Playas del Este on a sunny morning — Cuba from the saddle is something else entirely.</p>
+        <div class="review-author">
+          <div class="review-avatar">TW</div>
+          <div>
+            <div class="review-name">Thomas Weber</div>
+            <div class="review-origin">Alemania · Abril 2026</div>
+          </div>
+          <div class="review-platform">Google</div>
+        </div>
+      </div>
+
+      <div class="review-card rev d3">
+        <div class="review-stars">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="review-text">Najlepsza decyzja wakacyjna. Motocykl był w świetnym stanie, kask w zestawie, a płatność Bitcoinem to było coś nowego. Noel był bardzo pomocny i profesjonalny.</p>
+        <div class="review-author">
+          <div class="review-avatar">LK</div>
+          <div>
+            <div class="review-name">Lena Kowalski</div>
+            <div class="review-origin">Polonia · Mayo 2026</div>
+          </div>
+          <div class="review-platform">TripAdvisor</div>
+        </div>
+      </div>
+
+    </div><!-- end reviews-carousel -->
+    <div class="reviews-more rev">
+      <a href="https://www.google.com/search?q=Bitride+Cuba" target="_blank" rel="noopener">Ver todas las reseñas en Google →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ REDES SOCIALES ═════════════════════ -->
+<section id="rrss" style="padding:100px 0; background:var(--bg); border-top:1px solid var(--border);">
+  <div class="wrap">
+    <div class="rev" style="text-align:center; margin-bottom:56px;">
+      <div class="eyebrow">Síguenos</div>
+      <h2 class="sec-title">Nuestras<br>redes</h2>
+      <p class="sec-desc" style="margin:0 auto; text-align:center;">Rutas, aventuras y la vida en dos ruedas desde La Habana. Síguenos y sé parte de la comunidad Bitride.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:2px;" class="rev">
+
+      <!-- Facebook -->
+      <a href="https://www.facebook.com/bitridecuba" target="_blank" rel="noopener"
+         style="background:var(--card); border:1px solid var(--border); padding:40px 28px; text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:16px; transition:border-color 0.25s, transform 0.25s;"
+         onmouseover="this.style.borderColor='rgba(247,147,26,0.5)'; this.style.transform='translateY(-4px)'"
+         onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)'">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--accent)"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--white);">Facebook</div>
+        <div style="font-size:12px; color:var(--muted); letter-spacing:0.06em;">@bitridecuba</div>
+        <div style="font-size:11px; color:var(--muted); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px; border:1px solid var(--border); color:var(--accent); margin-top:4px;">Seguir →</div>
+      </a>
+
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/bitridecuba" target="_blank" rel="noopener"
+         style="background:var(--card); border:1px solid var(--border); padding:40px 28px; text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:16px; transition:border-color 0.25s, transform 0.25s;"
+         onmouseover="this.style.borderColor='rgba(247,147,26,0.5)'; this.style.transform='translateY(-4px)'"
+         onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)'">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="var(--accent)" stroke="none"/></svg>
+        <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--white);">Instagram</div>
+        <div style="font-size:12px; color:var(--muted); letter-spacing:0.06em;">@bitridecuba</div>
+        <div style="font-size:11px; color:var(--muted); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px; border:1px solid var(--border); color:var(--accent); margin-top:4px;">Seguir →</div>
+      </a>
+
+      <!-- TikTok -->
+      <a href="https://www.tiktok.com/@bitridecuba" target="_blank" rel="noopener"
+         style="background:var(--card); border:1px solid var(--border); padding:40px 28px; text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:16px; transition:border-color 0.25s, transform 0.25s;"
+         onmouseover="this.style.borderColor='rgba(247,147,26,0.5)'; this.style.transform='translateY(-4px)'"
+         onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)'">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--accent)"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.84 4.84 0 01-1.01-.07z"/></svg>
+        <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--white);">TikTok</div>
+        <div style="font-size:12px; color:var(--muted); letter-spacing:0.06em;">@bitridecuba</div>
+        <div style="font-size:11px; color:var(--muted); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px; border:1px solid var(--border); color:var(--accent); margin-top:4px;">Seguir →</div>
+      </a>
+
+      <!-- WhatsApp -->
+      <a href="https://wa.me/5355555555" target="_blank" rel="noopener"
+         style="background:rgba(37,211,102,0.06); border:1px solid rgba(37,211,102,0.25); padding:40px 28px; text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:16px; transition:border-color 0.25s, transform 0.25s;"
+         onmouseover="this.style.borderColor='rgba(37,211,102,0.6)'; this.style.transform='translateY(-4px)'"
+         onmouseout="this.style.borderColor='rgba(37,211,102,0.25)'; this.style.transform='translateY(0)'">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--white);">WhatsApp</div>
+        <div style="font-size:12px; color:#25D366; letter-spacing:0.06em;">+53 5555 5555</div>
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px; border:1px solid rgba(37,211,102,0.3); color:#25D366; margin-top:4px;">Escribir →</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACTO ═══════════════════════════ -->
+<section id="contacto">
+  <div class="cta-photo"></div>
+  <div class="cta-photo-overlay"></div>
+  <div class="cta-inner rev">
+    <div class="eyebrow">Hay rutas esperando</div>
+    <div class="cta-rule"></div>
+    <h2 class="cta-title">Cuba te<br>está<br><span class="acc">esperando</span></h2>
+    <p class="cta-sub">Cada calle de La Habana, cada curva en Viñales, cada amanecer en el Malecón. Escríbenos y empieza tu aventura.</p>
+    <div class="cta-btns">
+      <a href="https://t.me/bitridecuba" class="btn-solid" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>
+        Telegram
+      </a>
+      <a href="https://wa.me/5355555555" class="btn-ghost" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═════════════════════════════ -->
+<footer>
+  <a href="#hero" class="footer-logo">
+    <img src="assets/bitride-logo-transparent.png" alt="Bitride">
+  </a>
+  <span class="footer-copy">© 2026 Bitride · La Habana, Cuba</span>
+  <div class="footer-social">
+    <!-- Facebook -->
+    <a href="https://www.facebook.com/bitridecuba" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+    </a>
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/bitridecuba" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    </a>
+    <!-- TikTok -->
+    <a href="https://www.tiktok.com/@bitridecuba" target="_blank" rel="noopener" aria-label="TikTok">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.84 4.84 0 01-1.01-.07z"/></svg>
+    </a>
+    <!-- WhatsApp -->
+    <a href="https://wa.me/5355555555" target="_blank" rel="noopener" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+  </div>
+  <ul class="footer-nav">
+    <li><a href="#flota">Nuestra flota</a></li>
+    <li><a href="#tours">Tours</a></li>
+    <li><a href="#precios">Precios</a></li>
+    <li><a href="#reviews">Reseñas</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</footer>
+
+<!-- ═══ WHATSAPP FLOTANTE ══════════════════ -->
+<a id="wa-float" href="https://wa.me/5355555555?text=Hola%2C+me+interesa+alquilar+una+moto+en+Bitride" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- ═══ TWEAKS PANEL ═══════════════════════ -->
+<div id="tweaks">
+  <div class="tw-head">
+    <span class="tw-title">Tweaks</span>
+    <button class="tw-close" id="tw-close">✕</button>
+  </div>
+  <div class="tw-body">
+    <div class="tw-row">
+      <div class="tw-lbl">Color de acento</div>
+      <div class="tw-swatches">
+        <div class="tw-sw on" data-acc="#f7931a" style="background:#f7931a;"></div>
+        <div class="tw-sw" data-acc="#e63946" style="background:#e63946;"></div>
+        <div class="tw-sw" data-acc="#00c2cb" style="background:#00c2cb;"></div>
+        <div class="tw-sw" data-acc="#c8e84b" style="background:#c8e84b;"></div>
+      </div>
+    </div>
+    <div class="tw-row">
+      <div class="tw-toggle-row">
+        <span class="tw-toggle-lbl">Mostrar equivalencia en sats</span>
+        <div class="tw-pill on" id="tw-sats"></div>
+      </div>
+    </div>
+    <div class="tw-row">
+      <div class="tw-lbl">Foto del hero</div>
+      <div class="tw-photo-grid">
+        <div class="tw-photo on" data-ph="0" style="background-image:url('https://images.unsplash.com/photo-1519723264671-8b7a4d7e66e0?w=120&q=60');"></div>
+        <div class="tw-photo" data-ph="1" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=120&q=60');"></div>
+        <div class="tw-photo" data-ph="2" style="background-image:url('https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=120&q=60');"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   TWEAKS DEFAULTS
+═══════════════════════════════════════════ */
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accent": "#f7931a",
+  "showSats": true,
+  "heroPhoto": 1
+}/*EDITMODE-END*/;
+
+const tw = Object.assign({}, TWEAK_DEFAULTS);
+
+const HERO_PHOTOS = [
+  'https://images.unsplash.com/photo-1519723264671-8b7a4d7e66e0?auto=format&fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=1920&q=80'
+];
+
+function applyTweaks() {
+  document.documentElement.style.setProperty('--accent', tw.accent);
+  document.getElementById('hero-bg').style.backgroundImage = `url('${HERO_PHOTOS[tw.heroPhoto]}')`;
+  document.querySelectorAll('.result-sats').forEach(el => {
+    el.style.display = tw.showSats ? '' : 'none';
+  });
+  document.querySelectorAll('[data-acc]').forEach(el => {
+    el.classList.toggle('on', el.dataset.acc === tw.accent);
+  });
+  document.querySelectorAll('[data-ph]').forEach(el => {
+    el.classList.toggle('on', parseInt(el.dataset.ph) === tw.heroPhoto);
+  });
+  document.getElementById('tw-sats').classList.toggle('on', tw.showSats);
+}
+
+const tweaksEl = document.getElementById('tweaks');
+const showTw = () => tweaksEl.classList.add('show');
+const hideTw = () => {
+  tweaksEl.classList.remove('show');
+  window.parent.postMessage({type: '__edit_mode_dismissed'}, '*');
+};
+
+document.getElementById('tw-close').addEventListener('click', hideTw);
+
+window.addEventListener('message', e => {
+  if (!e.data || !e.data.type) return;
+  if (e.data.type === '__activate_edit_mode') showTw();
+  if (e.data.type === '__deactivate_edit_mode') hideTw();
+});
+window.parent.postMessage({type: '__edit_mode_available'}, '*');
+
+document.querySelectorAll('[data-acc]').forEach(el => {
+  el.addEventListener('click', () => {
+    tw.accent = el.dataset.acc; applyTweaks();
+    window.parent.postMessage({type:'__edit_mode_set_keys', edits:{accent: tw.accent}}, '*');
+  });
+});
+document.querySelectorAll('[data-ph]').forEach(el => {
+  el.addEventListener('click', () => {
+    tw.heroPhoto = parseInt(el.dataset.ph); applyTweaks();
+    window.parent.postMessage({type:'__edit_mode_set_keys', edits:{heroPhoto: tw.heroPhoto}}, '*');
+  });
+});
+document.getElementById('tw-sats').addEventListener('click', () => {
+  tw.showSats = !tw.showSats; applyTweaks(); updatePrice();
+  window.parent.postMessage({type:'__edit_mode_set_keys', edits:{showSats: tw.showSats}}, '*');
+});
+
+applyTweaks();
+
+/* ═══════════════════════════════════════════
+   NAV SCROLL
+═══════════════════════════════════════════ */
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  navEl.classList.toggle('scrolled', window.scrollY > 40);
+}, {passive: true});
+
+setTimeout(() => document.getElementById('hero').classList.add('loaded'), 80);
+
+/* ═══════════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════════ */
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); revObs.unobserve(e.target); }
+  });
+}, {threshold: 0.08});
+document.querySelectorAll('.rev').forEach(el => revObs.observe(el));
+
+/* ═══════════════════════════════════════════
+   CALENDAR + CALCULATOR
+═══════════════════════════════════════════ */
+const BTC_PRICE = 100000;
+const RATE_STD  = 40;
+const RATE_LONG = 35;
+
+const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const DIAS  = ['Lu','Ma','Mi','Ju','Vi','Sa','Do'];
+
+let calBase  = (() => { const d = new Date(); d.setDate(1); d.setHours(0,0,0,0); return d; })();
+let selStart = null;
+let selEnd   = null;
+let hoverD   = null;
+
+function addMo(d, n) { const r = new Date(d); r.setMonth(r.getMonth()+n); return r; }
+function d0(d)       { const r = new Date(d); r.setHours(0,0,0,0); return r; }
+function sameD(a,b)  { return a&&b && a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
+function inRange(d,s,e) { return s&&e && d>s && d<e; }
+
+function buildMonth(monthDate, isLeft) {
+  const today = d0(new Date());
+  const Y = monthDate.getFullYear();
+  const M = monthDate.getMonth();
+  const first = new Date(Y, M, 1);
+  const last  = new Date(Y, M+1, 0).getDate();
+  let dow = first.getDay(); dow = dow===0 ? 6 : dow-1; // Mon-first
+
+  const effEnd = selEnd || hoverD;
+  const curMonFirst = d0(new Date()); curMonFirst.setDate(1);
+  const prevDisabled = addMo(calBase,-1) < curMonFirst;
+
+  let h = `<div class="cal-mhead">
+    ${isLeft  ? `<button class="cal-mnav" id="cal-prev" ${prevDisabled?'disabled':''}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="15 18 9 12 15 6"/></svg></button>` : '<span></span>'}
+    <div class="cal-mname">${MESES[M]} ${Y}</div>
+    ${!isLeft ? `<button class="cal-mnav" id="cal-next"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"/></svg></button>` : '<span></span>'}
+  </div>`;
+
+  // DOW headers
+  h += `<div class="cal-grid" style="margin-bottom:4px;">`;
+  DIAS.forEach(d => { h += `<div class="cal-dow">${d}</div>`; });
+  h += '</div><div class="cal-grid">';
+
+  for (let i=0;i<dow;i++) h += '<div class="cal-cell emp"></div>';
+
+  for (let day=1; day<=last; day++) {
+    const date = new Date(Y, M, day);
+    const past = date < today;
+    const tdBit = sameD(date, today);
+    const isS   = sameD(date, selStart);
+    const isE   = sameD(date, selEnd);
+    const rang  = !past && inRange(date, selStart, effEnd);
+
+    let cls = 'cal-cell';
+    if (past) cls += ' past';
+    else cls += ' avail';
+    if (tdBit) cls += ' is-today';
+    if (isS) cls += ' s-start';
+    if (isE) cls += ' s-end';
+    if (rang) cls += ' in-range';
+
+    const ds = `${Y}-${String(M+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    h += `<div class="${cls}" data-d="${ds}">${day}</div>`;
+  }
+  h += '</div>';
+  return h;
+}
+
+function renderCal() {
+  const lEl = document.getElementById('cal-l');
+  const rEl = document.getElementById('cal-r');
+  lEl.innerHTML = buildMonth(calBase, true);
+  rEl.innerHTML = buildMonth(addMo(calBase,1), false);
+
+  const prev = document.getElementById('cal-prev');
+  const next = document.getElementById('cal-next');
+  if (prev) prev.addEventListener('click', () => { calBase = addMo(calBase,-1); renderCal(); });
+  if (next) next.addEventListener('click', () => { calBase = addMo(calBase,1);  renderCal(); });
+
+  document.querySelectorAll('.cal-cell.avail').forEach(cell => {
+    cell.addEventListener('click', () => {
+      const clicked = d0(new Date(cell.dataset.d + 'T12:00:00'));
+      if (!selStart || (selStart && selEnd)) {
+        selStart = clicked; selEnd = null;
+        setHint('Ahora selecciona la fecha de regreso');
+      } else {
+        if (clicked < selStart)         { selEnd = selStart; selStart = clicked; }
+        else if (sameD(clicked,selStart)){ selStart = null; selEnd = null; setHint('Clic en una fecha para comenzar'); }
+        else                             { selEnd = clicked; setHint(''); }
+        hoverD = null;
+      }
+      renderCal(); updatePrice();
+    });
+
+    cell.addEventListener('mouseenter', () => {
+      if (selStart && !selEnd) {
+        hoverD = d0(new Date(cell.dataset.d + 'T12:00:00'));
+        renderCal();
+      }
+    });
+  });
+
+  const calBody = document.querySelector('.cal-body');
+  if (calBody) {
+    calBody.addEventListener('mouseleave', () => {
+      if (selStart && !selEnd && hoverD) { hoverD = null; renderCal(); }
+    });
+  }
+}
+
+function setHint(msg) {
+  const h = document.getElementById('cal-hint');
+  if (h) h.textContent = msg;
+}
+
+function updatePrice() {
+  const out = document.getElementById('cal-out');
+  const btn = document.getElementById('btn-res');
+
+  if (!selStart || !selEnd) {
+    out.innerHTML = '<div class="result-empty">Selecciona las fechas para calcular el precio</div>';
+    btn.disabled = true; return;
+  }
+
+  const days = Math.round((selEnd - selStart) / 86400000);
+  if (days < 1) {
+    out.innerHTML = '<div class="result-empty">Selecciona al menos 1 día</div>';
+    btn.disabled = true; return;
+  }
+
+  const rate     = days >= 14 ? RATE_LONG : RATE_STD;
+  const totalUSD = days * rate;
+  const totalBTC = totalUSD / BTC_PRICE;
+  const sats     = Math.round(totalBTC * 1e8);
+
+  const fmt = d => d.toLocaleDateString('es-ES', {day:'numeric', month:'short'});
+  const discount = days >= 14 ? '<div class="result-discount">Tarifa reducida aplicada ✓</div>' : '';
+  const satsHTML = `<div class="result-sats"${tw.showSats ? '' : ' style="display:none"'}>≈ ${sats.toLocaleString()} sats</div>`;
+
+  out.innerHTML = `<div class="result-info">
+    <div class="result-days-col">
+      ${discount}
+      <div class="result-date-str">${fmt(selStart)} → ${fmt(selEnd)}</div>
+      <div class="result-days-big">${days}<span> días</span></div>
+      <div class="result-rate">× $${rate} / día</div>
+    </div>
+    <div class="result-price-col">
+      <div class="result-usd"><span class="cur">$</span>${totalUSD.toLocaleString()} <span class="cur">USD</span></div>
+      <div class="result-btc">≈ ${totalBTC.toFixed(8)} BTC</div>
+      ${satsHTML}
+    </div>
+  </div>`;
+  btn.disabled = false;
+}
+
+renderCal();
+
+/* ═══════════════════════════════════════════
+   FLEET SELECTOR
+═══════════════════════════════════════════ */
+const FLEET_DATA = {
+  hurricane: {
+    tag:    'Serpenti Hurricane 250',
+    name:   'Hurricane<br><span class="acc">250cc</span>',
+    eyebrow:'Disponible ahora',
+    desc:   'Naked deportiva con el carácter justo para cada ruta cubana. Ágil en el tráfico habanero, estable en carretera. La elección perfecta para el viajero que quiere libertad real.',
+    img:    'assets/hurricane-negra.webp',
+    ghost:  '250',
+    specs: [
+      ['Motor','250 cc'], ['Estilo','Naked'],
+      ['Frenos','Disco'], ['Transmisión','Manual'],
+      ['Arranque','Eléctrico'], ['Color','Negro/Rojo']
+    ],
+    units:  3,
+    price:  '$40',
+    priceLong: '$35/día a partir de 14 días',
+  },
+  bera: {
+    tag:    'Bera SBR 150',
+    name:   'Bera SBR<br><span class="acc">150cc</span>',
+    eyebrow:'Disponible ahora',
+    desc:   'Ligera, ágil y económica. La Bera SBR 150 es ideal para moverse por La Habana con facilidad y bajo consumo. Perfecta para quienes buscan una opción práctica sin renunciar al estilo.',
+    img:    'assets/bera-sbr-150.png',
+    ghost:  '150',
+    specs: [
+      ['Motor','150 cc'], ['Estilo','Sport'],
+      ['Frenos','Disco'], ['Transmisión','Manual 5v'],
+      ['Arranque','Eléctrico'], ['Peso','~130 kg']
+    ],
+    units:  1,
+    price:  '$25',                          /* ← confirmar precio */
+    priceLong: '$22/día a partir de 14 días',
+  }
+};
+
+document.querySelectorAll('.fleet-tab:not(:disabled)').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.fleet-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    const data = FLEET_DATA[btn.dataset.fleet];
+    if (!data) return;
+
+    document.getElementById('fleet-tag').textContent   = data.tag;
+    document.getElementById('fleet-name').innerHTML    = data.name;
+    document.getElementById('fleet-eyebrow').textContent = data.eyebrow;
+    document.getElementById('fleet-desc').textContent  = data.desc;
+    document.getElementById('fleet-ghost').textContent = data.ghost;
+    document.getElementById('fleet-price').textContent = data.price;
+
+    const img = document.getElementById('fleet-img');
+    img.style.opacity = '0';
+    img.style.transform = 'translateX(20px)';
+    setTimeout(() => {
+      img.src = data.img;
+      img.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      img.style.opacity = '1';
+      img.style.transform = 'translateX(0)';
+    }, 150);
+
+    const specsEl = document.getElementById('fleet-specs');
+    specsEl.innerHTML = data.specs.map(([l,v]) =>
+      `<div class="fleet-spec-cell"><div class="fleet-spec-lbl">${l}</div><div class="fleet-spec-val">${v}</div></div>`
+    ).join('');
+
+    const dotsEl = document.getElementById('fleet-dots');
+    dotsEl.innerHTML = Array.from({length: 5}, (_,i) =>
+      `<div class="fleet-unit-dot${i >= data.units ? ' unavail' : ''}"></div>`
+    ).join('');
+    document.getElementById('fleet-avail').textContent = `${data.units} unidad${data.units !== 1 ? 'es' : ''} disponible${data.units !== 1 ? 's' : ''}`;
+  });
+});
+</script>
+</body>
+</html>
