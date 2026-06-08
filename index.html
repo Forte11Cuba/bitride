@@ -983,6 +983,61 @@
     .footer-social a:hover { border-color: var(--accent); color: var(--accent); }
     .footer-social svg { width: 16px; height: 16px; }
 
+    /* ── LANG SWITCHER ──────────────────────── */
+    .lang-switcher { position: relative; margin-right: 8px; }
+    .lang-current {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 6px 10px;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer;
+      display: flex; align-items: center; gap: 6px;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .lang-current:hover, .lang-switcher.open .lang-current { color: var(--accent); border-color: var(--accent); }
+    .lang-current svg { transition: transform 0.2s; flex-shrink: 0; }
+    .lang-switcher.open .lang-current svg { transform: rotate(180deg); }
+    .lang-dropdown {
+      display: none;
+      position: absolute; top: calc(100% + 6px); right: 0;
+      background: var(--card2); border: 1px solid var(--border);
+      min-width: 148px; z-index: 400;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    }
+    .lang-switcher.open .lang-dropdown { display: block; }
+    .lang-option {
+      display: block; width: 100%;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 10px 14px; text-align: left;
+      background: none; border: none;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted); cursor: pointer;
+      transition: color 0.15s, background 0.15s;
+    }
+    .lang-option:last-child { border-bottom: none; }
+    .lang-option:hover { color: var(--white); background: rgba(255,255,255,0.05); }
+    .lang-option.active { color: var(--accent); }
+
+    /* ── FLEET SKELETON & GALLERY ────────── */
+    @keyframes shimmer { 0% { background-position:-200% 0 } 100% { background-position:200% 0 } }
+    .skel {
+      background: linear-gradient(90deg, var(--card) 25%, rgba(255,255,255,0.045) 50%, var(--card) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.6s infinite;
+    }
+    .fleet-photo-dots { display:flex; gap:7px; align-items:center; }
+    .fleet-photo-dot {
+      width:8px; height:8px; border-radius:50%;
+      background: var(--border); cursor:pointer;
+      transition: background 0.2s, transform 0.15s;
+      border:none; padding:0; flex-shrink:0;
+    }
+    .fleet-photo-dot.active { background:var(--accent); transform:scale(1.3); }
+
     /* ── RESPONSIVE ──────────────────────── */
     @media (max-width: 960px) {
       #nav { padding: 0 24px; }
@@ -1011,7 +1066,7 @@
     }
     @media (max-width: 540px) {
       .nav-links { display: none; }
-      .btc-grid { grid-template-columns: 1fr; }
+.btc-grid { grid-template-columns: 1fr; }
       .tours-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -1024,15 +1079,28 @@
     <img src="assets/bitride-logo-transparent.png" alt="Bitride">
   </a>
   <ul class="nav-links">
-    <li><a href="#flota">Nuestra flota</a></li>
-    <li><a href="#tours">Tours</a></li>
-    <li><a href="#precios">Precios</a></li>
-    <li><a href="#como">Cómo funciona</a></li>
-    <li><a href="#bitcoin">Bitcoin</a></li>
-    <li><a href="#rrss">Redes</a></li>
-    <li><a href="#reviews">Reseñas</a></li>
+    <li><a href="#flota" data-i18n="nav.fleet">Nuestra flota</a></li>
+    <li><a href="#tours" data-i18n="nav.tours">Tours</a></li>
+    <li><a href="#precios" data-i18n="nav.prices">Precios</a></li>
+    <li><a href="#como" data-i18n="nav.how">Cómo funciona</a></li>
+    <li><a href="#bitcoin" data-i18n="nav.bitcoin">Bitcoin</a></li>
+    <li><a href="#rrss" data-i18n="nav.social">Redes</a></li>
+    <li><a href="#reviews" data-i18n="nav.reviews">Reseñas</a></li>
   </ul>
-  <a href="#precios" class="nav-cta">Reservar</a>
+  <div class="lang-switcher" id="lang-switcher">
+    <button class="lang-current" id="lang-current" aria-haspopup="listbox">
+      <span id="lang-current-label">ES</span>
+      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="lang-dropdown" role="listbox">
+      <button class="lang-option active" data-lang="es">ES — Español</button>
+      <button class="lang-option" data-lang="en">EN — English</button>
+      <button class="lang-option" data-lang="fr">FR — Français</button>
+      <button class="lang-option" data-lang="de">DE — Deutsch</button>
+      <button class="lang-option" data-lang="it">IT — Italiano</button>
+    </div>
+  </div>
+  <a href="#precios" class="nav-cta" data-i18n="nav.book">Reservar</a>
 </nav>
 
 <!-- ═══ HERO ══════════════════════════════ -->
@@ -1041,18 +1109,18 @@
   <div class="hero-grain"></div>
   <div class="hero-vignette"></div>
   <div class="hero-content">
-    <h1 class="hero-hl">
+    <h1 class="hero-hl" data-i18n-html="hero.hl">
       Recorre<br>
       <span class="acc ita">Cuba</span><br>
       en moto
     </h1>
-    <p class="hero-sub">Descubre La Habana y sus alrededores a lomos de una Hurricane 250cc. Paga en Bitcoin — sin bancos, sin fronteras.</p>
+    <p class="hero-sub" data-i18n="hero.sub">Descubre La Habana y sus alrededores a lomos de una Hurricane 250cc. Paga en Bitcoin — sin bancos, sin fronteras.</p>
     <div class="hero-btns">
       <a href="#precios" class="btn-solid">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg>
-        Empieza la aventura
+        <span data-i18n="hero.cta1">Empieza la aventura</span>
       </a>
-      <a href="#flota" class="btn-ghost">Ver la flota</a>
+      <a href="#flota" class="btn-ghost" data-i18n="hero.cta2">Ver la flota</a>
     </div>
   </div>
 </section>
@@ -1062,19 +1130,19 @@
   <div class="stats-inner">
     <div class="stat-block">
       <div class="stat-num">250<span class="unit">cc</span></div>
-      <div class="stat-lbl">Motor naked deportivo</div>
+      <div class="stat-lbl" data-i18n="stat1.lbl">Motor naked deportivo</div>
     </div>
     <div class="stat-block">
-      <div class="stat-num"><span class="stat-acc">$35</span><span class="unit">/día</span></div>
-      <div class="stat-lbl">Precio desde (larga estadía)</div>
+      <div class="stat-num"><span class="stat-acc">$35</span><span class="unit" data-i18n="stat2.unit">/día</span></div>
+      <div class="stat-lbl" data-i18n="stat2.lbl">Precio desde (larga estadía)</div>
     </div>
     <div class="stat-block">
       <div class="stat-num"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg></div>
-      <div class="stat-lbl">Pago Bitcoin Lightning instantáneo</div>
+      <div class="stat-lbl" data-i18n="stat3.lbl">Pago Bitcoin Lightning instantáneo</div>
     </div>
     <div class="stat-block">
-      <div class="stat-num" style="font-style:italic">Cuba<span class="unit"> entera</span></div>
-      <div class="stat-lbl">Rutas sin límite desde La Habana</div>
+      <div class="stat-num" style="font-style:italic"><span data-i18n="stat4.num">Cuba</span><span class="unit" data-i18n="stat4.unit"> entera</span></div>
+      <div class="stat-lbl" data-i18n="stat4.lbl">Rutas sin límite desde La Habana</div>
     </div>
   </div>
 </div>
@@ -1109,85 +1177,14 @@
 <section id="flota">
   <div class="wrap">
     <div class="rev">
-      <div class="eyebrow">Nuestra flota</div>
-      <h2 class="sec-title">Elige tu<br>montura</h2>
-      <p class="sec-desc">Cada moto de nuestra flota está revisada y lista para rodar. Selecciona el modelo que más se adapte a tu aventura.</p>
+      <div class="eyebrow" data-i18n="fleet.eyebrow">Nuestra flota</div>
+      <h2 class="sec-title" data-i18n-html="fleet.title">Elige tu<br>montura</h2>
+      <p class="sec-desc" data-i18n="fleet.desc">Cada moto de nuestra flota está revisada y lista para rodar. Selecciona el modelo que más se adapte a tu aventura.</p>
     </div>
 
-    <!-- Tabs selector de modelos -->
-    <div class="fleet-tabs rev">
-      <button class="fleet-tab active" data-fleet="hurricane">Hurricane 250cc</button>
-      <button class="fleet-tab" data-fleet="bera">Bera SBR 150cc</button>
-      <button class="fleet-tab" disabled>Más modelos <span class="coming-label">Próximamente</span></button>
-    </div>
-
-    <!-- Showcase del modelo activo -->
-    <div class="fleet-showcase rev" id="fleet-showcase">
-
-      <!-- Imagen izquierda -->
-      <div class="fleet-img-panel">
-        <div class="fleet-img-glow"></div>
-        <div class="fleet-img-shadow"></div>
-        <div class="fleet-img-tag" id="fleet-tag">Serpenti Hurricane 250</div>
-        <img id="fleet-img" src="assets/hurricane-negra.webp" alt="Hurricane 250cc">
-        <div class="fleet-ghost-num" id="fleet-ghost">250</div>
-      </div>
-
-      <!-- Info derecha -->
-      <div class="fleet-info-panel">
-
-        <div>
-          <div class="eyebrow" id="fleet-eyebrow">Disponible ahora</div>
-          <div class="fleet-model-name" id="fleet-name">Hurricane<br><span class="acc">250cc</span></div>
-        </div>
-
-        <p class="fleet-model-desc" id="fleet-desc">
-          Naked deportiva con el carácter justo para cada ruta cubana. Ágil en el tráfico habanero, estable en carretera. La elección perfecta para el viajero que quiere libertad real.
-        </p>
-
-        <!-- Specs grid -->
-        <div class="fleet-specs" id="fleet-specs">
-          <div class="fleet-spec-cell"><div class="fleet-spec-lbl">Motor</div><div class="fleet-spec-val">250 cc</div></div>
-          <div class="fleet-spec-cell"><div class="fleet-spec-lbl">Estilo</div><div class="fleet-spec-val">Naked</div></div>
-          <div class="fleet-spec-cell"><div class="fleet-spec-lbl">Frenos</div><div class="fleet-spec-val">Disco</div></div>
-          <div class="fleet-spec-cell"><div class="fleet-spec-lbl">Transmisión</div><div class="fleet-spec-val">Manual</div></div>
-          <div class="fleet-spec-cell"><div class="fleet-spec-lbl">Arranque</div><div class="fleet-spec-val">Eléctrico</div></div>
-          <div class="fleet-spec-cell"><div class="fleet-spec-lbl">Color</div><div class="fleet-spec-val">Negro/Rojo</div></div>
-        </div>
-
-        <!-- Unidades disponibles -->
-        <div class="fleet-units">
-          <div class="fleet-units-dots" id="fleet-dots">
-            <div class="fleet-unit-dot"></div>
-            <div class="fleet-unit-dot"></div>
-            <div class="fleet-unit-dot"></div>
-          </div>
-          <div class="fleet-units-label" id="fleet-avail">3 unidades disponibles</div>
-        </div>
-
-        <!-- Incluye -->
-        <div class="fleet-includes">
-          <div class="fleet-include-tag yes">✓ Casco incluido</div>
-          <div class="fleet-include-tag yes">✓ Revisión técnica</div>
-          <div class="fleet-include-tag">⛽ Combustible aparte</div>
-        </div>
-
-        <!-- Precio y CTA -->
-        <div class="fleet-price-row">
-          <div class="fleet-price" id="fleet-price">$40</div>
-          <div>
-            <div class="fleet-price-unit">USD / día</div>
-            <div class="fleet-price-long">$35/día a partir de 14 días</div>
-          </div>
-        </div>
-
-        <a href="#precios" class="btn-solid" style="align-self:flex-start">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Reservar esta moto
-        </a>
-
-      </div>
-    </div>
+    <!-- Tabs y showcase — generados dinámicamente por fetchCatalog() -->
+    <div id="fleet-tabs-wrap" class="fleet-tabs rev" style="margin-top:52px;margin-bottom:2px;"></div>
+    <div id="fleet-showcase-wrap" class="rev"></div>
   </div>
 </section>
 
@@ -1195,24 +1192,24 @@
 <section id="tours">
   <div class="wrap">
     <div class="rev">
-      <div class="eyebrow">Tours guiados</div>
-      <h2 class="sec-title">Rutas que<br>no olvidarás</h2>
-      <p class="sec-desc">Te guiamos en moto por los rincones más icónicos de Cuba. Con guía local, sin perderte nada.</p>
+      <div class="eyebrow" data-i18n="tours.eyebrow">Tours guiados</div>
+      <h2 class="sec-title" data-i18n-html="tours.title">Rutas que<br>no olvidarás</h2>
+      <p class="sec-desc" data-i18n="tours.desc">Te guiamos en moto por los rincones más icónicos de Cuba. Con guía local, sin perderte nada.</p>
     </div>
     <div class="tours-grid">
 
       <!-- Tour 1 -->
       <div class="tour-card rev d1">
         <div class="tour-img" style="background-image:url('https://images.unsplash.com/photo-1519677100203-a0e668c92439?auto=format&fit=crop&w=800&q=80')">
-          <div class="tour-badge">Medio día</div>
+          <div class="tour-badge" data-i18n="tour.badge.halfday">Medio día</div>
         </div>
         <div class="tour-body">
           <div class="tour-name">La Habana Clásica</div>
-          <p class="tour-desc">Malecón, Habana Vieja, el Capitolio y el Vedado. El circuito perfecto para conocer la capital sobre dos ruedas.</p>
+          <p class="tour-desc" data-i18n="tour1.desc">Malecón, Habana Vieja, el Capitolio y el Vedado. El circuito perfecto para conocer la capital sobre dos ruedas.</p>
           <div class="tour-meta">
             <div class="tour-meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              3–4 horas
+              3–4 h
             </div>
             <div class="tour-meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -1220,14 +1217,14 @@
             </div>
             <div class="tour-meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-              Fácil
+              <span data-i18n="tour.difficulty.easy">Fácil</span>
             </div>
           </div>
         </div>
         <div class="tour-foot">
-          <div class="tour-price">Consultar precio</div>
+          <div class="tour-price" data-i18n="tour.price">Consultar precio</div>
           <a href="https://wa.me/5355555555?text=Hola%2C+me+interesa+el+tour+La+Habana+Cl%C3%A1sica" target="_blank" class="tour-cta">
-            Reservar
+            <span data-i18n="tour.book">Reservar</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
           </a>
         </div>
@@ -1236,15 +1233,15 @@
       <!-- Tour 2 -->
       <div class="tour-card rev d1">
         <div class="tour-img" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80')">
-          <div class="tour-badge">Día completo</div>
+          <div class="tour-badge" data-i18n="tour.badge.fullday">Día completo</div>
         </div>
         <div class="tour-body">
           <div class="tour-name">Viñales y los Mogotes</div>
-          <p class="tour-desc">Escapa a Pinar del Río entre campos de tabaco, mogotes y aire limpio. La ruta más espectacular del occidente cubano.</p>
+          <p class="tour-desc" data-i18n="tour2.desc">Escapa a Pinar del Río entre campos de tabaco, mogotes y aire limpio. La ruta más espectacular del occidente cubano.</p>
           <div class="tour-meta">
             <div class="tour-meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              8–10 horas
+              8–10 h
             </div>
             <div class="tour-meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -1252,14 +1249,14 @@
             </div>
             <div class="tour-meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-              Moderado
+              <span data-i18n="tour.difficulty.moderate">Moderado</span>
             </div>
           </div>
         </div>
         <div class="tour-foot">
-          <div class="tour-price">Consultar precio</div>
+          <div class="tour-price" data-i18n="tour.price">Consultar precio</div>
           <a href="https://wa.me/5355555555?text=Hola%2C+me+interesa+el+tour+Vi%C3%B1ales" target="_blank" class="tour-cta">
-            Reservar
+            <span data-i18n="tour.book">Reservar</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
           </a>
         </div>
@@ -1268,15 +1265,15 @@
       <!-- Tour 3 -->
       <div class="tour-card rev d2">
         <div class="tour-img" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80')">
-          <div class="tour-badge">Medio día</div>
+          <div class="tour-badge" data-i18n="tour.badge.halfday">Medio día</div>
         </div>
         <div class="tour-body">
           <div class="tour-name">Playas del Este</div>
-          <p class="tour-desc">Arena blanca, agua turquesa y la brisa del Atlántico. A solo 30 km de La Habana, el destino de playa más fácil de alcanzar.</p>
+          <p class="tour-desc" data-i18n="tour3.desc">Arena blanca, agua turquesa y la brisa del Atlántico. A solo 30 km de La Habana, el destino de playa más fácil de alcanzar.</p>
           <div class="tour-meta">
             <div class="tour-meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              4–5 horas
+              4–5 h
             </div>
             <div class="tour-meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -1284,14 +1281,14 @@
             </div>
             <div class="tour-meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-              Fácil
+              <span data-i18n="tour.difficulty.easy">Fácil</span>
             </div>
           </div>
         </div>
         <div class="tour-foot">
-          <div class="tour-price">Consultar precio</div>
+          <div class="tour-price" data-i18n="tour.price">Consultar precio</div>
           <a href="https://wa.me/5355555555?text=Hola%2C+me+interesa+el+tour+Playas+del+Este" target="_blank" class="tour-cta">
-            Reservar
+            <span data-i18n="tour.book">Reservar</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
           </a>
         </div>
@@ -1300,15 +1297,15 @@
       <!-- Tour 4 -->
       <div class="tour-card rev d2">
         <div class="tour-img" style="background-image:url('https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=800&q=80')">
-          <div class="tour-badge">2 días</div>
+          <div class="tour-badge" data-i18n="tour.badge.2days">2 días</div>
         </div>
         <div class="tour-body">
           <div class="tour-name">Trinidad Colonial</div>
-          <p class="tour-desc">La ciudad más bella de Cuba te espera. Calles empedradas, arquitectura colonial y el Valle de los Ingenios al fondo.</p>
+          <p class="tour-desc" data-i18n="tour4.desc">La ciudad más bella de Cuba te espera. Calles empedradas, arquitectura colonial y el Valle de los Ingenios al fondo.</p>
           <div class="tour-meta">
             <div class="tour-meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              2 días
+              <span data-i18n="tour.badge.2days">2 días</span>
             </div>
             <div class="tour-meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -1316,14 +1313,14 @@
             </div>
             <div class="tour-meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-              Avanzado
+              <span data-i18n="tour.difficulty.advanced">Avanzado</span>
             </div>
           </div>
         </div>
         <div class="tour-foot">
-          <div class="tour-price">Consultar precio</div>
+          <div class="tour-price" data-i18n="tour.price">Consultar precio</div>
           <a href="https://wa.me/5355555555?text=Hola%2C+me+interesa+el+tour+Trinidad" target="_blank" class="tour-cta">
-            Reservar
+            <span data-i18n="tour.book">Reservar</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
           </a>
         </div>
@@ -1338,20 +1335,20 @@
   <div class="wrap">
     <div class="calc-top">
       <div class="rev">
-        <div class="eyebrow">Precios</div>
-        <h2 class="sec-title">Elige<br>tus días</h2>
-        <p class="sec-desc">Mientras más tiempo explores, mejor precio obtienes. Paga directamente en Bitcoin — el precio es el precio.</p>
+        <div class="eyebrow" data-i18n="calc.eyebrow">Precios</div>
+        <h2 class="sec-title" data-i18n-html="calc.title">Elige<br>tus días</h2>
+        <p class="sec-desc" data-i18n="calc.desc">Mientras más tiempo explores, mejor precio obtienes. Paga directamente en Bitcoin — el precio es el precio.</p>
       </div>
       <div class="tarifas rev d1">
         <div class="tarifa">
-          <div class="tarifa-label">1 – 13 días</div>
-          <div class="tarifa-price">$40 <small>/ día</small></div>
+          <div class="tarifa-label" data-i18n="tarifa1.label">1 – 13 días</div>
+          <div class="tarifa-price">$40 <small data-i18n="cal.perday">/ día</small></div>
         </div>
         <div class="tarifa best">
-          <div class="tarifa-label">14 días o más</div>
+          <div class="tarifa-label" data-i18n="tarifa2.label">14 días o más</div>
           <div class="tarifa-right">
-            <div class="tarifa-price">$35 <small>/ día</small></div>
-            <div class="tarifa-badge">Mejor precio</div>
+            <div class="tarifa-price">$35 <small data-i18n="cal.perday">/ día</small></div>
+            <div class="tarifa-badge" data-i18n="tarifa.badge">Mejor precio</div>
           </div>
         </div>
       </div>
@@ -1359,16 +1356,16 @@
 
     <div class="cal-widget rev">
       <div class="cal-head">
-        <div class="cal-head-title">Selecciona tus fechas de renta</div>
-        <div class="cal-hint" id="cal-hint">Clic en una fecha para comenzar</div>
+        <div class="cal-head-title" data-i18n="cal.title">Selecciona tus fechas de renta</div>
+        <div class="cal-hint" id="cal-hint" data-i18n="cal.hint.start">Clic en una fecha para comenzar</div>
       </div>
       <div class="cal-body">
         <div class="cal-month" id="cal-l"></div>
         <div class="cal-month" id="cal-r"></div>
       </div>
       <div class="cal-result">
-        <div id="cal-out"><div class="result-empty">Selecciona las fechas para calcular el precio</div></div>
-        <button class="btn-solid" id="btn-res" disabled>Reservar</button>
+        <div id="cal-out"><div class="result-empty" data-i18n="cal.empty">Selecciona las fechas para calcular el precio</div></div>
+        <button class="btn-solid" id="btn-res" disabled data-i18n="cal.book">Reservar</button>
       </div>
     </div>
   </div>
@@ -1378,8 +1375,8 @@
 <section id="como">
   <div class="wrap">
     <div class="rev">
-      <div class="eyebrow">El proceso</div>
-      <h2 class="sec-title">En tres pasos<br>estás en ruta</h2>
+      <div class="eyebrow" data-i18n="how.eyebrow">El proceso</div>
+      <h2 class="sec-title" data-i18n-html="how.title">En tres pasos<br>estás en ruta</h2>
     </div>
     <div class="steps-grid">
       <div class="step-card rev d1">
@@ -1387,24 +1384,24 @@
         <div class="step-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         </div>
-        <div class="step-name">Elige tu aventura</div>
-        <p class="step-body">Selecciona los días que quieres explorar. La calculadora te muestra el precio exacto en USD y Bitcoin al instante.</p>
+        <div class="step-name" data-i18n="step1.name">Elige tu aventura</div>
+        <p class="step-body" data-i18n="step1.body">Selecciona los días que quieres explorar. La calculadora te muestra el precio exacto en USD y Bitcoin al instante.</p>
       </div>
       <div class="step-card rev d2">
         <div class="step-num">02</div>
         <div class="step-icon">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg>
         </div>
-        <div class="step-name">Confirma en segundos</div>
-        <p class="step-body">Recibes una factura Lightning Network. Pagas desde cualquier wallet, desde cualquier país. Tu reserva queda confirmada al instante.</p>
+        <div class="step-name" data-i18n="step2.name">Confirma en segundos</div>
+        <p class="step-body" data-i18n="step2.body">Recibes una factura Lightning Network. Pagas desde cualquier wallet, desde cualquier país. Tu reserva queda confirmada al instante.</p>
       </div>
       <div class="step-card rev d3">
         <div class="step-num">03</div>
         <div class="step-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </div>
-        <div class="step-name">Descubre Cuba libre</div>
-        <p class="step-body">Coordina la entrega en La Habana. Recoge tu Hurricane 250cc y empieza a escribir tu propia historia en Cuba.</p>
+        <div class="step-name" data-i18n="step3.name">Descubre Cuba libre</div>
+        <p class="step-body" data-i18n="step3.body">Coordina la entrega en La Habana. Recoge tu Hurricane 250cc y empieza a escribir tu propia historia en Cuba.</p>
       </div>
     </div>
   </div>
@@ -1417,47 +1414,47 @@
   </div>
   <div class="wrap">
     <div class="rev">
-      <div class="eyebrow">Sin barreras para explorar</div>
-      <h2 class="sec-title">Paga en segundos,<br>explora sin límites</h2>
+      <div class="eyebrow" data-i18n="btc.eyebrow">Sin barreras para explorar</div>
+      <h2 class="sec-title" data-i18n-html="btc.title">Paga en segundos,<br>explora sin límites</h2>
     </div>
     <div class="btc-grid">
       <div class="btc-card rev d1">
         <div class="btc-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
         </div>
-        <div class="btc-name">Múltiples métodos de pago</div>
-        <p class="btc-body">Aceptamos efectivo en USD, Bitcoin (Lightning y on-chain) y otras criptomonedas. Nos adaptamos a ti — sin complicaciones.</p>
+        <div class="btc-name" data-i18n="btc1.name">Múltiples métodos de pago</div>
+        <p class="btc-body" data-i18n="btc1.body">Aceptamos efectivo en USD, Bitcoin (Lightning y on-chain) y otras criptomonedas. Nos adaptamos a ti — sin complicaciones.</p>
       </div>
       <div class="btc-card rev d1">
         <div class="btc-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
         </div>
-        <div class="btc-name">Sin trámites bancarios</div>
-        <p class="btc-body">Cero formularios, cero intermediarios. Enfoca tu energía en la aventura, no en el pago.</p>
+        <div class="btc-name" data-i18n="btc2.name">Sin trámites bancarios</div>
+        <p class="btc-body" data-i18n="btc2.body">Cero formularios, cero intermediarios. Enfoca tu energía en la aventura, no en el pago.</p>
       </div>
       <div class="btc-card rev d2">
         <div class="btc-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
-        <div class="btc-name">Tu reserva, garantizada</div>
-        <p class="btc-body">Una vez pagado, es tuyo. Sin reversiones ni bloqueos bancarios. Tu aventura no tiene fecha de cancelación.</p>
+        <div class="btc-name" data-i18n="btc3.name">Tu reserva, garantizada</div>
+        <p class="btc-body" data-i18n="btc3.body">Una vez pagado, es tuyo. Sin reversiones ni bloqueos bancarios. Tu aventura no tiene fecha de cancelación.</p>
       </div>
     </div>
 
     <!-- BTCMap + Google Maps band -->
     <div class="btcmap-band rev">
       <div class="btcmap-left">
-        <div class="btcmap-eyebrow">Dónde encontrarnos</div>
-        <div class="btcmap-title">Verificados en BTCMap — y en Google</div>
-        <p class="btcmap-desc">Somos un negocio Bitcoin verificado en BTCMap, el directorio global de negocios que aceptan BTC. También nos encuentras en Google Maps para llegar sin complicaciones.</p>
+        <div class="btcmap-eyebrow" data-i18n="btcmap.eyebrow">Dónde encontrarnos</div>
+        <div class="btcmap-title" data-i18n="btcmap.title">Verificados en BTCMap — y en Google</div>
+        <p class="btcmap-desc" data-i18n="btcmap.desc">Somos un negocio Bitcoin verificado en BTCMap, el directorio global de negocios que aceptan BTC. También nos encuentras en Google Maps para llegar sin complicaciones.</p>
         <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:20px;">
           <a href="https://btcmap.org/map#13/23.1136/-82.3666" target="_blank" rel="noopener" class="btcmap-link">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            Ver en BTCMap
+            <span data-i18n="btcmap.link1">Ver en BTCMap</span>
           </a>
           <a href="https://maps.google.com/?q=Reparto+Aldabo,+Boyeros,+La+Habana,+Cuba" target="_blank" rel="noopener" class="btcmap-link" style="border-color:rgba(66,133,244,0.4); color:#4285F4;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 00-8 8c0 5.25 8 14 8 14s8-8.75 8-14a8 8 0 00-8-8z"/></svg>
-            Ver en Google Maps
+            <span data-i18n="btcmap.link2">Ver en Google Maps</span>
           </a>
         </div>
       </div>
@@ -1493,8 +1490,8 @@
   <div class="wrap">
     <div class="reviews-header">
       <div class="rev">
-        <div class="eyebrow">Lo que dicen nuestros viajeros</div>
-        <h2 class="sec-title">Reseñas de<br>nuestros clientes</h2>
+        <div class="eyebrow" data-i18n="reviews.eyebrow">Lo que dicen nuestros viajeros</div>
+        <h2 class="sec-title" data-i18n-html="reviews.title">Reseñas de<br>nuestros clientes</h2>
       </div>
       <div class="reviews-score rev">
         <div class="score-num">5.0</div>
@@ -1506,7 +1503,7 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           </div>
-          <div class="score-label">Basado en reseñas verificadas</div>
+          <div class="score-label" data-i18n="reviews.based">Basado en reseñas verificadas</div>
         </div>
       </div>
     </div>
@@ -1629,7 +1626,7 @@
 
     </div><!-- end reviews-carousel -->
     <div class="reviews-more rev">
-      <a href="https://www.google.com/search?q=Bitride+Cuba" target="_blank" rel="noopener">Ver todas las reseñas en Google →</a>
+      <a href="https://www.google.com/search?q=Bitride+Cuba" target="_blank" rel="noopener" data-i18n="reviews.more">Ver todas las reseñas en Google →</a>
     </div>
   </div>
 </section>
@@ -1638,9 +1635,9 @@
 <section id="rrss" style="padding:100px 0; background:var(--bg); border-top:1px solid var(--border);">
   <div class="wrap">
     <div class="rev" style="text-align:center; margin-bottom:56px;">
-      <div class="eyebrow">Síguenos</div>
-      <h2 class="sec-title">Nuestras<br>redes</h2>
-      <p class="sec-desc" style="margin:0 auto; text-align:center;">Rutas, aventuras y la vida en dos ruedas desde La Habana. Síguenos y sé parte de la comunidad Bitride.</p>
+      <div class="eyebrow" data-i18n="rrss.eyebrow">Síguenos</div>
+      <h2 class="sec-title" data-i18n-html="rrss.title">Nuestras<br>redes</h2>
+      <p class="sec-desc" style="margin:0 auto; text-align:center;" data-i18n="rrss.desc">Rutas, aventuras y la vida en dos ruedas desde La Habana. Síguenos y sé parte de la comunidad Bitride.</p>
     </div>
     <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:2px;" class="rev">
 
@@ -1652,7 +1649,7 @@
         <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--accent)"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
         <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--white);">Facebook</div>
         <div style="font-size:12px; color:var(--muted); letter-spacing:0.06em;">@bitridecuba</div>
-        <div style="font-size:11px; color:var(--muted); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px; border:1px solid var(--border); color:var(--accent); margin-top:4px;">Seguir →</div>
+        <div style="font-size:11px; color:var(--muted); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px; border:1px solid var(--border); color:var(--accent); margin-top:4px;" data-i18n="rrss.follow">Seguir →</div>
       </a>
 
       <!-- Instagram -->
@@ -1663,7 +1660,7 @@
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="var(--accent)" stroke="none"/></svg>
         <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--white);">Instagram</div>
         <div style="font-size:12px; color:var(--muted); letter-spacing:0.06em;">@bitridecuba</div>
-        <div style="font-size:11px; color:var(--muted); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px; border:1px solid var(--border); color:var(--accent); margin-top:4px;">Seguir →</div>
+        <div style="font-size:11px; color:var(--muted); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px; border:1px solid var(--border); color:var(--accent); margin-top:4px;" data-i18n="rrss.follow">Seguir →</div>
       </a>
 
       <!-- TikTok -->
@@ -1674,7 +1671,7 @@
         <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--accent)"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.84 4.84 0 01-1.01-.07z"/></svg>
         <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--white);">TikTok</div>
         <div style="font-size:12px; color:var(--muted); letter-spacing:0.06em;">@bitridecuba</div>
-        <div style="font-size:11px; color:var(--muted); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px; border:1px solid var(--border); color:var(--accent); margin-top:4px;">Seguir →</div>
+        <div style="font-size:11px; color:var(--muted); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px; border:1px solid var(--border); color:var(--accent); margin-top:4px;" data-i18n="rrss.follow">Seguir →</div>
       </a>
 
       <!-- WhatsApp -->
@@ -1685,7 +1682,7 @@
         <svg width="32" height="32" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--white);">WhatsApp</div>
         <div style="font-size:12px; color:#25D366; letter-spacing:0.06em;">+53 5555 5555</div>
-        <div style="font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px; border:1px solid rgba(37,211,102,0.3); color:#25D366; margin-top:4px;">Escribir →</div>
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px; border:1px solid rgba(37,211,102,0.3); color:#25D366; margin-top:4px;" data-i18n="rrss.write">Escribir →</div>
       </a>
 
     </div>
@@ -1697,10 +1694,10 @@
   <div class="cta-photo"></div>
   <div class="cta-photo-overlay"></div>
   <div class="cta-inner rev">
-    <div class="eyebrow">Hay rutas esperando</div>
+    <div class="eyebrow" data-i18n="contact.eyebrow">Hay rutas esperando</div>
     <div class="cta-rule"></div>
-    <h2 class="cta-title">Cuba te<br>está<br><span class="acc">esperando</span></h2>
-    <p class="cta-sub">Cada calle de La Habana, cada curva en Viñales, cada amanecer en el Malecón. Escríbenos y empieza tu aventura.</p>
+    <h2 class="cta-title" data-i18n-html="contact.title">Cuba te<br>está<br><span class="acc">esperando</span></h2>
+    <p class="cta-sub" data-i18n="contact.sub">Cada calle de La Habana, cada curva en Viñales, cada amanecer en el Malecón. Escríbenos y empieza tu aventura.</p>
     <div class="cta-btns">
       <a href="https://t.me/bitridecuba" class="btn-solid" target="_blank" rel="noopener">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>
@@ -1739,11 +1736,11 @@
     </a>
   </div>
   <ul class="footer-nav">
-    <li><a href="#flota">Nuestra flota</a></li>
-    <li><a href="#tours">Tours</a></li>
-    <li><a href="#precios">Precios</a></li>
-    <li><a href="#reviews">Reseñas</a></li>
-    <li><a href="#contacto">Contacto</a></li>
+    <li><a href="#flota" data-i18n="footer.fleet">Nuestra flota</a></li>
+    <li><a href="#tours" data-i18n="footer.tours">Tours</a></li>
+    <li><a href="#precios" data-i18n="footer.prices">Precios</a></li>
+    <li><a href="#reviews" data-i18n="footer.reviews">Reseñas</a></li>
+    <li><a href="#contacto" data-i18n="footer.contact">Contacto</a></li>
   </ul>
 </footer>
 
@@ -1786,6 +1783,364 @@
 </div>
 
 <script>
+/* ═══════════════════════════════════════════
+   I18N
+═══════════════════════════════════════════ */
+const TRANSLATIONS = {
+  es: {
+    'title':'Bitride — Explora Cuba en Moto',
+    'nav.fleet':'Nuestra flota','nav.tours':'Tours','nav.prices':'Precios',
+    'nav.how':'Cómo funciona','nav.bitcoin':'Bitcoin','nav.social':'Redes',
+    'nav.reviews':'Reseñas','nav.book':'Reservar',
+    'hero.hl':'Recorre<br><span class="acc ita">Cuba</span><br>en moto',
+    'hero.sub':'Descubre La Habana y sus alrededores a lomos de una Hurricane 250cc. Paga en Bitcoin — sin bancos, sin fronteras.',
+    'hero.cta1':'Empieza la aventura','hero.cta2':'Ver la flota',
+    'stat1.lbl':'Motor naked deportivo','stat2.lbl':'Precio desde (larga estadía)',
+    'stat2.unit':'/día','stat3.lbl':'Pago Bitcoin Lightning instantáneo',
+    'stat4.num':'Cuba','stat4.unit':' entera','stat4.lbl':'Rutas sin límite desde La Habana',
+    'fleet.eyebrow':'Nuestra flota','fleet.title':'Elige tu<br>montura',
+    'fleet.desc':'Cada moto de nuestra flota está revisada y lista para rodar. Selecciona el modelo que más se adapte a tu aventura.',
+    'fleet.tab.more':'Más modelos','fleet.tab.soon':'Próximamente',
+    'fleet.available':'Disponible ahora',
+    'fleet.hurricane.desc':'Naked deportiva con el carácter justo para cada ruta cubana. Ágil en el tráfico habanero, estable en carretera. La elección perfecta para el viajero que quiere libertad real.',
+    'fleet.bera.desc':'Ligera, ágil y económica. La Bera SBR 150 es ideal para moverse por La Habana con facilidad y bajo consumo. Perfecta para quienes buscan una opción práctica sin renunciar al estilo.',
+    'fleet.hurricane.pricelong':'$35/día a partir de 14 días','fleet.bera.pricelong':'$22/día a partir de 14 días',
+    'fleet.units':'{n} unidades disponibles','fleet.unit':'1 unidad disponible',
+    'fleet.include.helmet':'✓ Casco incluido','fleet.include.check':'✓ Revisión técnica','fleet.include.fuel':'⛽ Combustible aparte',
+    'fleet.price.unit':'USD / día','fleet.cta':'Reservar esta moto',
+    'spec.engine':'Motor','spec.style':'Estilo','spec.brakes':'Frenos',
+    'spec.transmission':'Transmisión','spec.start':'Arranque','spec.color':'Color',
+    'spec.weight':'Peso','spec.disc':'Disco','spec.manual':'Manual','spec.electric':'Eléctrico',
+    'tours.eyebrow':'Tours guiados','tours.title':'Rutas que<br>no olvidarás',
+    'tours.desc':'Te guiamos en moto por los rincones más icónicos de Cuba. Con guía local, sin perderte nada.',
+    'tour.badge.halfday':'Medio día','tour.badge.fullday':'Día completo','tour.badge.2days':'2 días',
+    'tour.difficulty.easy':'Fácil','tour.difficulty.moderate':'Moderado','tour.difficulty.advanced':'Avanzado',
+    'tour.price':'Consultar precio','tour.book':'Reservar',
+    'tour1.desc':'Malecón, Habana Vieja, el Capitolio y el Vedado. El circuito perfecto para conocer la capital sobre dos ruedas.',
+    'tour2.desc':'Escapa a Pinar del Río entre campos de tabaco, mogotes y aire limpio. La ruta más espectacular del occidente cubano.',
+    'tour3.desc':'Arena blanca, agua turquesa y la brisa del Atlántico. A solo 30 km de La Habana, el destino de playa más fácil de alcanzar.',
+    'tour4.desc':'La ciudad más bella de Cuba te espera. Calles empedradas, arquitectura colonial y el Valle de los Ingenios al fondo.',
+    'calc.eyebrow':'Precios','calc.title':'Elige<br>tus días',
+    'calc.desc':'Mientras más tiempo explores, mejor precio obtienes. Paga directamente en Bitcoin — el precio es el precio.',
+    'tarifa1.label':'1 – 13 días','tarifa2.label':'14 días o más','tarifa.badge':'Mejor precio',
+    'cal.title':'Selecciona tus fechas de renta',
+    'cal.hint.start':'Clic en una fecha para comenzar','cal.hint.end':'Ahora selecciona la fecha de regreso',
+    'cal.empty':'Selecciona las fechas para calcular el precio','cal.minday':'Selecciona al menos 1 día',
+    'cal.discount':'Tarifa reducida aplicada ✓','cal.days':' días','cal.perday':'/ día','cal.book':'Reservar',
+    'cal.months':'Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre',
+    'cal.weekdays':'Lu,Ma,Mi,Ju,Vi,Sa,Do',
+    'how.eyebrow':'El proceso','how.title':'En tres pasos<br>estás en ruta',
+    'step1.name':'Elige tu aventura','step1.body':'Selecciona los días que quieres explorar. La calculadora te muestra el precio exacto en USD y Bitcoin al instante.',
+    'step2.name':'Confirma en segundos','step2.body':'Recibes una factura Lightning Network. Pagas desde cualquier wallet, desde cualquier país. Tu reserva queda confirmada al instante.',
+    'step3.name':'Descubre Cuba libre','step3.body':'Coordina la entrega en La Habana. Recoge tu Hurricane 250cc y empieza a escribir tu propia historia en Cuba.',
+    'btc.eyebrow':'Sin barreras para explorar','btc.title':'Paga en segundos,<br>explora sin límites',
+    'btc1.name':'Múltiples métodos de pago','btc1.body':'Aceptamos efectivo en USD, Bitcoin (Lightning y on-chain) y otras criptomonedas. Nos adaptamos a ti — sin complicaciones.',
+    'btc2.name':'Sin trámites bancarios','btc2.body':'Cero formularios, cero intermediarios. Enfoca tu energía en la aventura, no en el pago.',
+    'btc3.name':'Tu reserva, garantizada','btc3.body':'Una vez pagado, es tuyo. Sin reversiones ni bloqueos bancarios. Tu aventura no tiene fecha de cancelación.',
+    'btcmap.eyebrow':'Dónde encontrarnos','btcmap.title':'Verificados en BTCMap — y en Google',
+    'btcmap.desc':'Somos un negocio Bitcoin verificado en BTCMap, el directorio global de negocios que aceptan BTC. También nos encuentras en Google Maps para llegar sin complicaciones.',
+    'btcmap.link1':'Ver en BTCMap','btcmap.link2':'Ver en Google Maps',
+    'reviews.eyebrow':'Lo que dicen nuestros viajeros','reviews.title':'Reseñas de<br>nuestros clientes',
+    'reviews.based':'Basado en reseñas verificadas','reviews.more':'Ver todas las reseñas en Google →',
+    'rrss.eyebrow':'Síguenos','rrss.title':'Nuestras<br>redes',
+    'rrss.desc':'Rutas, aventuras y la vida en dos ruedas desde La Habana. Síguenos y sé parte de la comunidad Bitride.',
+    'rrss.follow':'Seguir →','rrss.write':'Escribir →',
+    'contact.eyebrow':'Hay rutas esperando','contact.title':'Cuba te<br>está<br><span class="acc">esperando</span>',
+    'contact.sub':'Cada calle de La Habana, cada curva en Viñales, cada amanecer en el Malecón. Escríbenos y empieza tu aventura.',
+    'footer.fleet':'Nuestra flota','footer.tours':'Tours','footer.prices':'Precios','footer.reviews':'Reseñas','footer.contact':'Contacto',
+  },
+  en: {
+    'title':'Bitride — Explore Cuba by Motorcycle',
+    'nav.fleet':'Our fleet','nav.tours':'Tours','nav.prices':'Prices',
+    'nav.how':'How it works','nav.bitcoin':'Bitcoin','nav.social':'Social',
+    'nav.reviews':'Reviews','nav.book':'Book now',
+    'hero.hl':'Explore<br><span class="acc ita">Cuba</span><br>by bike',
+    'hero.sub':'Discover Havana and its surroundings on a Hurricane 250cc. Pay with Bitcoin — no banks, no borders.',
+    'hero.cta1':'Start the adventure','hero.cta2':'See the fleet',
+    'stat1.lbl':'Sport naked engine','stat2.lbl':'Price from (long stay)',
+    'stat2.unit':'/day','stat3.lbl':'Instant Bitcoin Lightning payment',
+    'stat4.num':'Cuba','stat4.unit':' complete','stat4.lbl':'Unlimited routes from Havana',
+    'fleet.eyebrow':'Our fleet','fleet.title':'Choose your<br>ride',
+    'fleet.desc':'Every bike in our fleet is inspected and ready to roll. Pick the model that fits your adventure.',
+    'fleet.tab.more':'More models','fleet.tab.soon':'Coming soon',
+    'fleet.available':'Available now',
+    'fleet.hurricane.desc':'A sport naked with the right character for every Cuban route. Agile in Havana traffic, stable on the open road. The perfect choice for the traveler who wants real freedom.',
+    'fleet.bera.desc':'Light, agile and economical. The Bera SBR 150 is ideal for getting around Havana with ease and low fuel consumption. Perfect for those seeking a practical option without sacrificing style.',
+    'fleet.hurricane.pricelong':'$35/day from 14 days','fleet.bera.pricelong':'$22/day from 14 days',
+    'fleet.units':'{n} units available','fleet.unit':'1 unit available',
+    'fleet.include.helmet':'✓ Helmet included','fleet.include.check':'✓ Technical check','fleet.include.fuel':'⛽ Fuel extra',
+    'fleet.price.unit':'USD / day','fleet.cta':'Book this bike',
+    'spec.engine':'Engine','spec.style':'Style','spec.brakes':'Brakes',
+    'spec.transmission':'Transmission','spec.start':'Start','spec.color':'Color',
+    'spec.weight':'Weight','spec.disc':'Disc','spec.manual':'Manual','spec.electric':'Electric',
+    'tours.eyebrow':'Guided tours','tours.title':'Routes you<br>won\'t forget',
+    'tours.desc':'We guide you by motorcycle through the most iconic corners of Cuba. With a local guide, missing nothing.',
+    'tour.badge.halfday':'Half day','tour.badge.fullday':'Full day','tour.badge.2days':'2 days',
+    'tour.difficulty.easy':'Easy','tour.difficulty.moderate':'Moderate','tour.difficulty.advanced':'Advanced',
+    'tour.price':'Ask for price','tour.book':'Book',
+    'tour1.desc':'Malecón, Old Havana, the Capitol and Vedado. The perfect circuit to discover the capital on two wheels.',
+    'tour2.desc':'Escape to Pinar del Río through tobacco fields, mogotes and fresh air. The most spectacular route in western Cuba.',
+    'tour3.desc':'White sand, turquoise water and the Atlantic breeze. Just 30 km from Havana, the easiest beach destination to reach.',
+    'tour4.desc':'Cuba\'s most beautiful city awaits. Cobblestone streets, colonial architecture and the Valley of the Sugar Mills in the background.',
+    'calc.eyebrow':'Prices','calc.title':'Choose<br>your days',
+    'calc.desc':'The longer you explore, the better the price. Pay directly in Bitcoin — the price is the price.',
+    'tarifa1.label':'1 – 13 days','tarifa2.label':'14 days or more','tarifa.badge':'Best price',
+    'cal.title':'Select your rental dates',
+    'cal.hint.start':'Click a date to start','cal.hint.end':'Now select the return date',
+    'cal.empty':'Select dates to calculate the price','cal.minday':'Select at least 1 day',
+    'cal.discount':'Reduced rate applied ✓','cal.days':' days','cal.perday':'/ day','cal.book':'Book',
+    'cal.months':'January,February,March,April,May,June,July,August,September,October,November,December',
+    'cal.weekdays':'Mo,Tu,We,Th,Fr,Sa,Su',
+    'how.eyebrow':'The process','how.title':'Three steps<br>to the road',
+    'step1.name':'Choose your adventure','step1.body':'Select the days you want to explore. The calculator shows you the exact price in USD and Bitcoin instantly.',
+    'step2.name':'Confirm in seconds','step2.body':'You receive a Lightning Network invoice. Pay from any wallet, from any country. Your booking is confirmed instantly.',
+    'step3.name':'Discover free Cuba','step3.body':'Coordinate pickup in Havana. Collect your Hurricane 250cc and start writing your own story in Cuba.',
+    'btc.eyebrow':'No barriers to explore','btc.title':'Pay in seconds,<br>explore limitlessly',
+    'btc1.name':'Multiple payment methods','btc1.body':'We accept cash in USD, Bitcoin (Lightning and on-chain) and other cryptocurrencies. We adapt to you — no complications.',
+    'btc2.name':'No banking hassle','btc2.body':'Zero forms, zero middlemen. Focus your energy on the adventure, not the payment.',
+    'btc3.name':'Your booking, guaranteed','btc3.body':'Once paid, it\'s yours. No reversals or bank blocks. Your adventure has no cancellation date.',
+    'btcmap.eyebrow':'Where to find us','btcmap.title':'Verified on BTCMap — and Google',
+    'btcmap.desc':'We are a Bitcoin-verified business on BTCMap, the global directory of BTC-accepting merchants. You can also find us on Google Maps for easy navigation.',
+    'btcmap.link1':'View on BTCMap','btcmap.link2':'View on Google Maps',
+    'reviews.eyebrow':'What our travelers say','reviews.title':'Reviews from<br>our clients',
+    'reviews.based':'Based on verified reviews','reviews.more':'See all reviews on Google →',
+    'rrss.eyebrow':'Follow us','rrss.title':'Our<br>networks',
+    'rrss.desc':'Routes, adventures and life on two wheels from Havana. Follow us and be part of the Bitride community.',
+    'rrss.follow':'Follow →','rrss.write':'Write →',
+    'contact.eyebrow':'Routes are waiting','contact.title':'Cuba is<br><span class="acc">waiting</span><br>for you',
+    'contact.sub':'Every street in Havana, every curve in Viñales, every sunrise on the Malecón. Write to us and start your adventure.',
+    'footer.fleet':'Our fleet','footer.tours':'Tours','footer.prices':'Prices','footer.reviews':'Reviews','footer.contact':'Contact',
+  },
+  fr: {
+    'title':'Bitride — Explorez Cuba à Moto',
+    'nav.fleet':'Notre flotte','nav.tours':'Tours','nav.prices':'Prix',
+    'nav.how':'Comment ça marche','nav.bitcoin':'Bitcoin','nav.social':'Réseaux',
+    'nav.reviews':'Avis','nav.book':'Réserver',
+    'hero.hl':'Explorez<br><span class="acc ita">Cuba</span><br>à moto',
+    'hero.sub':'Découvrez La Havane et ses environs à bord d\'une Hurricane 250cc. Payez en Bitcoin — sans banques, sans frontières.',
+    'hero.cta1':'Commencer l\'aventure','hero.cta2':'Voir la flotte',
+    'stat1.lbl':'Moteur naked sportif','stat2.lbl':'Prix à partir de (long séjour)',
+    'stat2.unit':'/jour','stat3.lbl':'Paiement Bitcoin Lightning instantané',
+    'stat4.num':'Cuba','stat4.unit':' entier','stat4.lbl':'Itinéraires illimités depuis La Havane',
+    'fleet.eyebrow':'Notre flotte','fleet.title':'Choisissez<br>votre monture',
+    'fleet.desc':'Chaque moto de notre flotte est révisée et prête à rouler. Choisissez le modèle qui correspond à votre aventure.',
+    'fleet.tab.more':'Plus de modèles','fleet.tab.soon':'Bientôt',
+    'fleet.available':'Disponible maintenant',
+    'fleet.hurricane.desc':'Une naked sportive avec le caractère idéal pour chaque route cubaine. Agile dans le trafic havanais, stable sur route. Le choix parfait pour le voyageur qui veut une vraie liberté.',
+    'fleet.bera.desc':'Légère, agile et économique. La Bera SBR 150 est idéale pour se déplacer à La Havane avec facilité et une faible consommation. Parfaite pour ceux qui cherchent une option pratique sans sacrifier le style.',
+    'fleet.hurricane.pricelong':'35$/jour à partir de 14 jours','fleet.bera.pricelong':'22$/jour à partir de 14 jours',
+    'fleet.units':'{n} unités disponibles','fleet.unit':'1 unité disponible',
+    'fleet.include.helmet':'✓ Casque inclus','fleet.include.check':'✓ Révision technique','fleet.include.fuel':'⛽ Carburant en sus',
+    'fleet.price.unit':'USD / jour','fleet.cta':'Réserver cette moto',
+    'spec.engine':'Moteur','spec.style':'Style','spec.brakes':'Freins',
+    'spec.transmission':'Transmission','spec.start':'Démarrage','spec.color':'Couleur',
+    'spec.weight':'Poids','spec.disc':'Disque','spec.manual':'Manuelle','spec.electric':'Électrique',
+    'tours.eyebrow':'Tours guidés','tours.title':'Des routes dont<br>vous vous souviendrez',
+    'tours.desc':'Nous vous guidons à moto dans les coins les plus emblématiques de Cuba. Avec un guide local, sans rien manquer.',
+    'tour.badge.halfday':'Demi-journée','tour.badge.fullday':'Journée entière','tour.badge.2days':'2 jours',
+    'tour.difficulty.easy':'Facile','tour.difficulty.moderate':'Modéré','tour.difficulty.advanced':'Avancé',
+    'tour.price':'Demander le prix','tour.book':'Réserver',
+    'tour1.desc':'Le Malecón, La Vieille Havane, le Capitole et le Vedado. Le circuit parfait pour découvrir la capitale à deux roues.',
+    'tour2.desc':'Évadez-vous à Pinar del Río entre champs de tabac, mogotes et air pur. L\'itinéraire le plus spectaculaire de l\'ouest cubain.',
+    'tour3.desc':'Sable blanc, eau turquoise et brise atlantique. À seulement 30 km de La Havane, la destination balnéaire la plus facile d\'accès.',
+    'tour4.desc':'La plus belle ville de Cuba vous attend. Rues pavées, architecture coloniale et Vallée des Sucreries en toile de fond.',
+    'calc.eyebrow':'Prix','calc.title':'Choisissez<br>vos jours',
+    'calc.desc':'Plus vous explorez longtemps, meilleur est le prix. Payez directement en Bitcoin — le prix est le prix.',
+    'tarifa1.label':'1 – 13 jours','tarifa2.label':'14 jours ou plus','tarifa.badge':'Meilleur prix',
+    'cal.title':'Sélectionnez vos dates de location',
+    'cal.hint.start':'Cliquez sur une date pour commencer','cal.hint.end':'Sélectionnez maintenant la date de retour',
+    'cal.empty':'Sélectionnez les dates pour calculer le prix','cal.minday':'Sélectionnez au moins 1 jour',
+    'cal.discount':'Tarif réduit appliqué ✓','cal.days':' jours','cal.perday':'/ jour','cal.book':'Réserver',
+    'cal.months':'Janvier,Février,Mars,Avril,Mai,Juin,Juillet,Août,Septembre,Octobre,Novembre,Décembre',
+    'cal.weekdays':'Lu,Ma,Me,Je,Ve,Sa,Di',
+    'how.eyebrow':'Le processus','how.title':'En trois étapes<br>sur la route',
+    'step1.name':'Choisissez votre aventure','step1.body':'Sélectionnez les jours que vous souhaitez explorer. La calculatrice vous montre le prix exact en USD et Bitcoin instantanément.',
+    'step2.name':'Confirmez en quelques secondes','step2.body':'Vous recevez une facture Lightning Network. Payez depuis n\'importe quel portefeuille, depuis n\'importe quel pays. Votre réservation est confirmée instantanément.',
+    'step3.name':'Découvrez Cuba librement','step3.body':'Coordonnez la livraison à La Havane. Récupérez votre Hurricane 250cc et commencez à écrire votre propre histoire à Cuba.',
+    'btc.eyebrow':'Sans barrières pour explorer','btc.title':'Payez en secondes,<br>explorez sans limites',
+    'btc1.name':'Multiples moyens de paiement','btc1.body':'Nous acceptons les espèces en USD, Bitcoin (Lightning et on-chain) et d\'autres cryptomonnaies. Nous nous adaptons à vous — sans complications.',
+    'btc2.name':'Sans tracas bancaires','btc2.body':'Zéro formulaire, zéro intermédiaire. Concentrez votre énergie sur l\'aventure, pas sur le paiement.',
+    'btc3.name':'Votre réservation, garantie','btc3.body':'Une fois payé, c\'est à vous. Sans révocations ni blocages bancaires. Votre aventure n\'a pas de date d\'annulation.',
+    'btcmap.eyebrow':'Où nous trouver','btcmap.title':'Vérifiés sur BTCMap — et Google',
+    'btcmap.desc':'Nous sommes un commerce Bitcoin vérifié sur BTCMap, le répertoire mondial des entreprises acceptant BTC. Vous pouvez aussi nous trouver sur Google Maps.',
+    'btcmap.link1':'Voir sur BTCMap','btcmap.link2':'Voir sur Google Maps',
+    'reviews.eyebrow':'Ce que disent nos voyageurs','reviews.title':'Avis de<br>nos clients',
+    'reviews.based':'Basé sur des avis vérifiés','reviews.more':'Voir tous les avis sur Google →',
+    'rrss.eyebrow':'Suivez-nous','rrss.title':'Nos<br>réseaux',
+    'rrss.desc':'Itinéraires, aventures et la vie sur deux roues depuis La Havane. Suivez-nous et faites partie de la communauté Bitride.',
+    'rrss.follow':'Suivre →','rrss.write':'Écrire →',
+    'contact.eyebrow':'Des routes vous attendent','contact.title':'Cuba<br>vous<br><span class="acc">attend</span>',
+    'contact.sub':'Chaque rue de La Havane, chaque virage à Viñales, chaque lever de soleil sur le Malecón. Écrivez-nous et commencez votre aventure.',
+    'footer.fleet':'Notre flotte','footer.tours':'Tours','footer.prices':'Prix','footer.reviews':'Avis','footer.contact':'Contact',
+  },
+  de: {
+    'title':'Bitride — Entdecke Kuba mit dem Motorrad',
+    'nav.fleet':'Unsere Flotte','nav.tours':'Touren','nav.prices':'Preise',
+    'nav.how':'Wie es funktioniert','nav.bitcoin':'Bitcoin','nav.social':'Netzwerke',
+    'nav.reviews':'Bewertungen','nav.book':'Buchen',
+    'hero.hl':'Entdecke<br><span class="acc ita">Kuba</span><br>per Motorrad',
+    'hero.sub':'Entdecke Havanna und Umgebung auf einer Hurricane 250cc. Zahle mit Bitcoin — keine Banken, keine Grenzen.',
+    'hero.cta1':'Abenteuer beginnen','hero.cta2':'Flotte ansehen',
+    'stat1.lbl':'Sport Naked Motor','stat2.lbl':'Preis ab (Langaufenthalt)',
+    'stat2.unit':'/Tag','stat3.lbl':'Sofortige Bitcoin Lightning Zahlung',
+    'stat4.num':'Kuba','stat4.unit':' komplett','stat4.lbl':'Unbegrenzte Routen von Havanna',
+    'fleet.eyebrow':'Unsere Flotte','fleet.title':'Wähle dein<br>Bike',
+    'fleet.desc':'Jedes Motorrad unserer Flotte ist geprüft und fahrbereit. Wähle das Modell, das am besten zu deinem Abenteuer passt.',
+    'fleet.tab.more':'Mehr Modelle','fleet.tab.soon':'Demnächst',
+    'fleet.available':'Jetzt verfügbar',
+    'fleet.hurricane.desc':'Eine Sport-Naked mit dem richtigen Charakter für jede kubanische Route. Wendig im Havannaer Stadtverkehr, stabil auf der Landstraße. Die perfekte Wahl für den Reisenden, der echte Freiheit will.',
+    'fleet.bera.desc':'Leicht, wendig und wirtschaftlich. Die Bera SBR 150 ist ideal, um Havanna mühelos bei niedrigem Kraftstoffverbrauch zu erkunden. Perfekt für diejenigen, die eine praktische Option ohne Stilabstriche suchen.',
+    'fleet.hurricane.pricelong':'35$/Tag ab 14 Tagen','fleet.bera.pricelong':'22$/Tag ab 14 Tagen',
+    'fleet.units':'{n} Einheiten verfügbar','fleet.unit':'1 Einheit verfügbar',
+    'fleet.include.helmet':'✓ Helm inklusive','fleet.include.check':'✓ Technische Prüfung','fleet.include.fuel':'⛽ Kraftstoff extra',
+    'fleet.price.unit':'USD / Tag','fleet.cta':'Dieses Bike buchen',
+    'spec.engine':'Motor','spec.style':'Stil','spec.brakes':'Bremsen',
+    'spec.transmission':'Getriebe','spec.start':'Starter','spec.color':'Farbe',
+    'spec.weight':'Gewicht','spec.disc':'Scheibe','spec.manual':'Manuell','spec.electric':'Elektrisch',
+    'tours.eyebrow':'Geführte Touren','tours.title':'Routen, die<br>du nicht vergisst',
+    'tours.desc':'Wir führen dich per Motorrad durch die ikonischsten Ecken Kubas. Mit lokalem Guide, nichts verpassen.',
+    'tour.badge.halfday':'Halber Tag','tour.badge.fullday':'Ganzer Tag','tour.badge.2days':'2 Tage',
+    'tour.difficulty.easy':'Einfach','tour.difficulty.moderate':'Mittel','tour.difficulty.advanced':'Fortgeschritten',
+    'tour.price':'Preis anfragen','tour.book':'Buchen',
+    'tour1.desc':'Malecón, Altstadt, das Kapitol und Vedado. Die perfekte Runde, um die Hauptstadt auf zwei Rädern kennenzulernen.',
+    'tour2.desc':'Fliehe nach Pinar del Río durch Tabakfelder, Mogotes und frische Luft. Die spektakulärste Route im Westen Kubas.',
+    'tour3.desc':'Weißer Sand, türkisfarbenes Wasser und die Atlantikbrise. Nur 30 km von Havanna entfernt, das am leichtesten erreichbare Strandziel.',
+    'tour4.desc':'Kubas schönste Stadt erwartet dich. Kopfsteinpflaster, koloniale Architektur und das Tal der Zuckermühlen im Hintergrund.',
+    'calc.eyebrow':'Preise','calc.title':'Wähle<br>deine Tage',
+    'calc.desc':'Je länger du erkundest, desto besser der Preis. Zahle direkt in Bitcoin — der Preis ist der Preis.',
+    'tarifa1.label':'1 – 13 Tage','tarifa2.label':'14 Tage oder mehr','tarifa.badge':'Bester Preis',
+    'cal.title':'Wähle deine Mietdaten',
+    'cal.hint.start':'Klicke auf ein Datum zum Starten','cal.hint.end':'Jetzt Rückgabedatum auswählen',
+    'cal.empty':'Daten auswählen um den Preis zu berechnen','cal.minday':'Mindestens 1 Tag auswählen',
+    'cal.discount':'Reduzierter Tarif angewendet ✓','cal.days':' Tage','cal.perday':'/ Tag','cal.book':'Buchen',
+    'cal.months':'Januar,Februar,März,April,Mai,Juni,Juli,August,September,Oktober,November,Dezember',
+    'cal.weekdays':'Mo,Di,Mi,Do,Fr,Sa,So',
+    'how.eyebrow':'Der Ablauf','how.title':'In drei Schritten<br>auf der Straße',
+    'step1.name':'Wähle dein Abenteuer','step1.body':'Wähle die Tage, die du erkunden möchtest. Der Kalkulator zeigt dir den genauen Preis in USD und Bitcoin sofort an.',
+    'step2.name':'In Sekunden bestätigen','step2.body':'Du erhältst eine Lightning Network Rechnung. Zahle von jeder Wallet, aus jedem Land. Deine Buchung wird sofort bestätigt.',
+    'step3.name':'Entdecke freies Kuba','step3.body':'Koordiniere die Übergabe in Havanna. Hol deine Hurricane 250cc ab und beginne deine eigene Geschichte in Kuba zu schreiben.',
+    'btc.eyebrow':'Keine Grenzen beim Erkunden','btc.title':'Zahle in Sekunden,<br>erkunde grenzenlos',
+    'btc1.name':'Mehrere Zahlungsmethoden','btc1.body':'Wir akzeptieren Bargeld in USD, Bitcoin (Lightning und On-Chain) und andere Kryptowährungen. Wir passen uns dir an — unkompliziert.',
+    'btc2.name':'Keine Bankbürokratie','btc2.body':'Null Formulare, null Mittelsmänner. Richte deine Energie auf das Abenteuer, nicht auf die Zahlung.',
+    'btc3.name':'Deine Buchung, garantiert','btc3.body':'Einmal bezahlt, gehört es dir. Keine Rückbuchungen oder Banksperren. Dein Abenteuer hat kein Stornierungsdatum.',
+    'btcmap.eyebrow':'Wo wir zu finden sind','btcmap.title':'Verifiziert auf BTCMap — und Google',
+    'btcmap.desc':'Wir sind ein Bitcoin-verifiziertes Unternehmen auf BTCMap, dem globalen Verzeichnis BTC-akzeptierender Händler. Du findest uns auch auf Google Maps für eine einfache Anfahrt.',
+    'btcmap.link1':'Auf BTCMap ansehen','btcmap.link2':'Auf Google Maps ansehen',
+    'reviews.eyebrow':'Was unsere Reisenden sagen','reviews.title':'Bewertungen<br>unserer Kunden',
+    'reviews.based':'Basierend auf verifizierten Bewertungen','reviews.more':'Alle Bewertungen auf Google →',
+    'rrss.eyebrow':'Folge uns','rrss.title':'Unsere<br>Netzwerke',
+    'rrss.desc':'Routen, Abenteuer und das Leben auf zwei Rädern aus Havanna. Folge uns und werde Teil der Bitride-Community.',
+    'rrss.follow':'Folgen →','rrss.write':'Schreiben →',
+    'contact.eyebrow':'Routen warten auf dich','contact.title':'Kuba<br>wartet<br><span class="acc">auf dich</span>',
+    'contact.sub':'Jede Straße in Havanna, jede Kurve in Viñales, jeder Sonnenaufgang am Malecón. Schreib uns und beginne dein Abenteuer.',
+    'footer.fleet':'Unsere Flotte','footer.tours':'Touren','footer.prices':'Preise','footer.reviews':'Bewertungen','footer.contact':'Kontakt',
+  },
+  it: {
+    'title':'Bitride — Esplora Cuba in Moto',
+    'nav.fleet':'La nostra flotta','nav.tours':'Tour','nav.prices':'Prezzi',
+    'nav.how':'Come funziona','nav.bitcoin':'Bitcoin','nav.social':'Social',
+    'nav.reviews':'Recensioni','nav.book':'Prenota',
+    'hero.hl':'Esplora<br><span class="acc ita">Cuba</span><br>in moto',
+    'hero.sub':'Scopri L\'Avana e i suoi dintorni in sella a una Hurricane 250cc. Paga in Bitcoin — senza banche, senza frontiere.',
+    'hero.cta1':'Inizia l\'avventura','hero.cta2':'Vedi la flotta',
+    'stat1.lbl':'Motore naked sportivo','stat2.lbl':'Prezzo da (soggiorno lungo)',
+    'stat2.unit':'/giorno','stat3.lbl':'Pagamento Bitcoin Lightning istantaneo',
+    'stat4.num':'Cuba','stat4.unit':' intera','stat4.lbl':'Percorsi illimitati dall\'Avana',
+    'fleet.eyebrow':'La nostra flotta','fleet.title':'Scegli la tua<br>moto',
+    'fleet.desc':'Ogni moto della nostra flotta è revisionata e pronta a partire. Scegli il modello più adatto alla tua avventura.',
+    'fleet.tab.more':'Altri modelli','fleet.tab.soon':'Prossimamente',
+    'fleet.available':'Disponibile ora',
+    'fleet.hurricane.desc':'Una naked sportiva con il carattere giusto per ogni percorso cubano. Agile nel traffico dell\'Avana, stabile in autostrada. La scelta perfetta per il viaggiatore che vuole vera libertà.',
+    'fleet.bera.desc':'Leggera, agile ed economica. La Bera SBR 150 è ideale per muoversi all\'Avana con facilità e basso consumo. Perfetta per chi cerca un\'opzione pratica senza rinunciare allo stile.',
+    'fleet.hurricane.pricelong':'35$/giorno da 14 giorni','fleet.bera.pricelong':'22$/giorno da 14 giorni',
+    'fleet.units':'{n} unità disponibili','fleet.unit':'1 unità disponibile',
+    'fleet.include.helmet':'✓ Casco incluso','fleet.include.check':'✓ Revisione tecnica','fleet.include.fuel':'⛽ Carburante escluso',
+    'fleet.price.unit':'USD / giorno','fleet.cta':'Prenota questa moto',
+    'spec.engine':'Motore','spec.style':'Stile','spec.brakes':'Freni',
+    'spec.transmission':'Trasmissione','spec.start':'Avviamento','spec.color':'Colore',
+    'spec.weight':'Peso','spec.disc':'Disco','spec.manual':'Manuale','spec.electric':'Elettrico',
+    'tours.eyebrow':'Tour guidati','tours.title':'Percorsi che<br>non dimenticherai',
+    'tours.desc':'Ti guidiamo in moto attraverso gli angoli più iconici di Cuba. Con una guida locale, senza perderti nulla.',
+    'tour.badge.halfday':'Mezza giornata','tour.badge.fullday':'Giornata intera','tour.badge.2days':'2 giorni',
+    'tour.difficulty.easy':'Facile','tour.difficulty.moderate':'Moderato','tour.difficulty.advanced':'Avanzato',
+    'tour.price':'Chiedi il prezzo','tour.book':'Prenota',
+    'tour1.desc':'Malecón, L\'Avana Vecchia, il Campidoglio e il Vedado. Il circuito perfetto per scoprire la capitale su due ruote.',
+    'tour2.desc':'Fuggi a Pinar del Río tra campi di tabacco, mogotes e aria pulita. Il percorso più spettacolare dell\'ovest cubano.',
+    'tour3.desc':'Sabbia bianca, acqua turchese e la brezza dell\'Atlantico. A soli 30 km dall\'Avana, la destinazione balneare più facile da raggiungere.',
+    'tour4.desc':'La città più bella di Cuba ti aspetta. Strade lastricate, architettura coloniale e la Valle degli Ingenios sullo sfondo.',
+    'calc.eyebrow':'Prezzi','calc.title':'Scegli<br>i tuoi giorni',
+    'calc.desc':'Più a lungo esplori, migliore è il prezzo. Paga direttamente in Bitcoin — il prezzo è il prezzo.',
+    'tarifa1.label':'1 – 13 giorni','tarifa2.label':'14 giorni o più','tarifa.badge':'Miglior prezzo',
+    'cal.title':'Seleziona le tue date di noleggio',
+    'cal.hint.start':'Clicca su una data per iniziare','cal.hint.end':'Ora seleziona la data di ritorno',
+    'cal.empty':'Seleziona le date per calcolare il prezzo','cal.minday':'Seleziona almeno 1 giorno',
+    'cal.discount':'Tariffa ridotta applicata ✓','cal.days':' giorni','cal.perday':'/ giorno','cal.book':'Prenota',
+    'cal.months':'Gennaio,Febbraio,Marzo,Aprile,Maggio,Giugno,Luglio,Agosto,Settembre,Ottobre,Novembre,Dicembre',
+    'cal.weekdays':'Lu,Ma,Me,Gi,Ve,Sa,Do',
+    'how.eyebrow':'Il processo','how.title':'In tre passi<br>sei in viaggio',
+    'step1.name':'Scegli la tua avventura','step1.body':'Seleziona i giorni che vuoi esplorare. Il calcolatore ti mostra il prezzo esatto in USD e Bitcoin all\'istante.',
+    'step2.name':'Conferma in secondi','step2.body':'Ricevi una fattura Lightning Network. Paghi da qualsiasi wallet, da qualsiasi paese. La tua prenotazione è confermata all\'istante.',
+    'step3.name':'Scopri Cuba libera','step3.body':'Coordina la consegna all\'Avana. Ritira la tua Hurricane 250cc e inizia a scrivere la tua storia a Cuba.',
+    'btc.eyebrow':'Nessuna barriera per esplorare','btc.title':'Paga in secondi,<br>esplora senza limiti',
+    'btc1.name':'Metodi di pagamento multipli','btc1.body':'Accettiamo contanti in USD, Bitcoin (Lightning e on-chain) e altre criptovalute. Ci adattiamo a te — senza complicazioni.',
+    'btc2.name':'Senza burocrazia bancaria','btc2.body':'Zero moduli, zero intermediari. Concentra la tua energia sull\'avventura, non sul pagamento.',
+    'btc3.name':'La tua prenotazione, garantita','btc3.body':'Una volta pagato, è tuo. Senza storni o blocchi bancari. La tua avventura non ha data di cancellazione.',
+    'btcmap.eyebrow':'Dove trovarci','btcmap.title':'Verificati su BTCMap — e Google',
+    'btcmap.desc':'Siamo un\'attività Bitcoin verificata su BTCMap, la directory globale delle attività che accettano BTC. Ci trovi anche su Google Maps per arrivare senza complicazioni.',
+    'btcmap.link1':'Vedi su BTCMap','btcmap.link2':'Vedi su Google Maps',
+    'reviews.eyebrow':'Cosa dicono i nostri viaggiatori','reviews.title':'Recensioni dei<br>nostri clienti',
+    'reviews.based':'Basato su recensioni verificate','reviews.more':'Vedi tutte le recensioni su Google →',
+    'rrss.eyebrow':'Seguici','rrss.title':'I nostri<br>social',
+    'rrss.desc':'Percorsi, avventure e la vita su due ruote dall\'Avana. Seguici e fai parte della comunità Bitride.',
+    'rrss.follow':'Segui →','rrss.write':'Scrivi →',
+    'contact.eyebrow':'Le strade ti aspettano','contact.title':'Cuba ti<br>sta<br><span class="acc">aspettando</span>',
+    'contact.sub':'Ogni strada dell\'Avana, ogni curva a Viñales, ogni alba sul Malecón. Scrivici e inizia la tua avventura.',
+    'footer.fleet':'La nostra flotta','footer.tours':'Tour','footer.prices':'Prezzi','footer.reviews':'Recensioni','footer.contact':'Contatto',
+  },
+};
+
+let currentLang = localStorage.getItem('bitride_lang') || 'es';
+
+function t(key) {
+  return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key])
+      || (TRANSLATIONS.es && TRANSLATIONS.es[key])
+      || key;
+}
+
+function applyLang() {
+  document.documentElement.lang = currentLang;
+  document.title = t('title');
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+  const lbl = document.getElementById('lang-current-label');
+  if (lbl) lbl.textContent = currentLang.toUpperCase();
+  document.querySelectorAll('.lang-option').forEach(opt => {
+    opt.classList.toggle('active', opt.dataset.lang === currentLang);
+  });
+  renderCal();
+  if (catalogData && catalogData.modelos && catalogData.modelos.length > 0) renderFleetModel(currentModelIdx);
+  updatePrice();
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('bitride_lang', lang);
+  applyLang();
+}
+
+const langSwitcherEl = document.getElementById('lang-switcher');
+document.getElementById('lang-current').addEventListener('click', e => {
+  e.stopPropagation();
+  langSwitcherEl.classList.toggle('open');
+});
+document.querySelectorAll('.lang-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    setLang(opt.dataset.lang);
+    langSwitcherEl.classList.remove('open');
+  });
+});
+document.addEventListener('click', () => langSwitcherEl.classList.remove('open'));
+
 /* ═══════════════════════════════════════════
    TWEAKS DEFAULTS
 ═══════════════════════════════════════════ */
@@ -1880,8 +2235,9 @@ const BTC_PRICE = 100000;
 const RATE_STD  = 40;
 const RATE_LONG = 35;
 
-const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-const DIAS  = ['Lu','Ma','Mi','Ju','Vi','Sa','Do'];
+function getMeses() { return t('cal.months').split(','); }
+function getDias()  { return t('cal.weekdays').split(','); }
+const localeMap = { es:'es-ES', en:'en-US', fr:'fr-FR', de:'de-DE', it:'it-IT' };
 
 let calBase  = (() => { const d = new Date(); d.setDate(1); d.setHours(0,0,0,0); return d; })();
 let selStart = null;
@@ -1907,13 +2263,13 @@ function buildMonth(monthDate, isLeft) {
 
   let h = `<div class="cal-mhead">
     ${isLeft  ? `<button class="cal-mnav" id="cal-prev" ${prevDisabled?'disabled':''}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="15 18 9 12 15 6"/></svg></button>` : '<span></span>'}
-    <div class="cal-mname">${MESES[M]} ${Y}</div>
+    <div class="cal-mname">${getMeses()[M]} ${Y}</div>
     ${!isLeft ? `<button class="cal-mnav" id="cal-next"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"/></svg></button>` : '<span></span>'}
   </div>`;
 
   // DOW headers
   h += `<div class="cal-grid" style="margin-bottom:4px;">`;
-  DIAS.forEach(d => { h += `<div class="cal-dow">${d}</div>`; });
+  getDias().forEach(d => { h += `<div class="cal-dow">${d}</div>`; });
   h += '</div><div class="cal-grid">';
 
   for (let i=0;i<dow;i++) h += '<div class="cal-cell emp"></div>';
@@ -1957,10 +2313,10 @@ function renderCal() {
       const clicked = d0(new Date(cell.dataset.d + 'T12:00:00'));
       if (!selStart || (selStart && selEnd)) {
         selStart = clicked; selEnd = null;
-        setHint('Ahora selecciona la fecha de regreso');
+        setHint(t('cal.hint.end'));
       } else {
         if (clicked < selStart)         { selEnd = selStart; selStart = clicked; }
-        else if (sameD(clicked,selStart)){ selStart = null; selEnd = null; setHint('Clic en una fecha para comenzar'); }
+        else if (sameD(clicked,selStart)){ selStart = null; selEnd = null; setHint(t('cal.hint.start')); }
         else                             { selEnd = clicked; setHint(''); }
         hoverD = null;
       }
@@ -1993,13 +2349,13 @@ function updatePrice() {
   const btn = document.getElementById('btn-res');
 
   if (!selStart || !selEnd) {
-    out.innerHTML = '<div class="result-empty">Selecciona las fechas para calcular el precio</div>';
+    out.innerHTML = `<div class="result-empty">${t('cal.empty')}</div>`;
     btn.disabled = true; return;
   }
 
   const days = Math.round((selEnd - selStart) / 86400000);
   if (days < 1) {
-    out.innerHTML = '<div class="result-empty">Selecciona al menos 1 día</div>';
+    out.innerHTML = `<div class="result-empty">${t('cal.minday')}</div>`;
     btn.disabled = true; return;
   }
 
@@ -2008,16 +2364,16 @@ function updatePrice() {
   const totalBTC = totalUSD / BTC_PRICE;
   const sats     = Math.round(totalBTC * 1e8);
 
-  const fmt = d => d.toLocaleDateString('es-ES', {day:'numeric', month:'short'});
-  const discount = days >= 14 ? '<div class="result-discount">Tarifa reducida aplicada ✓</div>' : '';
+  const fmt = d => d.toLocaleDateString(localeMap[currentLang] || 'es-ES', {day:'numeric', month:'short'});
+  const discount = days >= 14 ? `<div class="result-discount">${t('cal.discount')}</div>` : '';
   const satsHTML = `<div class="result-sats"${tw.showSats ? '' : ' style="display:none"'}>≈ ${sats.toLocaleString()} sats</div>`;
 
   out.innerHTML = `<div class="result-info">
     <div class="result-days-col">
       ${discount}
       <div class="result-date-str">${fmt(selStart)} → ${fmt(selEnd)}</div>
-      <div class="result-days-big">${days}<span> días</span></div>
-      <div class="result-rate">× $${rate} / día</div>
+      <div class="result-days-big">${days}<span>${t('cal.days')}</span></div>
+      <div class="result-rate">× $${rate} ${t('cal.perday')}</div>
     </div>
     <div class="result-price-col">
       <div class="result-usd"><span class="cur">$</span>${totalUSD.toLocaleString()} <span class="cur">USD</span></div>
@@ -2031,79 +2387,182 @@ function updatePrice() {
 renderCal();
 
 /* ═══════════════════════════════════════════
-   FLEET SELECTOR
+   FLEET — CATALOG API (rentaria.app)
 ═══════════════════════════════════════════ */
-const FLEET_DATA = {
-  hurricane: {
-    tag:    'Serpenti Hurricane 250',
-    name:   'Hurricane<br><span class="acc">250cc</span>',
-    eyebrow:'Disponible ahora',
-    desc:   'Naked deportiva con el carácter justo para cada ruta cubana. Ágil en el tráfico habanero, estable en carretera. La elección perfecta para el viajero que quiere libertad real.',
-    img:    'assets/hurricane-negra.webp',
-    ghost:  '250',
-    specs: [
-      ['Motor','250 cc'], ['Estilo','Naked'],
-      ['Frenos','Disco'], ['Transmisión','Manual'],
-      ['Arranque','Eléctrico'], ['Color','Negro/Rojo']
-    ],
-    units:  3,
-    price:  '$40',
-    priceLong: '$35/día a partir de 14 días',
-  },
-  bera: {
-    tag:    'Bera SBR 150',
-    name:   'Bera SBR<br><span class="acc">150cc</span>',
-    eyebrow:'Disponible ahora',
-    desc:   'Ligera, ágil y económica. La Bera SBR 150 es ideal para moverse por La Habana con facilidad y bajo consumo. Perfecta para quienes buscan una opción práctica sin renunciar al estilo.',
-    img:    'assets/bera-sbr-150.png',
-    ghost:  '150',
-    specs: [
-      ['Motor','150 cc'], ['Estilo','Sport'],
-      ['Frenos','Disco'], ['Transmisión','Manual 5v'],
-      ['Arranque','Eléctrico'], ['Peso','~130 kg']
-    ],
-    units:  1,
-    price:  '$25',                          /* ← confirmar precio */
-    priceLong: '$22/día a partir de 14 días',
-  }
-};
+const RENTARIA_SLUG = 'bitride';
+const RENTARIA_API  = `https://app.rentaria.app/api/${RENTARIA_SLUG}/catalog/`;
 
-document.querySelectorAll('.fleet-tab:not(:disabled)').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.fleet-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    const data = FLEET_DATA[btn.dataset.fleet];
-    if (!data) return;
+let catalogData     = null;
+let currentModelIdx = 0;
+let currentPhotoIdx = 0;
 
-    document.getElementById('fleet-tag').textContent   = data.tag;
-    document.getElementById('fleet-name').innerHTML    = data.name;
-    document.getElementById('fleet-eyebrow').textContent = data.eyebrow;
-    document.getElementById('fleet-desc').textContent  = data.desc;
-    document.getElementById('fleet-ghost').textContent = data.ghost;
-    document.getElementById('fleet-price').textContent = data.price;
+function getModelPhotos(model) {
+  if (model.fotos && model.fotos.length > 0)
+    return model.fotos.slice().sort((a, b) => a.orden - b.orden);
+  return model.imagen ? [{ url: model.imagen, orden: 0 }] : [];
+}
 
-    const img = document.getElementById('fleet-img');
+function buildPhotoDots(count, activeIdx) {
+  if (count <= 1) return '';
+  return `<div class="fleet-photo-dots">${
+    Array.from({length: count}, (_, i) =>
+      `<button class="fleet-photo-dot${i === activeIdx ? ' active' : ''}" data-pi="${i}" aria-label="Photo ${i+1}"></button>`
+    ).join('')
+  }</div>`;
+}
+
+function switchFleetPhoto(idx) {
+  const photos = getModelPhotos(catalogData.modelos[currentModelIdx]);
+  if (idx < 0 || idx >= photos.length) return;
+  currentPhotoIdx = idx;
+  const img = document.getElementById('fleet-main-img');
+  if (img) {
     img.style.opacity = '0';
-    img.style.transform = 'translateX(20px)';
-    setTimeout(() => {
-      img.src = data.img;
-      img.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-      img.style.opacity = '1';
-      img.style.transform = 'translateX(0)';
-    }, 150);
+    setTimeout(() => { img.src = photos[idx].url; img.style.opacity = '1'; }, 160);
+  }
+  document.querySelectorAll('.fleet-photo-dot').forEach(d =>
+    d.classList.toggle('active', parseInt(d.dataset.pi) === idx));
+}
 
-    const specsEl = document.getElementById('fleet-specs');
-    specsEl.innerHTML = data.specs.map(([l,v]) =>
-      `<div class="fleet-spec-cell"><div class="fleet-spec-lbl">${l}</div><div class="fleet-spec-val">${v}</div></div>`
-    ).join('');
+function renderFleetModel(idx) {
+  const wrap = document.getElementById('fleet-showcase-wrap');
+  if (!wrap || !catalogData) return;
+  const model   = catalogData.modelos[idx];
+  const slug    = catalogData.shop.slug;
+  const photos  = getModelPhotos(model);
+  const mainImg = photos.length > 0 ? photos[Math.min(currentPhotoIdx, photos.length - 1)].url : '';
+  const dots    = buildPhotoDots(photos.length, currentPhotoIdx);
 
-    const dotsEl = document.getElementById('fleet-dots');
-    dotsEl.innerHTML = Array.from({length: 5}, (_,i) =>
-      `<div class="fleet-unit-dot${i >= data.units ? ' unavail' : ''}"></div>`
-    ).join('');
-    document.getElementById('fleet-avail').textContent = `${data.units} unidad${data.units !== 1 ? 'es' : ''} disponible${data.units !== 1 ? 's' : ''}`;
+  const specsHtml = (model.caracteristicas || []).slice(0, 6).map(s =>
+    `<div class="fleet-spec-cell">
+      <div class="fleet-spec-lbl">${s.label}</div>
+      <div class="fleet-spec-val">${s.value}</div>
+    </div>`).join('');
+
+  const maxDots  = Math.min(model.total_unidades, 5);
+  const unitDots = Array.from({length: maxDots}, () => `<div class="fleet-unit-dot"></div>`).join('');
+  const availTxt = model.total_unidades === 1
+    ? t('fleet.unit')
+    : t('fleet.units').replace('{n}', model.total_unidades);
+
+  const chargesHtml = (model.cargos || []).map(c => {
+    const free = parseFloat(c.costo) === 0;
+    return `<div class="fleet-include-tag${free ? ' yes' : ''}">${free ? '✓' : '⊕'} ${c.nombre}</div>`;
+  }).join('');
+
+  const plan0 = model.planes && model.planes[0];
+  const plan1 = model.planes && model.planes[1];
+  const primaryPrice = plan0 ? `$${parseFloat(plan0.precio_dia).toFixed(0)}` : '';
+  const dayUnit = t('fleet.price.unit').split('/').pop().trim();
+  const daysUnit = t('cal.days').trim();
+  const fromWord = {es:'desde',en:'from',fr:'à partir de',de:'ab',it:'da'}[currentLang] || 'from';
+  const priceLongHtml = plan1
+    ? `<div class="fleet-price-long">$${parseFloat(plan1.precio_dia).toFixed(0)}/${dayUnit} ${fromWord} ${plan1.dias_min} ${daysUnit}</div>`
+    : '';
+
+  const bookUrl = `https://app.rentaria.app/${slug}/`;
+  const ghostText = model.modelo.toUpperCase();
+
+  wrap.innerHTML = `
+    <div class="fleet-showcase">
+      <div class="fleet-img-panel">
+        <div class="fleet-img-glow"></div>
+        <div class="fleet-img-shadow"></div>
+        ${mainImg ? `<img id="fleet-main-img" src="${mainImg}" alt="${model.marca} ${model.modelo}"
+          style="width:92%;padding:32px 0 48px;position:relative;z-index:2;transition:opacity 0.3s;">` : ''}
+        <div class="fleet-ghost-num" style="white-space:nowrap;overflow:hidden;font-size:clamp(36px,7vw,96px);">${ghostText}</div>
+        ${dots ? `<div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:3;">${dots}</div>` : ''}
+      </div>
+      <div class="fleet-info-panel">
+        <div>
+          <div class="eyebrow">${t('fleet.available')}</div>
+          <div class="fleet-model-name">${model.marca.toUpperCase()}<br><span class="acc">${model.modelo.toUpperCase()}</span></div>
+        </div>
+        <p class="fleet-model-desc">${model.descripcion}</p>
+        <div class="fleet-specs">${specsHtml}</div>
+        ${dots}
+        <div class="fleet-units">
+          <div class="fleet-units-dots">${unitDots}</div>
+          <div class="fleet-units-label">${availTxt}</div>
+        </div>
+        <div class="fleet-includes">${chargesHtml}</div>
+        <div class="fleet-price-row">
+          <div class="fleet-price">${primaryPrice}</div>
+          <div>
+            <div class="fleet-price-unit">${t('fleet.price.unit')}</div>
+            ${priceLongHtml}
+          </div>
+        </div>
+        <a href="${bookUrl}" target="_blank" rel="noopener" class="btn-solid" style="align-self:flex-start;text-decoration:none;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          ${t('fleet.cta')}
+        </a>
+      </div>
+    </div>`;
+
+  wrap.querySelectorAll('.fleet-photo-dot').forEach(d =>
+    d.addEventListener('click', () => switchFleetPhoto(parseInt(d.dataset.pi))));
+}
+
+function renderFleetTabs(modelos) {
+  const wrap = document.getElementById('fleet-tabs-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = modelos.map((m, i) =>
+    `<button class="fleet-tab${i === currentModelIdx ? ' active' : ''}" data-idx="${i}">${(m.marca + ' ' + m.modelo).toUpperCase()}</button>`
+  ).join('');
+  wrap.querySelectorAll('.fleet-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentModelIdx = parseInt(btn.dataset.idx);
+      currentPhotoIdx = 0;
+      wrap.querySelectorAll('.fleet-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderFleetModel(currentModelIdx);
+    });
   });
-});
+}
+
+function showFleetSkeleton() {
+  const tw = document.getElementById('fleet-tabs-wrap');
+  const sw = document.getElementById('fleet-showcase-wrap');
+  if (tw) tw.innerHTML = [160, 140].map(w =>
+    `<div class="skel" style="width:${w}px;height:38px;"></div>`).join('');
+  if (sw) sw.innerHTML = `
+    <div class="fleet-showcase" style="min-height:480px;">
+      <div class="fleet-img-panel" style="background:var(--card);">
+        <div class="skel" style="position:absolute;inset:0;"></div>
+      </div>
+      <div class="fleet-info-panel" style="gap:20px;">
+        <div class="skel" style="height:14px;width:110px;"></div>
+        <div class="skel" style="height:72px;width:78%;margin-top:4px;"></div>
+        <div class="skel" style="height:58px;"></div>
+        <div class="fleet-specs">${Array(6).fill(0).map(() =>
+          `<div class="fleet-spec-cell"><div class="skel" style="height:44px;"></div></div>`).join('')}</div>
+        <div class="skel" style="height:44px;"></div>
+        <div class="skel" style="height:44px;width:200px;margin-top:4px;"></div>
+      </div>
+    </div>`;
+}
+
+async function fetchCatalog() {
+  showFleetSkeleton();
+  try {
+    const res = await fetch(RENTARIA_API);
+    if (!res.ok) throw new Error('API ' + res.status);
+    const data = await res.json();
+    if (!data.modelos || data.modelos.length === 0) throw new Error('empty');
+    catalogData = data;
+    renderFleetTabs(data.modelos);
+    renderFleetModel(0);
+  } catch (_) {
+    const sec = document.getElementById('flota');
+    if (sec) sec.style.display = 'none';
+  }
+}
+
+fetchCatalog();
+
+/* Apply saved language on load */
+applyLang();
 </script>
 </body>
 </html>
