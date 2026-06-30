@@ -27,6 +27,46 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,700;1,800&family=Barlow:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Structured data (SEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://bitride.rent/#business",
+    "name": "Bitride",
+    "description": "Alquiler de motos Hurricane 250cc en La Habana, Cuba. Kilometraje ilimitado y casco incluido, entrega en toda La Habana. Paga en Bitcoin (Lightning), efectivo o cripto.",
+    "url": "https://bitride.rent/",
+    "image": "https://bitride.rent/assets/habana-capitolio.jpg",
+    "logo": "https://bitride.rent/assets/bitride-logo-transparent.png",
+    "telephone": "+5355003336",
+    "priceRange": "$$",
+    "currenciesAccepted": "USD, BTC",
+    "paymentAccepted": "Bitcoin (Lightning), Efectivo, Cripto",
+    "areaServed": { "@type": "City", "name": "La Habana" },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "La Habana",
+      "addressCountry": "CU"
+    },
+    "makesOffer": {
+      "@type": "Offer",
+      "name": "Alquiler de moto Hurricane 250cc",
+      "priceCurrency": "USD",
+      "price": "30",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "30",
+        "priceCurrency": "USD",
+        "referenceQuantity": { "@type": "QuantitativeValue", "value": "1", "unitText": "DAY" }
+      }
+    },
+    "sameAs": [
+      "https://t.me/bitridecuba",
+      "https://instagram.com/bitridecuba"
+    ]
+  }
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -92,6 +132,22 @@
     }
     .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
 
+    /* Hamburger (mobile only) */
+    .nav-burger {
+      display: none;
+      flex-direction: column; justify-content: center; gap: 5px;
+      width: 40px; height: 40px; padding: 9px;
+      background: transparent; border: none; cursor: pointer;
+    }
+    .nav-burger span {
+      display: block; height: 2px; width: 100%;
+      background: var(--white); border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.2s ease;
+    }
+    #nav.menu-open .nav-burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    #nav.menu-open .nav-burger span:nth-child(2) { opacity: 0; }
+    #nav.menu-open .nav-burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
     /* ── STATS BAR ────────────────────────── */
     #stats-bar {
       background: var(--bg);
@@ -150,7 +206,7 @@
     .hero-bg {
       position: absolute; inset: 0;
       background-size: cover; background-position: center 35%;
-      background-image: url('assets/habana-capitolio.jpg');
+      background-image: url('assets/habana-capitolio.webp');
       transform: scale(1.04);
       transition: transform 10s ease, opacity 1s ease;
       filter: brightness(0.65) saturate(1.1);
@@ -471,9 +527,8 @@
       letter-spacing: 0.08em; text-transform: uppercase;
     }
     .cal-hint { font-size: 12px; color: var(--muted); }
-    .cal-body { display: grid; grid-template-columns: 1fr 1fr; }
-    .cal-month { padding: 28px 32px; }
-    .cal-month:first-child { border-right: 1px solid var(--border); }
+    .cal-body { display: flex; justify-content: center; }
+    .cal-month { padding: 28px 32px; width: 100%; max-width: 420px; }
     .cal-mhead {
       display: flex; align-items: center;
       justify-content: space-between; margin-bottom: 20px;
@@ -491,10 +546,36 @@
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 16px; font-weight: 700;
       text-transform: uppercase; letter-spacing: 0.06em;
+      background: none; border: none; color: var(--white);
+      cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+      transition: color 0.15s;
     }
+    .cal-mname:hover { color: var(--accent); }
+    .cal-mname svg { transition: transform 0.2s; }
+    .cal-mname.open svg { transform: rotate(180deg); }
+    /* Selector rápido de mes/año */
+    .cal-picker { margin-bottom: 16px; border: 1px solid var(--border); background: var(--bg); padding: 12px; }
+    .cal-picker-yr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .cal-picker-yr span { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.06em; }
+    .cal-picker-yr button {
+      width: 26px; height: 26px; background: none; border: 1px solid var(--border);
+      color: var(--white); cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .cal-picker-yr button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+    .cal-picker-yr button:disabled { opacity: 0.2; cursor: default; }
+    .cal-picker-months { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .cal-pmonth {
+      padding: 9px 0; border: 1px solid var(--border); background: var(--card2);
+      color: var(--text); cursor: pointer; font-size: 12px;
+      text-transform: uppercase; letter-spacing: 0.04em; transition: border-color 0.15s, color 0.15s;
+    }
+    .cal-pmonth:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+    .cal-pmonth.cur { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 700; }
+    .cal-pmonth:disabled { opacity: 0.22; cursor: default; }
     .cal-grid {
       display: grid; grid-template-columns: repeat(7, 1fr);
-      gap: 2px;
+      column-gap: 0; row-gap: 3px;
     }
     .cal-dow {
       text-align: center; padding: 4px 0;
@@ -516,7 +597,7 @@
     .cal-cell.s-start, .cal-cell.s-end {
       background: var(--accent); color: var(--bg); font-weight: 700;
     }
-    .cal-cell.in-range { background: rgba(247,147,26,0.13); }
+    .cal-cell.in-range { background: rgba(247,147,26,0.16); color: var(--accent); }
     .cal-cell.is-today::after {
       content: ''; position: absolute;
       bottom: 3px; left: 50%; transform: translateX(-50%);
@@ -570,7 +651,7 @@
     #como::before {
       content: '';
       position: absolute; inset: 0;
-      background-image: url('assets/habana-capitolio.jpg');
+      background-image: url('assets/habana-capitolio.webp');
       background-size: cover; background-position: center;
       opacity: 0.04; pointer-events: none;
     }
@@ -699,72 +780,6 @@
       text-decoration: none; transition: color 0.2s;
     }
     .footer-nav a:hover { color: var(--white); }
-
-    /* ── TWEAKS ──────────────────────────── */
-    #tweaks {
-      display: none; position: fixed;
-      bottom: 24px; right: 24px; z-index: 999;
-      width: 256px;
-      background: var(--card2);
-      border: 1px solid #333;
-      box-shadow: 0 12px 48px rgba(0,0,0,0.7);
-    }
-    #tweaks.show { display: block; }
-    .tw-head {
-      padding: 13px 16px;
-      border-bottom: 1px solid #333;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .tw-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 12px; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase;
-    }
-    .tw-close {
-      background: none; border: none;
-      color: var(--muted); cursor: pointer; font-size: 15px;
-      line-height: 1; padding: 0;
-    }
-    .tw-close:hover { color: var(--white); }
-    .tw-body { padding: 16px; display: flex; flex-direction: column; gap: 18px; }
-    .tw-row { display: flex; flex-direction: column; gap: 8px; }
-    .tw-lbl {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--muted);
-    }
-    .tw-swatches { display: flex; gap: 6px; }
-    .tw-sw {
-      width: 28px; height: 28px; cursor: pointer;
-      border: 2px solid transparent;
-      transition: border-color 0.15s, transform 0.1s;
-    }
-    .tw-sw.on { border-color: white; transform: scale(1.12); }
-    .tw-toggle-row {
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .tw-toggle-lbl { font-size: 13px; color: var(--text); }
-    .tw-pill {
-      width: 38px; height: 20px;
-      background: #333; border-radius: 10px;
-      position: relative; cursor: pointer;
-      transition: background 0.2s;
-    }
-    .tw-pill.on { background: var(--accent); }
-    .tw-pill::after {
-      content: ''; position: absolute;
-      width: 14px; height: 14px; background: white; border-radius: 50%;
-      top: 3px; left: 3px; transition: transform 0.2s;
-    }
-    .tw-pill.on::after { transform: translateX(18px); }
-    .tw-photo-grid { display: flex; gap: 6px; }
-    .tw-photo {
-      width: 60px; height: 40px;
-      background-size: cover; background-position: center;
-      cursor: pointer; border: 2px solid transparent;
-      transition: border-color 0.15s;
-    }
-    .tw-photo.on { border-color: white; }
 
     /* ── TOURS ──────────────────────────── */
     #tours {
@@ -1072,8 +1087,6 @@
       .fleet-img-panel { clip-path: none; min-height: 280px; }
       .fleet-info-panel { border-left: none; border-top: 1px solid var(--border); padding: 32px 24px; }
       .moto-grid, .calc-top { grid-template-columns: 1fr; gap: 44px; }
-      .cal-body { grid-template-columns: 1fr; }
-      .cal-month:first-child { border-right: none; border-bottom: 1px solid var(--border); }
       .steps-grid { grid-template-columns: 1fr; gap: 2px; }
       .btc-grid { grid-template-columns: 1fr 1fr; }
       .btcmap-maps { flex-direction: column !important; }
@@ -1086,10 +1099,79 @@
       .footer-social { justify-content: center; }
       .cta-inner { padding: 0 24px; }
     }
-    @media (max-width: 540px) {
-      .nav-links { display: none; }
-.btc-grid { grid-template-columns: 1fr; }
+    /* ── MOBILE NAV (dropdown desde el nav) ── */
+    @media (max-width: 760px) {
+      .nav-burger { display: flex; }
+      .nav-links {
+        position: fixed;
+        top: 64px; left: 0; right: 0;
+        flex-direction: column; gap: 0;
+        background: rgba(10,10,10,0.97);
+        backdrop-filter: blur(18px);
+        border-bottom: 1px solid var(--border);
+        padding: 0 24px;
+        max-height: 0; overflow: hidden;
+        opacity: 0; pointer-events: none;
+        transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease;
+      }
+      #nav.menu-open .nav-links {
+        max-height: calc(100dvh - 64px);
+        overflow-y: auto;
+        padding: 6px 24px 18px;
+        opacity: 1; pointer-events: auto;
+      }
+      .nav-links li { width: 100%; }
+      .nav-links a {
+        display: block; font-size: 17px; color: var(--text);
+        padding: 15px 2px;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-links li:last-child a { border-bottom: none; }
+    }
+
+    /* ── PHONE (≤600px) ─────────────────────── */
+    @media (max-width: 600px) {
+      #nav { padding: 0 16px; }
+      .nav-right { gap: 10px; }
+      .nav-logo img { height: 30px; }
+      .nav-cta { padding: 8px 16px; font-size: 13px; }
+      #stats-bar { padding: 0 16px; }
+      .stat-block { flex: 1 1 50%; padding: 20px 0 20px 18px; }
+      .stat-num { font-size: 30px; }
+      .wrap { padding: 0 18px; }
+      .hero-content { padding: 0 18px 64px; }
+      h1.hero-hl { font-size: clamp(44px, 13vw, 72px); }
+      .hero-sub { margin-bottom: 28px; }
+      .hero-btns { gap: 10px; }
+      .btn-solid, .btn-ghost { font-size: 15px; padding: 13px 22px; }
+      .sec-title { font-size: clamp(38px, 11vw, 56px); }
+      .btc-grid { grid-template-columns: 1fr; }
       .tours-grid { grid-template-columns: 1fr; }
+      .tour-img { height: 360px; background-position: center 28%; }
+      .step-num { font-size: 72px; }
+      .score-num { font-size: 56px; }
+      .result-days-big { font-size: 48px; }
+    }
+
+    /* ── SMALL PHONE (≤380px) ───────────────── */
+    @media (max-width: 380px) {
+      .wrap { padding: 0 14px; }
+      .hero-content { padding: 0 14px 56px; }
+      h1.hero-hl { font-size: clamp(38px, 13vw, 58px); }
+      .nav-cta { padding: 7px 12px; }
+      .btn-solid, .btn-ghost { width: 100%; justify-content: center; }
+    }
+
+    /* ── ACCESIBILIDAD: respeta reducción de movimiento ── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+      }
+      .ticker-track { animation: none !important; }
+      .rev { opacity: 1 !important; transform: none !important; }
     }
   </style>
 </head>
@@ -1100,7 +1182,7 @@
   <a href="#hero" class="nav-logo">
     <img src="assets/bitride-logo-transparent.png" alt="Bitride">
   </a>
-  <ul class="nav-links">
+  <ul class="nav-links" id="nav-links">
     <li><a href="#tours" data-i18n="nav.tours">Tours</a></li>
     <li><a href="#flota" data-i18n="nav.fleet">Nuestra flota</a></li>
     <li><a href="#precios" data-i18n="nav.prices">Precios</a></li>
@@ -1125,6 +1207,9 @@
       </div>
     </div>
     <a href="#precios" class="nav-cta" data-i18n="nav.book">Reservar</a>
+    <button class="nav-burger" id="nav-burger" aria-label="Menú" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
@@ -1210,11 +1295,11 @@
 
       <!-- Tour 1 -->
       <div class="tour-card rev d1">
-        <div class="tour-img" style="background-image:url('assets/tour-habana.jpg')">
+        <div class="tour-img" style="background-image:url('assets/tour-habana.webp')">
           <div class="tour-badge" data-i18n="tour.badge.halfday">Medio día</div>
         </div>
         <div class="tour-body">
-          <div class="tour-name">La Habana Clásica</div>
+          <div class="tour-name">La Habana Vieja</div>
           <p class="tour-desc" data-i18n="tour1.desc">Malecón, Habana Vieja, el Capitolio y el Vedado. El circuito perfecto para conocer la capital sobre dos ruedas.</p>
           <div class="tour-meta">
             <div class="tour-meta-item">
@@ -1233,7 +1318,7 @@
         </div>
         <div class="tour-foot">
           <div class="tour-price" data-i18n="tour.price">Consultar precio</div>
-          <a href="https://wa.me/5355003336?text=Hola%2C+me+interesa+el+tour+La+Habana+Cl%C3%A1sica" target="_blank" class="tour-cta">
+          <a href="https://wa.me/5355003336?text=Hola%2C+me+interesa+el+tour+La+Habana+Vieja" target="_blank" class="tour-cta">
             <span data-i18n="tour.book">Reservar</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
           </a>
@@ -1242,11 +1327,11 @@
 
       <!-- Tour 2 -->
       <div class="tour-card rev d1">
-        <div class="tour-img" style="background-image:url('assets/tour-vinales.jpg')">
+        <div class="tour-img" style="background-image:url('assets/tour-vinales.webp')">
           <div class="tour-badge" data-i18n="tour.badge.fullday">Día completo</div>
         </div>
         <div class="tour-body">
-          <div class="tour-name">Viñales y los Mogotes</div>
+          <div class="tour-name">La Ruta del Tabaco</div>
           <p class="tour-desc" data-i18n="tour2.desc">Escapa a Pinar del Río entre campos de tabaco, mogotes y aire limpio. La ruta más espectacular del occidente cubano.</p>
           <div class="tour-meta">
             <div class="tour-meta-item">
@@ -1265,7 +1350,7 @@
         </div>
         <div class="tour-foot">
           <div class="tour-price" data-i18n="tour.price">Consultar precio</div>
-          <a href="https://wa.me/5355003336?text=Hola%2C+me+interesa+el+tour+Vi%C3%B1ales" target="_blank" class="tour-cta">
+          <a href="https://wa.me/5355003336?text=Hola%2C+me+interesa+el+tour+La+Ruta+del+Tabaco" target="_blank" class="tour-cta">
             <span data-i18n="tour.book">Reservar</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
           </a>
@@ -1274,7 +1359,7 @@
 
       <!-- Tour 3 -->
       <div class="tour-card rev d2">
-        <div class="tour-img" style="background-image:url('assets/tour-playas.jpg')">
+        <div class="tour-img" style="background-image:url('assets/tour-playas.webp')">
           <div class="tour-badge" data-i18n="tour.badge.halfday">Medio día</div>
         </div>
         <div class="tour-body">
@@ -1306,12 +1391,12 @@
 
       <!-- Tour 4 -->
       <div class="tour-card rev d2">
-        <div class="tour-img" style="background-image:url('assets/tour-trinidad.jpg')">
+        <div class="tour-img" style="background-image:url('assets/tour-trinidad.webp')">
           <div class="tour-badge" data-i18n="tour.badge.2days">2 días</div>
         </div>
         <div class="tour-body">
-          <div class="tour-name">Trinidad Colonial</div>
-          <p class="tour-desc" data-i18n="tour4.desc">La ciudad más bella de Cuba te espera. Calles empedradas, arquitectura colonial y el Valle de los Ingenios al fondo.</p>
+          <div class="tour-name">Trinidad</div>
+          <p class="tour-desc" data-i18n="tour4.desc">Patrimonio de la Humanidad detenido en el tiempo. Calles empedradas, arquitectura colonial y el Valle de los Ingenios al fondo.</p>
           <div class="tour-meta">
             <div class="tour-meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -1412,7 +1497,6 @@
       </div>
       <div class="cal-body">
         <div class="cal-month" id="cal-l"></div>
-        <div class="cal-month" id="cal-r"></div>
       </div>
       <div class="cal-options">
         <div class="cal-opt">
@@ -1931,39 +2015,6 @@
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
-<!-- ═══ TWEAKS PANEL ═══════════════════════ -->
-<div id="tweaks">
-  <div class="tw-head">
-    <span class="tw-title">Tweaks</span>
-    <button class="tw-close" id="tw-close">✕</button>
-  </div>
-  <div class="tw-body">
-    <div class="tw-row">
-      <div class="tw-lbl">Color de acento</div>
-      <div class="tw-swatches">
-        <div class="tw-sw on" data-acc="#f7931a" style="background:#f7931a;"></div>
-        <div class="tw-sw" data-acc="#e63946" style="background:#e63946;"></div>
-        <div class="tw-sw" data-acc="#00c2cb" style="background:#00c2cb;"></div>
-        <div class="tw-sw" data-acc="#c8e84b" style="background:#c8e84b;"></div>
-      </div>
-    </div>
-    <div class="tw-row">
-      <div class="tw-toggle-row">
-        <span class="tw-toggle-lbl">Mostrar equivalencia en sats</span>
-        <div class="tw-pill on" id="tw-sats"></div>
-      </div>
-    </div>
-    <div class="tw-row">
-      <div class="tw-lbl">Foto del hero</div>
-      <div class="tw-photo-grid">
-        <div class="tw-photo" data-ph="0" style="background-image:url('assets/malecon-sunset.jpg');"></div>
-        <div class="tw-photo on" data-ph="1" style="background-image:url('assets/habana-capitolio.jpg');"></div>
-        <div class="tw-photo" data-ph="2" style="background-image:url('assets/vinales-mogotes.jpg');"></div>
-        <div class="tw-photo" data-ph="3" style="background-image:url('assets/trinidad-plaza.jpg');"></div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <script>
 /* ═══════════════════════════════════════════
@@ -2001,7 +2052,7 @@ const TRANSLATIONS = {
     'tour1.desc':'Malecón, Habana Vieja, el Capitolio y el Vedado. El circuito perfecto para conocer la capital sobre dos ruedas.',
     'tour2.desc':'Escapa a Pinar del Río entre campos de tabaco, mogotes y aire limpio. La ruta más espectacular del occidente cubano.',
     'tour3.desc':'Arena blanca, agua turquesa y la brisa del Atlántico. A solo 30 km de La Habana, el destino de playa más fácil de alcanzar.',
-    'tour4.desc':'La ciudad más bella de Cuba te espera. Calles empedradas, arquitectura colonial y el Valle de los Ingenios al fondo.',
+    'tour4.desc':'Patrimonio de la Humanidad detenido en el tiempo. Calles empedradas, arquitectura colonial y el Valle de los Ingenios al fondo.',
     'calc.eyebrow':'Precios','calc.title':'Elige<br>tus días',
     'calc.desc':'Mientras más tiempo explores, mejor precio obtienes. Paga directamente en Bitcoin. El precio es el precio.',
     'tarifa1.label':'1 – 7 días','tarifa2.label':'8 – 15 días','tarifa3.label':'Más de 15 días','tarifa.badge':'Mejor precio',
@@ -2012,7 +2063,7 @@ const TRANSLATIONS = {
     'cal.motos':'Cantidad de motos','cal.helmets':'Cascos extra','cal.rent':'Alquiler','cal.helmet':'Casco extra','cal.delivery':'Entrega y recogida','cal.deposit':'Depósito reembolsable','cal.fuelnote':'+ combustible (tanque lleno) a la entrega, según precio del momento',
     'wa.hello':'Hola, quiero reservar en Bitride.','wa.dates':'Fechas','wa.bikes':'Motos','wa.breakdown':'DESGLOSE','wa.total':'TOTAL','wa.confirm':'¿Me confirman disponibilidad?',
     'cal.months':'Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre',
-    'cal.weekdays':'Lu,Ma,Mi,Ju,Vi,Sa,Do',
+    'cal.weekdays':'Do,Lu,Ma,Mi,Ju,Vi,Sa',
     'how.eyebrow':'El proceso','how.title':'En tres pasos<br>estás en ruta',
     'step1.name':'Elige tu aventura','step1.body':'Selecciona tus fechas, cuántas motos y los extras. La calculadora te muestra el precio exacto al instante.',
     'step2.name':'Reserva por WhatsApp','step2.body':'Pulsa «Reservar» y nos llega tu pedido con todo el desglose. Confirmamos disponibilidad y coordinamos la entrega contigo.',
@@ -2083,7 +2134,7 @@ const TRANSLATIONS = {
     'tour1.desc':'Malecón, Old Havana, the Capitol and Vedado. The perfect circuit to discover the capital on two wheels.',
     'tour2.desc':'Escape to Pinar del Río through tobacco fields, mogotes and fresh air. The most spectacular route in western Cuba.',
     'tour3.desc':'White sand, turquoise water and the Atlantic breeze. Just 30 km from Havana, the easiest beach destination to reach.',
-    'tour4.desc':'Cuba\'s most beautiful city awaits. Cobblestone streets, colonial architecture and the Valley of the Sugar Mills in the background.',
+    'tour4.desc':'A UNESCO World Heritage town frozen in time. Cobblestone streets, colonial architecture and the Valley of the Sugar Mills in the background.',
     'calc.eyebrow':'Prices','calc.title':'Choose<br>your days',
     'calc.desc':'The longer you explore, the better the price. Pay directly in Bitcoin. The price is the price.',
     'tarifa1.label':'1 – 7 days','tarifa2.label':'8 – 15 days','tarifa3.label':'More than 15 days','tarifa.badge':'Best price',
@@ -2094,7 +2145,7 @@ const TRANSLATIONS = {
     'cal.motos':'Number of bikes','cal.helmets':'Extra helmets','cal.rent':'Rental','cal.helmet':'Extra helmet','cal.delivery':'Delivery & pickup','cal.deposit':'Refundable deposit','cal.fuelnote':'+ fuel (full tank) at delivery, at the current price',
     'wa.hello':'Hi, I would like to book with Bitride.','wa.dates':'Dates','wa.bikes':'Bikes','wa.breakdown':'BREAKDOWN','wa.total':'TOTAL','wa.confirm':'Can you confirm availability?',
     'cal.months':'January,February,March,April,May,June,July,August,September,October,November,December',
-    'cal.weekdays':'Mo,Tu,We,Th,Fr,Sa,Su',
+    'cal.weekdays':'Su,Mo,Tu,We,Th,Fr,Sa',
     'how.eyebrow':'The process','how.title':'Three steps<br>to the road',
     'step1.name':'Choose your adventure','step1.body':'Pick your dates, how many bikes and the extras. The calculator shows you the exact price instantly.',
     'step2.name':'Book on WhatsApp','step2.body':'Tap "Book" and we get your request with the full breakdown. We confirm availability and arrange delivery with you.',
@@ -2165,7 +2216,7 @@ const TRANSLATIONS = {
     'tour1.desc':'Le Malecón, La Vieille Havane, le Capitole et le Vedado. Le circuit parfait pour découvrir la capitale à deux roues.',
     'tour2.desc':'Évadez-vous à Pinar del Río entre champs de tabac, mogotes et air pur. L\'itinéraire le plus spectaculaire de l\'ouest cubain.',
     'tour3.desc':'Sable blanc, eau turquoise et brise atlantique. À seulement 30 km de La Havane, la destination balnéaire la plus facile d\'accès.',
-    'tour4.desc':'La plus belle ville de Cuba vous attend. Rues pavées, architecture coloniale et Vallée des Sucreries en toile de fond.',
+    'tour4.desc':'Une ville classée au patrimoine de l\'UNESCO, figée dans le temps. Rues pavées, architecture coloniale et Vallée des Sucreries en toile de fond.',
     'calc.eyebrow':'Prix','calc.title':'Choisissez<br>vos jours',
     'calc.desc':'Plus vous explorez longtemps, meilleur est le prix. Payez directement en Bitcoin. Le prix est le prix.',
     'tarifa1.label':'1 – 7 jours','tarifa2.label':'8 – 15 jours','tarifa3.label':'Plus de 15 jours','tarifa.badge':'Meilleur prix',
@@ -2176,7 +2227,7 @@ const TRANSLATIONS = {
     'cal.motos':'Nombre de motos','cal.helmets':'Casques sup.','cal.rent':'Location','cal.helmet':'Casque sup.','cal.delivery':'Livraison et retour','cal.deposit':'Caution remboursable','cal.fuelnote':'+ carburant (plein) à la livraison, au prix du moment',
     'wa.hello':'Bonjour, je souhaite réserver chez Bitride.','wa.dates':'Dates','wa.bikes':'Motos','wa.breakdown':'DÉTAIL','wa.total':'TOTAL','wa.confirm':'Pouvez-vous confirmer la disponibilité ?',
     'cal.months':'Janvier,Février,Mars,Avril,Mai,Juin,Juillet,Août,Septembre,Octobre,Novembre,Décembre',
-    'cal.weekdays':'Lu,Ma,Me,Je,Ve,Sa,Di',
+    'cal.weekdays':'Di,Lu,Ma,Me,Je,Ve,Sa',
     'how.eyebrow':'Le processus','how.title':'En trois étapes<br>sur la route',
     'step1.name':'Choisissez votre aventure','step1.body':'Choisissez vos dates, le nombre de motos et les extras. La calculatrice vous montre le prix exact instantanément.',
     'step2.name':'Réservez par WhatsApp','step2.body':'Appuyez sur « Réserver » et nous recevons votre demande avec le détail complet. Nous confirmons la disponibilité et organisons la livraison avec vous.',
@@ -2247,7 +2298,7 @@ const TRANSLATIONS = {
     'tour1.desc':'Malecón, Altstadt, das Kapitol und Vedado. Die perfekte Runde, um die Hauptstadt auf zwei Rädern kennenzulernen.',
     'tour2.desc':'Fliehe nach Pinar del Río durch Tabakfelder, Mogotes und frische Luft. Die spektakulärste Route im Westen Kubas.',
     'tour3.desc':'Weißer Sand, türkisfarbenes Wasser und die Atlantikbrise. Nur 30 km von Havanna entfernt, das am leichtesten erreichbare Strandziel.',
-    'tour4.desc':'Kubas schönste Stadt erwartet dich. Kopfsteinpflaster, koloniale Architektur und das Tal der Zuckermühlen im Hintergrund.',
+    'tour4.desc':'UNESCO-Welterbe, in der Zeit eingefroren. Kopfsteinpflaster, koloniale Architektur und das Tal der Zuckermühlen im Hintergrund.',
     'calc.eyebrow':'Preise','calc.title':'Wähle<br>deine Tage',
     'calc.desc':'Je länger du erkundest, desto besser der Preis. Zahle direkt in Bitcoin. Der Preis ist der Preis.',
     'tarifa1.label':'1 – 7 Tage','tarifa2.label':'8 – 15 Tage','tarifa3.label':'Mehr als 15 Tage','tarifa.badge':'Bester Preis',
@@ -2258,7 +2309,7 @@ const TRANSLATIONS = {
     'cal.motos':'Anzahl Motorräder','cal.helmets':'Extra-Helme','cal.rent':'Miete','cal.helmet':'Extra-Helm','cal.delivery':'Lieferung & Abholung','cal.deposit':'Erstattbare Kaution','cal.fuelnote':'+ Kraftstoff (voller Tank) bei Übergabe, zum Tagespreis',
     'wa.hello':'Hallo, ich möchte bei Bitride buchen.','wa.dates':'Zeitraum','wa.bikes':'Motorräder','wa.breakdown':'AUFSTELLUNG','wa.total':'GESAMT','wa.confirm':'Könnt ihr die Verfügbarkeit bestätigen?',
     'cal.months':'Januar,Februar,März,April,Mai,Juni,Juli,August,September,Oktober,November,Dezember',
-    'cal.weekdays':'Mo,Di,Mi,Do,Fr,Sa,So',
+    'cal.weekdays':'So,Mo,Di,Mi,Do,Fr,Sa',
     'how.eyebrow':'Der Ablauf','how.title':'In drei Schritten<br>auf der Straße',
     'step1.name':'Wähle dein Abenteuer','step1.body':'Wähle deine Daten, wie viele Motorräder und die Extras. Der Kalkulator zeigt dir sofort den genauen Preis.',
     'step2.name':'Per WhatsApp buchen','step2.body':'Tippe auf „Buchen“ und wir erhalten deine Anfrage mit der kompletten Aufstellung. Wir bestätigen die Verfügbarkeit und vereinbaren die Übergabe mit dir.',
@@ -2329,7 +2380,7 @@ const TRANSLATIONS = {
     'tour1.desc':'Malecón, L\'Avana Vecchia, il Campidoglio e il Vedado. Il circuito perfetto per scoprire la capitale su due ruote.',
     'tour2.desc':'Fuggi a Pinar del Río tra campi di tabacco, mogotes e aria pulita. Il percorso più spettacolare dell\'ovest cubano.',
     'tour3.desc':'Sabbia bianca, acqua turchese e la brezza dell\'Atlantico. A soli 30 km dall\'Avana, la destinazione balneare più facile da raggiungere.',
-    'tour4.desc':'La città più bella di Cuba ti aspetta. Strade lastricate, architettura coloniale e la Valle degli Ingenios sullo sfondo.',
+    'tour4.desc':'Patrimonio dell\'Umanità fermo nel tempo. Strade lastricate, architettura coloniale e la Valle degli Ingenios sullo sfondo.',
     'calc.eyebrow':'Prezzi','calc.title':'Scegli<br>i tuoi giorni',
     'calc.desc':'Più a lungo esplori, migliore è il prezzo. Paga direttamente in Bitcoin. Il prezzo è il prezzo.',
     'tarifa1.label':'1 – 7 giorni','tarifa2.label':'8 – 15 giorni','tarifa3.label':'Più di 15 giorni','tarifa.badge':'Miglior prezzo',
@@ -2340,7 +2391,7 @@ const TRANSLATIONS = {
     'cal.motos':'Numero di moto','cal.helmets':'Caschi extra','cal.rent':'Noleggio','cal.helmet':'Casco extra','cal.delivery':'Consegna e ritiro','cal.deposit':'Deposito rimborsabile','cal.fuelnote':'+ carburante (pieno) alla consegna, al prezzo del momento',
     'wa.hello':'Ciao, vorrei prenotare con Bitride.','wa.dates':'Date','wa.bikes':'Moto','wa.breakdown':'DETTAGLIO','wa.total':'TOTALE','wa.confirm':'Potete confermare la disponibilità?',
     'cal.months':'Gennaio,Febbraio,Marzo,Aprile,Maggio,Giugno,Luglio,Agosto,Settembre,Ottobre,Novembre,Dicembre',
-    'cal.weekdays':'Lu,Ma,Me,Gi,Ve,Sa,Do',
+    'cal.weekdays':'Do,Lu,Ma,Me,Gi,Ve,Sa',
     'how.eyebrow':'Il processo','how.title':'In tre passi<br>sei in viaggio',
     'step1.name':'Scegli la tua avventura','step1.body':'Seleziona le tue date, quante moto e gli extra. Il calcolatore ti mostra il prezzo esatto all\'istante.',
     'step2.name':'Prenota su WhatsApp','step2.body':'Premi «Prenota» e ci arriva la tua richiesta con tutto il dettaglio. Confermiamo la disponibilità e organizziamo la consegna con te.',
@@ -2424,73 +2475,42 @@ document.querySelectorAll('.lang-option').forEach(opt => {
 });
 document.addEventListener('click', () => langSwitcherEl.classList.remove('open'));
 
-/* ═══════════════════════════════════════════
-   TWEAKS DEFAULTS
-═══════════════════════════════════════════ */
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "accent": "#f7931a",
-  "showSats": true,
-  "heroPhoto": 1
-}/*EDITMODE-END*/;
+/* Mobile nav dropdown */
+const navMenuEl = document.getElementById('nav');
+const navBurgerEl = document.getElementById('nav-burger');
+function closeMenu() {
+  navMenuEl.classList.remove('menu-open');
+  navBurgerEl.setAttribute('aria-expanded', 'false');
+}
+navBurgerEl.addEventListener('click', e => {
+  e.stopPropagation();
+  const open = navMenuEl.classList.toggle('menu-open');
+  navBurgerEl.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', closeMenu));
+document.addEventListener('click', closeMenu);
 
-const tw = Object.assign({}, TWEAK_DEFAULTS);
+/* ═══════════════════════════════════════════
+   CONFIG (acento · foto del hero · sats)
+═══════════════════════════════════════════ */
+const tw = { accent: '#f7931a', showSats: true, heroPhoto: 1 };
 
 const HERO_PHOTOS = [
   // Fotos de Cuba servidas localmente (Licencia Unsplash). Índice 1 (El Capitolio) es el hero por defecto.
-  'assets/malecon-sunset.jpg',    // Auto clásico en el Malecón al atardecer
-  'assets/habana-capitolio.jpg',  // El Capitolio de La Habana al anochecer
-  'assets/vinales-mogotes.jpg',   // Valle de Viñales y mogotes
-  'assets/trinidad-plaza.jpg'     // Plaza Mayor de Trinidad
+  'assets/malecon-sunset.webp',    // Auto clásico en el Malecón al atardecer
+  'assets/habana-capitolio.webp',  // El Capitolio de La Habana al anochecer
+  'assets/vinales-mogotes.webp',   // Valle de Viñales y mogotes
+  'assets/trinidad-plaza.webp'     // Plaza Mayor de Trinidad
 ];
 
 function applyTweaks() {
   document.documentElement.style.setProperty('--accent', tw.accent);
-  document.getElementById('hero-bg').style.backgroundImage = `url('${HERO_PHOTOS[tw.heroPhoto]}')`;
+  const hb = document.getElementById('hero-bg');
+  if (hb) hb.style.backgroundImage = `url('${HERO_PHOTOS[tw.heroPhoto]}')`;
   document.querySelectorAll('.result-sats').forEach(el => {
     el.style.display = tw.showSats ? '' : 'none';
   });
-  document.querySelectorAll('[data-acc]').forEach(el => {
-    el.classList.toggle('on', el.dataset.acc === tw.accent);
-  });
-  document.querySelectorAll('[data-ph]').forEach(el => {
-    el.classList.toggle('on', parseInt(el.dataset.ph) === tw.heroPhoto);
-  });
-  document.getElementById('tw-sats').classList.toggle('on', tw.showSats);
 }
-
-const tweaksEl = document.getElementById('tweaks');
-const showTw = () => tweaksEl.classList.add('show');
-const hideTw = () => {
-  tweaksEl.classList.remove('show');
-  window.parent.postMessage({type: '__edit_mode_dismissed'}, '*');
-};
-
-document.getElementById('tw-close').addEventListener('click', hideTw);
-
-window.addEventListener('message', e => {
-  if (!e.data || !e.data.type) return;
-  if (e.data.type === '__activate_edit_mode') showTw();
-  if (e.data.type === '__deactivate_edit_mode') hideTw();
-});
-window.parent.postMessage({type: '__edit_mode_available'}, '*');
-
-document.querySelectorAll('[data-acc]').forEach(el => {
-  el.addEventListener('click', () => {
-    tw.accent = el.dataset.acc; applyTweaks();
-    window.parent.postMessage({type:'__edit_mode_set_keys', edits:{accent: tw.accent}}, '*');
-  });
-});
-document.querySelectorAll('[data-ph]').forEach(el => {
-  el.addEventListener('click', () => {
-    tw.heroPhoto = parseInt(el.dataset.ph); applyTweaks();
-    window.parent.postMessage({type:'__edit_mode_set_keys', edits:{heroPhoto: tw.heroPhoto}}, '*');
-  });
-});
-document.getElementById('tw-sats').addEventListener('click', () => {
-  tw.showSats = !tw.showSats; applyTweaks(); updatePrice();
-  window.parent.postMessage({type:'__edit_mode_set_keys', edits:{showSats: tw.showSats}}, '*');
-});
-
 applyTweaks();
 
 /* ═══════════════════════════════════════════
@@ -2521,20 +2541,9 @@ applyTweaks();
     front.style.opacity = '0';
     const tmp = front; front = back; back = tmp;
     tw.heroPhoto = idx;
-    document.querySelectorAll('[data-ph]').forEach(el =>
-      el.classList.toggle('on', parseInt(el.dataset.ph) === idx));
   }
 
-  let timer = setInterval(() => show(idx + 1), 4000);
-
-  // Si en modo edición se elige una foto, salta a ella y reinicia el ciclo.
-  document.querySelectorAll('[data-ph]').forEach(el => {
-    el.addEventListener('click', () => {
-      clearInterval(timer);
-      show(parseInt(el.dataset.ph));
-      timer = setInterval(() => show(idx + 1), 4000);
-    });
-  });
+  setInterval(() => show(idx + 1), 4000);
 })();
 
 /* ═══════════════════════════════════════════
@@ -2584,42 +2593,64 @@ function getMeses() { return t('cal.months').split(','); }
 function getDias()  { return t('cal.weekdays').split(','); }
 const localeMap = { es:'es-ES', en:'en-US', fr:'fr-FR', de:'de-DE', it:'it-IT' };
 
-let calBase  = (() => { const d = new Date(); d.setDate(1); d.setHours(0,0,0,0); return d; })();
+function d0(d)        { const r = new Date(d); r.setHours(0,0,0,0); return r; }
+function monthStart(d){ const r = d0(d); r.setDate(1); return r; }
+function addMo(d,n)   { const r = monthStart(d); r.setMonth(r.getMonth()+n); return r; }
+
+let calMonth = monthStart(new Date());       // primer día del mes mostrado
 let selStart = null;
 let selEnd   = null;
 let hoverD   = null;
+let pickerOpen = false;                       // selector mes/año abierto
+let pickerYear = new Date().getFullYear();    // año mostrado en el selector
 
-function addMo(d, n) { const r = new Date(d); r.setMonth(r.getMonth()+n); return r; }
-function d0(d)       { const r = new Date(d); r.setHours(0,0,0,0); return r; }
 function sameD(a,b)  { return a&&b && a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
 function inRange(d,s,e) { return s&&e && d>s && d<e; }
 
-function buildMonth(monthDate, isLeft) {
-  const today = d0(new Date());
-  const Y = monthDate.getFullYear();
-  const M = monthDate.getMonth();
-  const first = new Date(Y, M, 1);
-  const last  = new Date(Y, M+1, 0).getDate();
-  let dow = first.getDay(); dow = dow===0 ? 6 : dow-1; // Mon-first
-
+function buildCal() {
+  const today  = d0(new Date());
   const effEnd = selEnd || hoverD;
-  const curMonFirst = d0(new Date()); curMonFirst.setDate(1);
-  const prevDisabled = addMo(calBase,-1) < curMonFirst;
+  const meses  = getMeses();
+  const Y = calMonth.getFullYear();
+  const M = calMonth.getMonth();
+  const lastDay = new Date(Y, M + 1, 0).getDate();
+  const lead = new Date(Y, M, 1).getDay();      // domingo=0 → huecos de alineación
+  const prevDisabled = calMonth <= monthStart(today);
+
+  const title = `${meses[M]} ${Y}`;
 
   let h = `<div class="cal-mhead">
-    ${isLeft  ? `<button class="cal-mnav" id="cal-prev" ${prevDisabled?'disabled':''}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="15 18 9 12 15 6"/></svg></button>` : '<span></span>'}
-    <div class="cal-mname">${getMeses()[M]} ${Y}</div>
-    ${!isLeft ? `<button class="cal-mnav" id="cal-next"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"/></svg></button>` : '<span></span>'}
+    <button class="cal-mnav" id="cal-prev" ${prevDisabled?'disabled':''}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="cal-mname${pickerOpen?' open':''}" id="cal-title" aria-haspopup="true" aria-expanded="${pickerOpen}">${title}<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <button class="cal-mnav" id="cal-next"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"/></svg></button>
   </div>`;
 
-  // DOW headers
+  if (pickerOpen) {
+    const todayY = today.getFullYear(), todayM = today.getMonth();
+    let mh = '';
+    for (let mi=0; mi<12; mi++) {
+      const dis = (pickerYear < todayY) || (pickerYear === todayY && mi < todayM);
+      const cur = (pickerYear === Y && mi === M);
+      mh += `<button class="cal-pmonth${cur?' cur':''}" ${dis?'disabled':''} data-y="${pickerYear}" data-m="${mi}">${meses[mi].slice(0,3)}</button>`;
+    }
+    h += `<div class="cal-picker">
+      <div class="cal-picker-yr">
+        <button id="cal-yr-prev" ${pickerYear<=todayY?'disabled':''}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <span>${pickerYear}</span>
+        <button id="cal-yr-next"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="cal-picker-months">${mh}</div>
+    </div>`;
+  }
+
+  // Cabecera de días (domingo primero, desde i18n)
   h += `<div class="cal-grid" style="margin-bottom:4px;">`;
   getDias().forEach(d => { h += `<div class="cal-dow">${d}</div>`; });
   h += '</div><div class="cal-grid">';
 
-  for (let i=0;i<dow;i++) h += '<div class="cal-cell emp"></div>';
+  for (let i=0; i<lead; i++) h += '<div class="cal-cell emp"></div>';
 
-  for (let day=1; day<=last; day++) {
+  for (let day=1; day<=lastDay; day++) {
     const date = new Date(Y, M, day);
     const past = date < today;
     const tdBit = sameD(date, today);
@@ -2653,16 +2684,51 @@ function paintHover() {
   });
 }
 
+function jumpTo(year, monthIndex) {
+  const cur = monthStart(new Date());
+  let target = monthStart(new Date(year, monthIndex, 1));
+  if (target < cur) target = cur;           // no permitir saltar a un mes pasado
+  calMonth = target;
+  pickerOpen = false;
+  renderCal();
+}
+
+// Cerrar el selector al hacer clic fuera (se registra una sola vez)
+document.addEventListener('click', () => {
+  if (pickerOpen) { pickerOpen = false; renderCal(); }
+});
+
 function renderCal() {
   const lEl = document.getElementById('cal-l');
-  const rEl = document.getElementById('cal-r');
-  lEl.innerHTML = buildMonth(calBase, true);
-  rEl.innerHTML = buildMonth(addMo(calBase,1), false);
+  lEl.innerHTML = buildCal();
 
   const prev = document.getElementById('cal-prev');
   const next = document.getElementById('cal-next');
-  if (prev) prev.addEventListener('click', () => { calBase = addMo(calBase,-1); renderCal(); });
-  if (next) next.addEventListener('click', () => { calBase = addMo(calBase,1);  renderCal(); });
+  const minMonth = monthStart(new Date());
+  if (prev) prev.addEventListener('click', () => {
+    calMonth = addMo(calMonth, -1);
+    if (calMonth < minMonth) calMonth = minMonth;
+    renderCal();
+  });
+  if (next) next.addEventListener('click', () => { calMonth = addMo(calMonth, 1); renderCal(); });
+
+  // Selector rápido de mes/año
+  const titleBtn = document.getElementById('cal-title');
+  if (titleBtn) titleBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (!pickerOpen) pickerYear = calMonth.getFullYear();
+    pickerOpen = !pickerOpen;
+    renderCal();
+  });
+  const todayY = (new Date()).getFullYear();
+  const yrPrev = document.getElementById('cal-yr-prev');
+  const yrNext = document.getElementById('cal-yr-next');
+  if (yrPrev) yrPrev.addEventListener('click', e => { e.stopPropagation(); if (pickerYear > todayY) { pickerYear--; renderCal(); } });
+  if (yrNext) yrNext.addEventListener('click', e => { e.stopPropagation(); pickerYear++; renderCal(); });
+  document.querySelectorAll('.cal-pmonth').forEach(b => {
+    if (b.disabled) return;
+    b.addEventListener('click', e => { e.stopPropagation(); jumpTo(+b.dataset.y, +b.dataset.m); });
+  });
 
   document.querySelectorAll('.cal-cell.avail').forEach(cell => {
     cell.addEventListener('click', () => {
@@ -2990,7 +3056,7 @@ function renderFleetFallback() {
         <div class="fleet-ghost-num" style="white-space:nowrap;overflow:hidden;font-size:clamp(36px,7vw,96px);">HURRICANE</div>
       </div>
       <div class="fleet-info-panel">
-        <div class="fleet-model-name">BITRIDE<br><span class="acc">HURRICANE 250</span></div>
+        <div class="fleet-model-name">FURIA<br><span class="acc">HURRICANE 250</span></div>
         <p class="fleet-model-desc">${t('fleet.hurricane.desc')}</p>
         <div class="fleet-specs">${specsHtml}</div>
         <div class="fleet-units">
