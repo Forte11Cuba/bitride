@@ -1046,6 +1046,14 @@
     #wa-float.hide { opacity: 0; pointer-events: none; transform: scale(0.6); }
     #wa-float svg { width: 28px; height: 28px; color: white; }
 
+    /* ── SOCIAL GRID (sección Redes) ─────── */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+    .social-grid > * { min-width: 0; } /* permite que las tarjetas encojan y no desborden */
+
     /* ── SOCIAL FOOTER ───────────────────── */
     .footer-social { display: flex; gap: 16px; align-items: center; }
     .footer-social a {
@@ -1166,6 +1174,8 @@
         border-bottom: 1px solid var(--border);
       }
       .nav-links li:last-child a { border-bottom: none; }
+      /* Redes: 2 columnas en móvil para que no desborden a la derecha */
+      .social-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     /* ── PHONE (≤600px) ─────────────────────── */
@@ -1182,7 +1192,10 @@
       h1.hero-hl { font-size: clamp(44px, 13vw, 72px); }
       .hero-sub { margin-bottom: 28px; }
       .hero-btns { gap: 10px; }
-      .btn-solid, .btn-ghost { font-size: 15px; padding: 13px 22px; }
+      /* Botones del hero iguales y a ancho completo en móvil */
+      .btn-solid, .btn-ghost { font-size: 15px; width: 100%; justify-content: center; }
+      .btn-solid { padding: 14px 22px; }
+      .btn-ghost { padding: 13px 22px; } /* +1px de borde = misma altura que el sólido */
       .sec-title { font-size: clamp(38px, 11vw, 56px); }
       .btc-grid { grid-template-columns: 1fr; }
       .tours-grid { grid-template-columns: 1fr; }
@@ -1198,7 +1211,6 @@
       .hero-content { padding: 0 14px 56px; }
       h1.hero-hl { font-size: clamp(38px, 13vw, 58px); }
       .nav-cta { padding: 7px 12px; }
-      .btn-solid, .btn-ghost { width: 100%; justify-content: center; }
     }
 
     /* ── ACCESIBILIDAD: respeta reducción de movimiento ── */
@@ -1960,7 +1972,7 @@
       <h2 class="sec-title" data-i18n-html="rrss.title">Nuestras<br>redes</h2>
       <p class="sec-desc" style="margin:0 auto; text-align:center;" data-i18n="rrss.desc">Rutas, aventuras y la vida en dos ruedas desde La Habana. Síguenos y sé parte de la comunidad Bitride.</p>
     </div>
-    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:2px;" class="rev">
+    <div class="rev social-grid">
 
       <!-- Facebook -->
       <div style="background:var(--card); border:1px solid var(--border); padding:40px 28px; display:flex; flex-direction:column; align-items:center; gap:16px; opacity:0.5; cursor:default;">
