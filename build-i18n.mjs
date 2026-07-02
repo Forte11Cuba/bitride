@@ -99,10 +99,34 @@ for (const lang of LANGS) {
 // ── Página de hosts (hosts.html) ──────────────────────
 // El <body> se traduce en runtime por JS; aquí solo el <head> (SEO) por idioma.
 const ANF_META = {
-  en: { title: 'List your motorcycle with Bitride · Hosts', desc: 'Put your motorcycle to work with Bitride. You provide the bike; we bring the clients and handle the bookings, payments and delivery. Fill in the form and we contact you.' },
-  fr: { title: 'Proposez votre moto avec Bitride · Hosts', desc: "Mettez votre moto à profit avec Bitride. Vous fournissez la moto ; nous apportons les clients et gérons les réservations, le paiement et la livraison. Remplissez le formulaire." },
-  de: { title: 'Biete dein Motorrad bei Bitride an · Hosts', desc: 'Bring dein Motorrad mit Bitride zum Verdienen. Du stellst das Motorrad; wir bringen die Kunden und kümmern uns um Buchungen, Zahlung und Übergabe. Fülle das Formular aus.' },
-  it: { title: 'Metti la tua moto con Bitride · Hosts', desc: 'Metti la tua moto a rendere con Bitride. Tu fornisci la moto; noi portiamo i clienti e gestiamo prenotazioni, pagamento e consegna. Compila il modulo e ti contattiamo.' },
+  en: {
+    title: 'Rent out your motorcycle in Cuba and earn · Bitride',
+    desc: 'Rent out your motorcycle in Cuba with Bitride and earn. You provide the bike; we bring the clients and handle bookings, payment and delivery. Fill in the form and we contact you.',
+    svcName: 'Rent out your motorcycle with Bitride',
+    svcType: 'Motorcycle rental management for owners',
+    svcDesc: 'List your motorcycle in Cuba with Bitride. We bring the clients and handle bookings, payment and delivery; you get your share.',
+  },
+  fr: {
+    title: 'Louez votre moto à Cuba et gagnez · Bitride',
+    desc: "Louez votre moto à Cuba avec Bitride et gagnez. Vous fournissez la moto ; nous apportons les clients et gérons réservations, paiement et livraison. Remplissez le formulaire.",
+    svcName: 'Louez votre moto avec Bitride',
+    svcType: 'Gestion de location de motos pour propriétaires',
+    svcDesc: "Proposez votre moto à Cuba avec Bitride. Nous apportons les clients et gérons réservations, paiement et livraison ; vous recevez votre part.",
+  },
+  de: {
+    title: 'Vermiete dein Motorrad in Kuba und verdiene · Bitride',
+    desc: 'Vermiete dein Motorrad in Kuba mit Bitride und verdiene. Du stellst das Motorrad; wir bringen die Kunden und übernehmen Buchung, Zahlung und Übergabe. Fülle das Formular aus.',
+    svcName: 'Vermiete dein Motorrad mit Bitride',
+    svcType: 'Vermietungsverwaltung von Motorrädern für Eigentümer',
+    svcDesc: 'Biete dein Motorrad in Kuba mit Bitride an. Wir bringen die Kunden und übernehmen Buchung, Zahlung und Übergabe; du bekommst deinen Anteil.',
+  },
+  it: {
+    title: 'Affitta la tua moto a Cuba e guadagna · Bitride',
+    desc: 'Affitta la tua moto a Cuba con Bitride e guadagna. Tu fornisci la moto; noi portiamo i clienti e gestiamo prenotazioni, pagamento e consegna. Compila il modulo e ti contattiamo.',
+    svcName: 'Affitta la tua moto con Bitride',
+    svcType: 'Gestione del noleggio di moto per proprietari',
+    svcDesc: "Metti la tua moto a rendere a Cuba con Bitride. Noi portiamo i clienti e gestiamo prenotazioni, pagamento e consegna; tu ricevi la tua parte.",
+  },
 };
 
 const anfHtml = fs.readFileSync('hosts.html', 'utf8');
@@ -117,6 +141,11 @@ for (const lang of LANGS) {
   out = out.replace('<meta property="og:locale" content="es_ES">', `<meta property="og:locale" content="${META[lang].locale}">`);
   out = out.replace('<link rel="canonical" href="https://bitride.rent/hosts.html">', `<link rel="canonical" href="${BASE}/${lang}/hosts.html">`);
   out = out.replace('<meta property="og:url" content="https://bitride.rent/hosts.html">', `<meta property="og:url" content="${BASE}/${lang}/hosts.html">`);
+  // JSON-LD Service (programa para propietarios) traducido
+  out = out.replace('"name": "Renta tu moto con Bitride"', `"name": ${JSON.stringify(meta.svcName)}`);
+  out = out.replace('"serviceType": "Gestión de alquiler de motos para propietarios"', `"serviceType": ${JSON.stringify(meta.svcType)}`);
+  out = out.replace('"description": "Pon tu moto a rentar en Cuba con Bitride. Nosotros ponemos los clientes y gestionamos reservas, cobro y entrega; tú recibes tu parte."', `"description": ${JSON.stringify(meta.svcDesc)}`);
+  out = out.replace('"url": "https://bitride.rent/hosts.html"', `"url": "${BASE}/${lang}/hosts.html"`);
   out = out.replace(/'assets\//g, "'/assets/").replace(/"assets\//g, '"/assets/');
   fs.mkdirSync(lang, { recursive: true });
   fs.writeFileSync(`${lang}/hosts.html`, out);

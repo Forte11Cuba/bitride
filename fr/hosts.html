@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proposez votre moto avec Bitride · Hosts</title>
-  <meta name="description" content="Mettez votre moto à profit avec Bitride. Vous fournissez la moto ; nous apportons les clients et gérons les réservations, le paiement et la livraison. Remplissez le formulaire.">
+  <title>Louez votre moto à Cuba et gagnez · Bitride</title>
+  <meta name="description" content="Louez votre moto à Cuba avec Bitride et gagnez. Vous fournissez la moto ; nous apportons les clients et gérons réservations, paiement et livraison. Remplissez le formulaire.">
+  <meta name="keywords" content="renta tu moto Cuba, rentar mi moto Cuba, ganar dinero con mi moto, poner mi moto a rentar, gestión de alquiler de motos Cuba">
   <meta name="author" content="Bitride">
   <meta name="theme-color" content="#f7931a">
   <link rel="canonical" href="https://bitride.rent/fr/hosts.html">
@@ -20,10 +21,30 @@
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
   <meta property="og:site_name" content="Bitride">
-  <meta property="og:title" content="Proposez votre moto avec Bitride · Hosts">
-  <meta property="og:description" content="Mettez votre moto à profit avec Bitride. Vous fournissez la moto ; nous apportons les clients et gérons les réservations, le paiement et la livraison. Remplissez le formulaire.">
+  <meta property="og:title" content="Louez votre moto à Cuba et gagnez · Bitride">
+  <meta property="og:description" content="Louez votre moto à Cuba avec Bitride et gagnez. Vous fournissez la moto ; nous apportons les clients et gérons réservations, paiement et livraison. Remplissez le formulaire.">
   <meta property="og:url" content="https://bitride.rent/fr/hosts.html">
   <meta property="og:image" content="https://bitride.rent/assets/habana-capitolio.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://bitride.rent/assets/habana-capitolio.jpg">
+
+  <!-- Structured data: programa para propietarios (SEO lado host) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Louez votre moto avec Bitride",
+    "serviceType": "Gestion de location de motos pour propriétaires",
+    "description": "Proposez votre moto à Cuba avec Bitride. Nous apportons les clients et gérons réservations, paiement et livraison ; vous recevez votre part.",
+    "provider": {
+      "@type": "AutoRental",
+      "name": "Bitride",
+      "url": "https://bitride.rent/"
+    },
+    "areaServed": { "@type": "Country", "name": "Cuba" },
+    "url": "https://bitride.rent/fr/hosts.html"
+  }
+  </script>
 
   <link rel="icon" type="image/png" href="/assets/bitride-logo-transparent.png">
   <link rel="apple-touch-icon" href="/assets/bitride-logo-transparent.png">
@@ -155,7 +176,7 @@
 
 <main class="anf-main">
   <div class="anf-hero">
-    <img class="anf-hero-img" src="/assets/entrega-llaves.webp" alt="Entrega de las llaves de una moto a un motorista con casco y guantes" loading="lazy">
+    <img class="anf-hero-img" src="/assets/entrega-llaves.webp" alt="Entrega de las llaves de una moto a un motorista con casco y guantes" fetchpriority="high" decoding="async">
     <div class="wrap">
       <div class="anf-hero-copy">
         <div class="eyebrow" data-i18n="host.eyebrow">¿Tienes una moto?</div>
@@ -165,7 +186,7 @@
     </div>
   </div>
   <div class="wrap">
-    <div class="host-card" id="host-form">
+    <form class="host-card" id="host-form" novalidate>
       <div class="host-grid">
         <div class="host-field full">
           <label for="host-name" data-i18n="host.f.name">Nombre</label>
@@ -187,7 +208,7 @@
           </select>
         </div>
         <div class="host-field">
-          <label data-i18n="host.f.year">Año</label>
+          <label for="host-year-val" data-i18n="host.f.year">Año</label>
           <div class="host-stepper">
             <button type="button" id="host-year-dec" aria-label="−">−</button>
             <input type="text" inputmode="numeric" id="host-year-val" value="2026" maxlength="4" aria-label="Año">
@@ -236,13 +257,13 @@
         </div>
       </div>
       <div class="host-submit-row">
-        <button type="button" class="btn-solid" id="host-submit">
+        <button type="submit" class="btn-solid" id="host-submit">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           <span data-i18n="host.cta">Enviar por WhatsApp</span>
         </button>
         <div class="host-error" id="host-error" data-i18n="host.error">Completa los campos marcados.</div>
       </div>
-    </div>
+    </form>
   </div>
 </main>
 
@@ -262,7 +283,7 @@ const TRANSLATIONS = {
     'host.opt.select':'Selecciona…',
     'host.avail.year':'Todo el año','host.avail.season':'Por temporadas','host.avail.months':'Solo algunos meses',
     'host.cta':'Enviar por WhatsApp','host.error':'Completa los campos marcados.',
-    'host.wa.hello':'Hola Bitride, quiero poner mi moto con ustedes','host.wa.moto':'Moto','host.wa.location':'Ubicación','host.wa.comment':'Comentario','host.wa.confirm':'¿Cómo empezamos?',
+    'host.wa.hello':'Hola Bitride, quiero poner mi moto a rentar con ustedes','host.wa.moto':'Moto','host.wa.location':'Ubicación','host.wa.comment':'Comentario','host.wa.confirm':'¿Cómo empezamos?',
   },
   en: {
     'anf.back':'Back',
@@ -398,8 +419,9 @@ document.addEventListener('click', () => sw.classList.remove('open'));
     el.addEventListener('change', clear);
   });
 
-  const btn = document.getElementById('host-submit');
-  if (btn) btn.addEventListener('click', () => {
+  const form = document.getElementById('host-form');
+  if (form) form.addEventListener('submit', e => {
+    e.preventDefault();
     let ok = true;
     required.forEach(id => {
       const el = document.getElementById(id);
