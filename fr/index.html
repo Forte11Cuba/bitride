@@ -1058,6 +1058,14 @@
     #wa-float.hide { opacity: 0; pointer-events: none; transform: scale(0.6); }
     #wa-float svg { width: 28px; height: 28px; color: white; }
 
+    /* ── SOCIAL GRID (sección Redes) ─────── */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+    .social-grid > * { min-width: 0; } /* permite que las tarjetas encojan y no desborden */
+
     /* ── SOCIAL FOOTER ───────────────────── */
     .footer-social { display: flex; gap: 16px; align-items: center; }
     .footer-social a {
@@ -1178,6 +1186,8 @@
         border-bottom: 1px solid var(--border);
       }
       .nav-links li:last-child a { border-bottom: none; }
+      /* Redes: 2 columnas en móvil para que no desborden a la derecha */
+      .social-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     /* ── PHONE (≤600px) ─────────────────────── */
@@ -1194,7 +1204,10 @@
       h1.hero-hl { font-size: clamp(44px, 13vw, 72px); }
       .hero-sub { margin-bottom: 28px; }
       .hero-btns { gap: 10px; }
-      .btn-solid, .btn-ghost { font-size: 15px; padding: 13px 22px; }
+      /* Botones del hero iguales y a ancho completo en móvil */
+      .btn-solid, .btn-ghost { font-size: 15px; width: 100%; justify-content: center; }
+      .btn-solid { padding: 14px 22px; }
+      .btn-ghost { padding: 13px 22px; } /* +1px de borde = misma altura que el sólido */
       .sec-title { font-size: clamp(38px, 11vw, 56px); }
       .btc-grid { grid-template-columns: 1fr; }
       .tours-grid { grid-template-columns: 1fr; }
@@ -1210,7 +1223,6 @@
       .hero-content { padding: 0 14px 56px; }
       h1.hero-hl { font-size: clamp(38px, 13vw, 58px); }
       .nav-cta { padding: 7px 12px; }
-      .btn-solid, .btn-ghost { width: 100%; justify-content: center; }
     }
 
     /* ── ACCESIBILIDAD: respeta reducción de movimiento ── */
@@ -1240,6 +1252,7 @@
     <li><a href="#incluido">FAQ</a></li>
     <li><a href="#como" data-i18n="nav.how">Cómo funciona</a></li>
     <li><a href="#bitcoin" data-i18n="nav.bitcoin">Bitcoin</a></li>
+    <li><a href="#hosts" data-i18n="nav.host">Hosts</a></li>
     <li><a href="#rrss" data-i18n="nav.social">Redes</a></li>
     <!-- <li><a href="#reviews" data-i18n="nav.reviews">Reseñas</a></li> reactivar con reseñas reales -->
   </ul>
@@ -1817,6 +1830,18 @@
   </div>
 </section>
 
+<!-- ═══ HOSTS ════════════════════════ -->
+<section id="hosts" style="padding:100px 0; background:var(--bg2); border-top:1px solid var(--border);">
+  <div class="wrap">
+    <div class="rev" style="text-align:center;">
+      <div class="eyebrow" data-i18n="host.eyebrow">¿Tienes una moto?</div>
+      <h2 class="sec-title" data-i18n-html="host.title">Forma parte<br>de <span class="acc">Bitride</span></h2>
+      <p class="sec-desc" style="margin:0 auto 32px; text-align:center;" data-i18n="host.desc">Pon tu moto a rodar con nosotros. Tú aportas la moto; nosotros ponemos los clientes, gestionamos las reservas, el cobro y la entrega. Tú recibes tu parte.</p>
+      <a href="hosts.html" class="btn-solid" data-i18n="host.cta2">Quiero sumarme</a>
+    </div>
+  </div>
+</section>
+
 <!-- ═══ REVIEWS ════════════════════════════ -->
 <!-- OCULTO temporalmente: reactivar (quitar style="display:none" y restaurar los enlaces #reviews en nav y footer) cuando haya reseñas reales. -->
 <section id="reviews" style="display:none">
@@ -1972,7 +1997,7 @@
       <h2 class="sec-title" data-i18n-html="rrss.title">Nuestras<br>redes</h2>
       <p class="sec-desc" style="margin:0 auto; text-align:center;" data-i18n="rrss.desc">Rutas, aventuras y la vida en dos ruedas desde La Habana. Síguenos y sé parte de la comunidad Bitride.</p>
     </div>
-    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:2px;" class="rev">
+    <div class="rev social-grid">
 
       <!-- Facebook -->
       <div style="background:var(--card); border:1px solid var(--border); padding:40px 28px; display:flex; flex-direction:column; align-items:center; gap:16px; opacity:0.5; cursor:default;">
@@ -2040,7 +2065,7 @@
   <a href="#hero" class="footer-logo">
     <img src="/assets/bitride-logo-transparent.png" alt="Bitride" loading="lazy" width="92" height="24">
   </a>
-  <span class="footer-copy">© 2026 Bitride · La Habana, Cuba</span>
+  <span class="footer-copy">© 2026 Bitride · La Habana, Cuba · <a href="#hosts" data-i18n="nav.host" style="color:var(--accent); text-decoration:none;">Hosts</a></span>
   <div class="footer-social">
     <!-- Facebook -->
     <a aria-label="Facebook (próximamente)" style="opacity:0.4; cursor:default;">
@@ -2080,7 +2105,7 @@ const TRANSLATIONS = {
     'hero.hl':'Recorre<br><span class="acc ita">Cuba</span><br>en moto',
     'hero.sub':'Descubre La Habana y sus alrededores sobre dos ruedas. Kilómetros sin límite y la libertad de explorar la isla a tu ritmo.',
     'hero.cta1':'Empieza la aventura','hero.cta2':'Ver la flota',
-    'stat1.lbl':'Kilometraje ilimitado','stat2.lbl':'Tu mejor precio, a partir de 15 días',
+    'stat1.lbl':'Kilometraje ilimitado','stat2.lbl':'Tu mejor precio, a partir de 16 días',
     'stat2.unit':'/día','stat3.unit':' casco','stat3.lbl':'Incluido en el precio',
     'stat4.lbl':'Aceptamos efectivo y cripto, preferimos Bitcoin',
     'fleet.eyebrow':'Nuestra flota','fleet.title':'Elige tu<br>montura',
@@ -2153,6 +2178,10 @@ const TRANSLATIONS = {
     'faq.q2':'¿Hay límite de kilómetros?','faq.a2':'No. El kilometraje es libre, sin límite. Solo te pedimos avisarnos si vas a salir de La Habana.',
     'faq.q3':'¿Y si la moto sufre un daño?','faq.a3':'El desgaste normal no tiene cargo. En caso de accidente o rotura por mal uso, el costo depende de la gravedad. En robo o pérdida total se cubre el valor de la moto.',
     'faq.q4':'¿Puedo cancelar?','faq.a4':'Sí. Si cancelas, solo se retiene el importe del día de entrega; el resto se te devuelve.',
+    'nav.host':'Hosts',
+    'host.cta2':'Quiero sumarme',
+    'host.eyebrow':'¿Tienes una moto?','host.title':'Forma parte<br>de <span class="acc">Bitride</span>',
+    'host.desc':'Pon tu moto a rodar con nosotros. Tú aportas la moto; nosotros ponemos los clientes, gestionamos las reservas, el cobro y la entrega. Tú recibes tu parte.',
   },
   en: {
     'title':'Motorcycle Rental in Havana, Cuba · Bitride',
@@ -2162,7 +2191,7 @@ const TRANSLATIONS = {
     'hero.hl':'Explore<br><span class="acc ita">Cuba</span><br>by bike',
     'hero.sub':'Discover Havana and its surroundings on two wheels. Unlimited mileage and the freedom to explore the island at your own pace.',
     'hero.cta1':'Start the adventure','hero.cta2':'See the fleet',
-    'stat1.lbl':'Unlimited mileage','stat2.lbl':'Your best price, from 15 days',
+    'stat1.lbl':'Unlimited mileage','stat2.lbl':'Your best price, from 16 days',
     'stat2.unit':'/day','stat3.unit':' helmet','stat3.lbl':'Included in the price',
     'stat4.lbl':'We accept cash and crypto, we prefer Bitcoin',
     'fleet.eyebrow':'Our fleet','fleet.title':'Choose your<br>ride',
@@ -2235,6 +2264,10 @@ const TRANSLATIONS = {
     'faq.q2':'Is there a mileage limit?','faq.a2':'No. Mileage is free and unlimited. We just ask you to let us know if you\'re leaving Havana.',
     'faq.q3':'What if the bike gets damaged?','faq.a3':'Normal wear is free of charge. In case of an accident or breakage from misuse, the cost depends on the severity. Theft or total loss covers the value of the bike.',
     'faq.q4':'Can I cancel?','faq.a4':'Yes. If you cancel, only the delivery-day amount is retained; the rest is refunded to you.',
+    'nav.host':'Hosts',
+    'host.cta2':'Count me in',
+    'host.eyebrow':'Got a motorcycle?','host.title':'Become part<br>of <span class="acc">Bitride</span>',
+    'host.desc':'Put your motorcycle to work with us. You provide the bike; we bring the clients and handle the bookings, payments and delivery. You get your share.',
   },
   fr: {
     'title':'Location de Motos à La Havane, Cuba · Bitride',
@@ -2244,7 +2277,7 @@ const TRANSLATIONS = {
     'hero.hl':'Explorez<br><span class="acc ita">Cuba</span><br>à moto',
     'hero.sub':'Découvrez La Havane et ses environs à deux roues. Kilométrage illimité et la liberté d\'explorer l\'île à votre rythme.',
     'hero.cta1':'Commencer l\'aventure','hero.cta2':'Voir la flotte',
-    'stat1.lbl':'Kilométrage illimité','stat2.lbl':'Votre meilleur prix, dès 15 jours',
+    'stat1.lbl':'Kilométrage illimité','stat2.lbl':'Votre meilleur prix, dès 16 jours',
     'stat2.unit':'/jour','stat3.unit':' casque','stat3.lbl':'Inclus dans le prix',
     'stat4.lbl':'Espèces et crypto, nous préférons le Bitcoin',
     'fleet.eyebrow':'Notre flotte','fleet.title':'Choisissez<br>votre monture',
@@ -2317,6 +2350,10 @@ const TRANSLATIONS = {
     'faq.q2':'Y a-t-il une limite de kilomètres ?','faq.a2':'Non. Le kilométrage est libre et illimité. Nous vous demandons juste de nous prévenir si vous quittez La Havane.',
     'faq.q3':'Et si la moto est endommagée ?','faq.a3':'L\'usure normale est sans frais. En cas d\'accident ou de casse par mauvaise utilisation, le coût dépend de la gravité. Vol ou perte totale : la valeur de la moto est couverte.',
     'faq.q4':'Puis-je annuler ?','faq.a4':'Oui. Si vous annulez, seul le montant du jour de remise est retenu ; le reste vous est remboursé.',
+    'nav.host':'Hosts',
+    'host.cta2':'Je veux participer',
+    'host.eyebrow':'Vous avez une moto ?','host.title':'Faites partie<br>de <span class="acc">Bitride</span>',
+    'host.desc':"Mettez votre moto à profit avec nous. Vous fournissez la moto ; nous apportons les clients et gérons les réservations, le paiement et la livraison. Vous recevez votre part.",
   },
   de: {
     'title':'Motorradverleih in Havanna, Kuba · Bitride',
@@ -2326,7 +2363,7 @@ const TRANSLATIONS = {
     'hero.hl':'Entdecke<br><span class="acc ita">Kuba</span><br>per Motorrad',
     'hero.sub':'Entdecke Havanna und seine Umgebung auf zwei Rädern. Unbegrenzte Kilometer und die Freiheit, die Insel in deinem Tempo zu erkunden.',
     'hero.cta1':'Abenteuer beginnen','hero.cta2':'Flotte ansehen',
-    'stat1.lbl':'Unbegrenzte Kilometer','stat2.lbl':'Bester Preis, ab 15 Tagen',
+    'stat1.lbl':'Unbegrenzte Kilometer','stat2.lbl':'Bester Preis, ab 16 Tagen',
     'stat2.unit':'/Tag','stat3.unit':' Helm','stat3.lbl':'Im Preis inbegriffen',
     'stat4.lbl':'Bargeld und Krypto, wir bevorzugen Bitcoin',
     'fleet.eyebrow':'Unsere Flotte','fleet.title':'Wähle dein<br>Bike',
@@ -2399,6 +2436,10 @@ const TRANSLATIONS = {
     'faq.q2':'Gibt es ein Kilometerlimit?','faq.a2':'Nein. Die Kilometer sind frei und unbegrenzt. Wir bitten dich nur, uns zu informieren, wenn du Havanna verlässt.',
     'faq.q3':'Was, wenn das Motorrad beschädigt wird?','faq.a3':'Normaler Verschleiß ist kostenlos. Bei Unfall oder Bruch durch Fehlgebrauch hängen die Kosten von der Schwere ab. Diebstahl oder Totalverlust deckt den Wert des Motorrads.',
     'faq.q4':'Kann ich stornieren?','faq.a4':'Ja. Bei Stornierung wird nur der Betrag des Übergabetages einbehalten; der Rest wird dir erstattet.',
+    'nav.host':'Hosts',
+    'host.cta2':'Ich mache mit',
+    'host.eyebrow':'Hast du ein Motorrad?','host.title':'Werde Teil<br>von <span class="acc">Bitride</span>',
+    'host.desc':'Bring dein Motorrad mit uns zum Verdienen. Du stellst das Motorrad; wir bringen die Kunden und kümmern uns um Buchungen, Zahlung und Übergabe. Du bekommst deinen Anteil.',
   },
   it: {
     'title':'Noleggio Moto a L\'Avana, Cuba · Bitride',
@@ -2408,7 +2449,7 @@ const TRANSLATIONS = {
     'hero.hl':'Esplora<br><span class="acc ita">Cuba</span><br>in moto',
     'hero.sub':'Scopri L\'Avana e i suoi dintorni su due ruote. Chilometraggio illimitato e la libertà di esplorare l\'isola al tuo ritmo.',
     'hero.cta1':'Inizia l\'avventura','hero.cta2':'Vedi la flotta',
-    'stat1.lbl':'Chilometraggio illimitato','stat2.lbl':'Miglior prezzo, da 15 giorni',
+    'stat1.lbl':'Chilometraggio illimitato','stat2.lbl':'Miglior prezzo, da 16 giorni',
     'stat2.unit':'/giorno','stat3.unit':' casco','stat3.lbl':'Incluso nel prezzo',
     'stat4.lbl':'Contanti e cripto, preferiamo Bitcoin',
     'fleet.eyebrow':'La nostra flotta','fleet.title':'Scegli la tua<br>moto',
@@ -2481,6 +2522,10 @@ const TRANSLATIONS = {
     'faq.q2':'C\'è un limite di chilometri?','faq.a2':'No. Il chilometraggio è libero e illimitato. Ti chiediamo solo di avvisarci se lasci L\'Avana.',
     'faq.q3':'E se la moto subisce un danno?','faq.a3':'L\'usura normale è gratuita. In caso di incidente o rottura per uso improprio, il costo dipende dalla gravità. Furto o perdita totale copre il valore della moto.',
     'faq.q4':'Posso annullare?','faq.a4':'Sì. Se annulli, viene trattenuto solo l\'importo del giorno di consegna; il resto ti viene rimborsato.',
+    'nav.host':'Hosts',
+    'host.cta2':'Voglio partecipare',
+    'host.eyebrow':'Hai una moto?','host.title':'Entra a far parte<br>di <span class="acc">Bitride</span>',
+    'host.desc':'Metti la tua moto a rendere con noi. Tu fornisci la moto; noi portiamo i clienti e gestiamo le prenotazioni, il pagamento e la consegna. Tu ricevi la tua parte.',
   },
 };
 
@@ -2499,6 +2544,7 @@ function applyLang() {
   document.title = t('title');
   document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
   document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
   const lbl = document.getElementById('lang-current-label');
   if (lbl) lbl.textContent = currentLang.toUpperCase();
   document.querySelectorAll('.lang-option').forEach(opt => {

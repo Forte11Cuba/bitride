@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pon tu moto con Bitride · Hosts</title>
+  <meta name="description" content="Pon tu moto a rentar con Bitride. Tú aportas la moto; nosotros ponemos los clientes, gestionamos las reservas, el cobro y la entrega. Rellena el formulario y te contactamos.">
+  <meta name="author" content="Bitride">
+  <meta name="theme-color" content="#f7931a">
+  <link rel="canonical" href="https://bitride.rent/hosts.html">
+
+  <!-- hreflang -->
+  <link rel="alternate" hreflang="es" href="https://bitride.rent/hosts.html">
+  <link rel="alternate" hreflang="en" href="https://bitride.rent/en/hosts.html">
+  <link rel="alternate" hreflang="fr" href="https://bitride.rent/fr/hosts.html">
+  <link rel="alternate" hreflang="de" href="https://bitride.rent/de/hosts.html">
+  <link rel="alternate" hreflang="it" href="https://bitride.rent/it/hosts.html">
+  <link rel="alternate" hreflang="x-default" href="https://bitride.rent/hosts.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="Bitride">
+  <meta property="og:title" content="Pon tu moto con Bitride · Hosts">
+  <meta property="og:description" content="Tú aportas la moto; nosotros ponemos los clientes, gestionamos las reservas, el cobro y la entrega. Rellena el formulario y te contactamos.">
+  <meta property="og:url" content="https://bitride.rent/hosts.html">
+  <meta property="og:image" content="https://bitride.rent/assets/habana-capitolio.jpg">
+
+  <link rel="icon" type="image/png" href="assets/bitride-logo-transparent.png">
+  <link rel="apple-touch-icon" href="assets/bitride-logo-transparent.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,700;1,800&family=Barlow:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #080806; --bg2: #0d0d0b; --card: #141414; --border: #222222;
+      --accent: #f7931a; --white: #ffffff; --muted: rgba(255,255,255,0.42);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--white); overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
+    .acc { color: var(--accent); }
+    .wrap { max-width: 820px; margin: 0 auto; padding: 0 24px; width: 100%; }
+
+    /* Topbar */
+    .topbar { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 15px 24px; background: rgba(8,8,6,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+    .topbar-logo img { height: 26px; display: block; }
+    .topbar-right { display: flex; align-items: center; gap: 18px; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .back-link:hover { color: var(--white); }
+
+    /* Language switcher */
+    .lang-switcher { position: relative; }
+    .lang-current { display: flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); color: var(--white); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.06em; padding: 8px 12px; cursor: pointer; }
+    .lang-dropdown { position: absolute; right: 0; top: calc(100% + 6px); background: var(--card); border: 1px solid var(--border); min-width: 150px; display: none; flex-direction: column; z-index: 200; }
+    .lang-switcher.open .lang-dropdown { display: flex; }
+    .lang-option { background: none; border: none; color: var(--white); text-align: left; padding: 10px 14px; font-family: 'Barlow', sans-serif; font-size: 13px; cursor: pointer; }
+    .lang-option:hover, .lang-option.active { background: var(--bg2); color: var(--accent); }
+
+    /* Main */
+    .anf-main { flex: 1; padding: 0 0 90px; }
+    /* Hero a todo el ancho: foto integrada tras el texto; degradado horizontal que mantiene el texto legible y deja ver la foto a la derecha */
+    .anf-hero { position: relative; overflow: hidden; margin-bottom: 46px; border-bottom: 1px solid var(--border);
+      background: var(--bg); min-height: 300px; display: flex; align-items: center; }
+    /* Foto entera (altura completa = mínimo zoom), a la derecha, con los bordes izq/der fundidos a negro */
+    .anf-hero-img { position: absolute; top: 0; bottom: 0; right: 30%; height: 100%; width: auto; z-index: 0; opacity: 0.7;
+      -webkit-mask-image: radial-gradient(ellipse farthest-side at 47% 52%, #000 40%, transparent 95%);
+      mask-image: radial-gradient(ellipse farthest-side at 47% 52%, #000 40%, transparent 95%); }
+    .anf-hero .wrap { position: relative; z-index: 1; width: 100%; }
+    .anf-hero-copy { padding: 44px 0; max-width: 520px; }
+    .anf-hero-copy .anf-desc { max-width: 470px; }
+    @media (max-width: 700px) {
+      /* En móvil el hero se apila: foto como banner arriba (fundido hacia el negro) y el texto debajo */
+      .anf-hero { min-height: 0; display: block; margin-bottom: 30px; }
+      .anf-hero-img {
+        position: static; display: block; width: 100%; height: 240px;
+        object-fit: cover; object-position: 50% 46%; opacity: 0.9;
+        -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+        mask-image: linear-gradient(to bottom, #000 55%, transparent 100%); }
+      .anf-hero-copy { padding: 24px 0 4px; max-width: none; }
+    }
+    .eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+    .anf-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(40px, 7vw, 68px); font-weight: 800; line-height: 0.92; text-transform: uppercase; letter-spacing: -0.015em; margin-bottom: 20px; }
+    .anf-desc { font-size: 16px; color: var(--muted); line-height: 1.72; max-width: 560px; }
+
+    /* Buttons */
+    .btn-solid { display: inline-flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 16px; letter-spacing: 0.09em; text-transform: uppercase; padding: 14px 32px; background: var(--accent); color: var(--bg); text-decoration: none; border: none; cursor: pointer; transition: opacity 0.2s, transform 0.15s; }
+    .btn-solid:hover { opacity: 0.88; transform: translateY(-2px); }
+
+    /* Form */
+    .host-card { margin: 40px 0 0; background: var(--card); border: 1px solid var(--border); padding: 40px; }
+    .host-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .host-field { display: flex; flex-direction: column; gap: 8px; }
+    .host-field.full { grid-column: 1 / -1; }
+    .host-col2 { grid-column: span 2; }
+    .host-field label { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .host-field input, .host-field select, .host-field textarea { background: var(--bg); border: 1px solid var(--border); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 15px; padding: 12px 14px; width: 100%; transition: border-color 0.2s; }
+    .host-field textarea { resize: vertical; min-height: 84px; }
+    .host-field input:focus, .host-field select:focus, .host-field textarea:focus { outline: none; border-color: var(--accent); }
+    .host-field input::placeholder, .host-field textarea::placeholder { color: rgba(255,255,255,0.3); }
+    .host-field select { appearance: none; -webkit-appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
+    .host-field.invalid input, .host-field.invalid select, .host-field.invalid textarea { border-color: #e5484d; }
+    .host-submit-row { margin-top: 28px; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+    .host-error { display: none; color: #e5484d; font-size: 13px; }
+    .host-error.show { display: block; }
+
+    /* Año: stepper ± */
+    .host-stepper { display: inline-flex; align-items: center; border: 1px solid var(--border); background: var(--bg); width: 100%; }
+    .host-stepper button { width: 46px; height: 46px; flex-shrink: 0; border: none; background: transparent; color: var(--white); font-size: 20px; line-height: 1; cursor: pointer; transition: color 0.2s; }
+    .host-stepper button:hover { color: var(--accent); }
+    .host-stepper input { flex: 1; min-width: 0; height: 46px; border: none; background: transparent; color: var(--white); text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; -moz-appearance: textfield; }
+    .host-stepper input:focus { outline: none; }
+
+    /* Botón de envío en verde WhatsApp (blanco sobre verde, ancho completo) */
+    #host-submit { background: #25D366; color: #ffffff; width: 100%; justify-content: center; }
+
+    /* Footer */
+    .anf-footer { border-top: 1px solid var(--border); padding: 26px 0; text-align: center; color: var(--muted); font-size: 12px; }
+
+    @media (max-width: 620px) {
+      .anf-main { padding: 0 0 64px; }
+      .host-card { padding: 26px 18px; }
+      .host-grid { grid-template-columns: 1fr; }
+      .host-col2 { grid-column: auto; }
+      .topbar-right { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="topbar-logo" aria-label="Bitride">
+    <img src="assets/bitride-logo-transparent.png" alt="Bitride">
+  </a>
+  <div class="topbar-right">
+    <a href="index.html" class="back-link">
+      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="15 18 9 12 15 6"/></svg>
+      <span data-i18n="anf.back">Volver</span>
+    </a>
+    <div class="lang-switcher" id="lang-switcher">
+      <button class="lang-current" id="lang-current" aria-haspopup="listbox">
+        <span id="lang-current-label">ES</span>
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="lang-dropdown" role="listbox">
+        <button class="lang-option active" data-lang="es">ES · Español</button>
+        <button class="lang-option" data-lang="en">EN · English</button>
+        <button class="lang-option" data-lang="fr">FR · Français</button>
+        <button class="lang-option" data-lang="de">DE · Deutsch</button>
+        <button class="lang-option" data-lang="it">IT · Italiano</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="anf-main">
+  <div class="anf-hero">
+    <img class="anf-hero-img" src="assets/entrega-llaves.webp" alt="Entrega de las llaves de una moto a un motorista con casco y guantes" loading="lazy">
+    <div class="wrap">
+      <div class="anf-hero-copy">
+        <div class="eyebrow" data-i18n="host.eyebrow">¿Tienes una moto?</div>
+        <h1 class="anf-title" data-i18n-html="host.title">Forma parte<br>de <span class="acc">Bitride</span></h1>
+        <p class="anf-desc" data-i18n-html="host.desc">Pon tu moto a rodar con nosotros.<br>Tú aportas la moto; nosotros ponemos los clientes, gestionamos las reservas, el cobro y la entrega.<br>Tú recibes tu parte.</p>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="host-card" id="host-form">
+      <div class="host-grid">
+        <div class="host-field full">
+          <label for="host-name" data-i18n="host.f.name">Nombre</label>
+          <input type="text" id="host-name" data-i18n-ph="host.ph.name" placeholder="Tu nombre" autocomplete="name">
+        </div>
+        <div class="host-field host-col2">
+          <label for="host-model" data-i18n="host.f.model">Marca y modelo</label>
+          <input type="text" id="host-model" data-i18n-ph="host.ph.model" placeholder="Ej. Suzuki GN 125">
+        </div>
+        <div class="host-field">
+          <label for="host-cc" data-i18n="host.f.cc">Cilindrada</label>
+          <select id="host-cc" required>
+            <option value="" disabled selected data-i18n="host.opt.select">Selecciona…</option>
+            <option value="&lt; 125 cc">&lt; 125 cc</option>
+            <option value="125 cc">125 cc</option>
+            <option value="150 cc">150 cc</option>
+            <option value="250 cc">250 cc</option>
+            <option value="&gt; 250 cc">&gt; 250 cc</option>
+          </select>
+        </div>
+        <div class="host-field">
+          <label data-i18n="host.f.year">Año</label>
+          <div class="host-stepper">
+            <button type="button" id="host-year-dec" aria-label="−">−</button>
+            <input type="text" inputmode="numeric" id="host-year-val" value="2026" maxlength="4" aria-label="Año">
+            <button type="button" id="host-year-inc" aria-label="+">+</button>
+          </div>
+        </div>
+        <div class="host-field host-col2">
+          <label for="host-province" data-i18n="host.f.province">Provincia</label>
+          <input type="text" id="host-province" list="provincias-list" required autocomplete="off" data-i18n-ph="host.ph.province" placeholder="Escribe o elige…">
+          <datalist id="provincias-list">
+            <option>Pinar del Río</option>
+            <option>Artemisa</option>
+            <option>La Habana</option>
+            <option>Mayabeque</option>
+            <option>Matanzas</option>
+            <option>Cienfuegos</option>
+            <option>Villa Clara</option>
+            <option>Sancti Spíritus</option>
+            <option>Ciego de Ávila</option>
+            <option>Camagüey</option>
+            <option>Las Tunas</option>
+            <option>Holguín</option>
+            <option>Granma</option>
+            <option>Santiago de Cuba</option>
+            <option>Guantánamo</option>
+            <option>Isla de la Juventud</option>
+          </datalist>
+        </div>
+        <div class="host-field host-col2">
+          <label for="host-municipality" data-i18n="host.f.municipality">Municipio</label>
+          <input type="text" id="host-municipality" list="municipios-list" required autocomplete="off" data-i18n-ph="host.ph.municipality" placeholder="Escribe o elige…">
+          <datalist id="municipios-list"></datalist>
+        </div>
+        <div class="host-field full">
+          <label for="host-availability" data-i18n="host.f.availability">Disponibilidad</label>
+          <select id="host-availability" required>
+            <option value="" disabled selected data-i18n="host.opt.select">Selecciona…</option>
+            <option data-i18n="host.avail.year">Todo el año</option>
+            <option data-i18n="host.avail.season">Por temporadas</option>
+            <option data-i18n="host.avail.months">Solo algunos meses</option>
+          </select>
+        </div>
+        <div class="host-field full">
+          <label for="host-comment" data-i18n="host.f.comment">Comentario (opcional)</label>
+          <textarea id="host-comment" data-i18n-ph="host.ph.comment" placeholder="Estado de la moto, extras, dudas…"></textarea>
+        </div>
+      </div>
+      <div class="host-submit-row">
+        <button type="button" class="btn-solid" id="host-submit">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <span data-i18n="host.cta">Enviar por WhatsApp</span>
+        </button>
+        <div class="host-error" id="host-error" data-i18n="host.error">Completa los campos marcados.</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="anf-footer">
+  <div class="wrap">© 2026 Bitride · La Habana, Cuba</div>
+</footer>
+
+<script>
+const TRANSLATIONS = {
+  es: {
+    'anf.back':'Volver',
+    'host.eyebrow':'¿Tienes una moto?','host.title':'Forma parte<br>de <span class="acc">Bitride</span>',
+    'host.desc':'Pon tu moto a rodar con nosotros.<br>Tú aportas la moto; nosotros ponemos los clientes, gestionamos las reservas, el cobro y la entrega.<br>Tú recibes tu parte.',
+    'host.f.name':'Nombre','host.f.model':'Marca y modelo','host.f.cc':'Cilindrada','host.f.year':'Año',
+    'host.f.province':'Provincia','host.f.municipality':'Municipio','host.f.availability':'Disponibilidad','host.f.comment':'Comentario (opcional)',
+    'host.ph.name':'Tu nombre','host.ph.model':'Ej. Suzuki GN 125','host.ph.province':'Escribe o elige…','host.ph.municipality':'Escribe o elige…','host.ph.comment':'Estado de la moto, extras, dudas…',
+    'host.opt.select':'Selecciona…',
+    'host.avail.year':'Todo el año','host.avail.season':'Por temporadas','host.avail.months':'Solo algunos meses',
+    'host.cta':'Enviar por WhatsApp','host.error':'Completa los campos marcados.',
+    'host.wa.hello':'Hola Bitride, quiero poner mi moto con ustedes','host.wa.moto':'Moto','host.wa.location':'Ubicación','host.wa.comment':'Comentario','host.wa.confirm':'¿Cómo empezamos?',
+  },
+  en: {
+    'anf.back':'Back',
+    'host.eyebrow':'Got a motorcycle?','host.title':'Become part<br>of <span class="acc">Bitride</span>',
+    'host.desc':'Put your motorcycle to work with us.<br>You provide the bike; we bring the clients and handle the bookings, payments and delivery.<br>You get your share.',
+    'host.f.name':'Name','host.f.model':'Make & model','host.f.cc':'Engine size','host.f.year':'Year',
+    'host.f.province':'Province','host.f.municipality':'Municipality','host.f.availability':'Availability','host.f.comment':'Comment (optional)',
+    'host.ph.name':'Your name','host.ph.model':'e.g. Suzuki GN 125','host.ph.province':'Type or choose…','host.ph.municipality':'Type or choose…','host.ph.comment':'Bike condition, extras, questions…',
+    'host.opt.select':'Select…',
+    'host.avail.year':'All year','host.avail.season':'Seasonal','host.avail.months':'Only some months',
+    'host.cta':'Send via WhatsApp','host.error':'Please complete the marked fields.',
+    'host.wa.hello':'Hi Bitride, I would like to list my motorcycle with you','host.wa.moto':'Bike','host.wa.location':'Location','host.wa.comment':'Comment','host.wa.confirm':'How do we get started?',
+  },
+  fr: {
+    'anf.back':'Retour',
+    'host.eyebrow':'Vous avez une moto ?','host.title':'Faites partie<br>de <span class="acc">Bitride</span>',
+    'host.desc':"Mettez votre moto à profit avec nous.<br>Vous fournissez la moto ; nous apportons les clients et gérons les réservations, le paiement et la livraison.<br>Vous recevez votre part.",
+    'host.f.name':'Nom','host.f.model':'Marque et modèle','host.f.cc':'Cylindrée','host.f.year':'Année',
+    'host.f.province':'Province','host.f.municipality':'Municipalité','host.f.availability':'Disponibilité','host.f.comment':'Commentaire (optionnel)',
+    'host.ph.name':'Votre nom','host.ph.model':'Ex. Suzuki GN 125','host.ph.province':'Écrivez ou choisissez…','host.ph.municipality':'Écrivez ou choisissez…','host.ph.comment':'État de la moto, extras, questions…',
+    'host.opt.select':'Sélectionner…',
+    'host.avail.year':"Toute l'année",'host.avail.season':'Par saisons','host.avail.months':'Seulement quelques mois',
+    'host.cta':'Envoyer par WhatsApp','host.error':'Veuillez remplir les champs indiqués.',
+    'host.wa.hello':'Bonjour Bitride, je souhaite proposer ma moto avec vous','host.wa.moto':'Moto','host.wa.location':'Lieu','host.wa.comment':'Commentaire','host.wa.confirm':'Comment commençons-nous ?',
+  },
+  de: {
+    'anf.back':'Zurück',
+    'host.eyebrow':'Hast du ein Motorrad?','host.title':'Werde Teil<br>von <span class="acc">Bitride</span>',
+    'host.desc':'Bring dein Motorrad mit uns zum Verdienen.<br>Du stellst das Motorrad; wir bringen die Kunden und kümmern uns um Buchungen, Zahlung und Übergabe.<br>Du bekommst deinen Anteil.',
+    'host.f.name':'Name','host.f.model':'Marke & Modell','host.f.cc':'Hubraum','host.f.year':'Baujahr',
+    'host.f.province':'Provinz','host.f.municipality':'Gemeinde','host.f.availability':'Verfügbarkeit','host.f.comment':'Kommentar (optional)',
+    'host.ph.name':'Dein Name','host.ph.model':'z.B. Suzuki GN 125','host.ph.province':'Tippen oder wählen…','host.ph.municipality':'Tippen oder wählen…','host.ph.comment':'Zustand des Motorrads, Extras, Fragen…',
+    'host.opt.select':'Auswählen…',
+    'host.avail.year':'Ganzjährig','host.avail.season':'Saisonal','host.avail.months':'Nur einige Monate',
+    'host.cta':'Per WhatsApp senden','host.error':'Bitte die markierten Felder ausfüllen.',
+    'host.wa.hello':'Hallo Bitride, ich möchte mein Motorrad bei euch anbieten','host.wa.moto':'Motorrad','host.wa.location':'Standort','host.wa.comment':'Kommentar','host.wa.confirm':'Wie fangen wir an?',
+  },
+  it: {
+    'anf.back':'Indietro',
+    'host.eyebrow':'Hai una moto?','host.title':'Entra a far parte<br>di <span class="acc">Bitride</span>',
+    'host.desc':'Metti la tua moto a rendere con noi.<br>Tu fornisci la moto; noi portiamo i clienti e gestiamo le prenotazioni, il pagamento e la consegna.<br>Tu ricevi la tua parte.',
+    'host.f.name':'Nome','host.f.model':'Marca e modello','host.f.cc':'Cilindrata','host.f.year':'Anno',
+    'host.f.province':'Provincia','host.f.municipality':'Comune','host.f.availability':'Disponibilità','host.f.comment':'Commento (facoltativo)',
+    'host.ph.name':'Il tuo nome','host.ph.model':'Es. Suzuki GN 125','host.ph.province':'Scrivi o scegli…','host.ph.municipality':'Scrivi o scegli…','host.ph.comment':'Stato della moto, extra, domande…',
+    'host.opt.select':'Seleziona…',
+    'host.avail.year':'Tutto l\'anno','host.avail.season':'Stagionale','host.avail.months':'Solo alcuni mesi',
+    'host.cta':'Invia su WhatsApp','host.error':'Compila i campi indicati.',
+    'host.wa.hello':'Ciao Bitride, vorrei mettere la mia moto con voi','host.wa.moto':'Moto','host.wa.location':'Posizione','host.wa.comment':'Commento','host.wa.confirm':'Come iniziamo?',
+  },
+};
+
+const PATH_LANG = (location.pathname.match(/^\/(en|fr|de|it)(\/|$)/) || [])[1];
+let currentLang = PATH_LANG || localStorage.getItem('bitride_lang') || 'es';
+
+function t(key) {
+  return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key])
+      || (TRANSLATIONS.es && TRANSLATIONS.es[key]) || key;
+}
+
+function applyLang() {
+  document.documentElement.lang = currentLang;
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+  const lbl = document.getElementById('lang-current-label');
+  if (lbl) lbl.textContent = currentLang.toUpperCase();
+  document.querySelectorAll('.lang-option').forEach(opt => opt.classList.toggle('active', opt.dataset.lang === currentLang));
+}
+
+/* Language switcher — cada idioma tiene su URL */
+const sw = document.getElementById('lang-switcher');
+document.getElementById('lang-current').addEventListener('click', e => { e.stopPropagation(); sw.classList.toggle('open'); });
+const ANF_URLS = { es:'/hosts.html', en:'/en/hosts.html', fr:'/fr/hosts.html', de:'/de/hosts.html', it:'/it/hosts.html' };
+document.querySelectorAll('.lang-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    const lang = opt.dataset.lang;
+    localStorage.setItem('bitride_lang', lang);
+    sw.classList.remove('open');
+    if (lang === currentLang) return;
+    window.location.href = ANF_URLS[lang];
+  });
+});
+document.addEventListener('click', () => sw.classList.remove('open'));
+
+/* Formulario → WhatsApp (sin backend, mismo patrón que la calculadora) */
+(function hostForm() {
+  const nowY = new Date().getFullYear();
+
+  // Año: editable a mano + botones ± (1950 … año actual).
+  const yearInput = document.getElementById('host-year-val');
+  const clampYear = y => { y = parseInt(y, 10); if (isNaN(y)) y = nowY; return Math.max(1950, Math.min(nowY, y)); };
+  const stepYear = d => { yearInput.value = clampYear((parseInt(yearInput.value, 10) || nowY) + d); };
+  document.getElementById('host-year-dec').addEventListener('click', () => stepYear(-1));
+  document.getElementById('host-year-inc').addEventListener('click', () => stepYear(1));
+  yearInput.addEventListener('blur', () => { yearInput.value = clampYear(yearInput.value); });
+
+  // Municipios por provincia — se escribe libremente y el navegador sugiere coincidencias.
+  const MUNICIPIOS = {
+    'Pinar del Río': ['Consolación del Sur','Guane','La Palma','Los Palacios','Mantua','Minas de Matahambre','Pinar del Río','San Juan y Martínez','San Luis','Sandino','Viñales'],
+    'Artemisa': ['Alquízar','Artemisa','Bahía Honda','Bauta','Caimito','Candelaria','Guanajay','Güira de Melena','Mariel','San Antonio de los Baños','San Cristóbal'],
+    'La Habana': ['Arroyo Naranjo','Boyeros','Centro Habana','Cerro','Cotorro','Diez de Octubre','Guanabacoa','Habana del Este','Habana Vieja','La Lisa','Marianao','Playa','Plaza de la Revolución','Regla','San Miguel del Padrón'],
+    'Mayabeque': ['Batabanó','Bejucal','Güines','Jaruco','Madruga','Melena del Sur','Nueva Paz','Quivicán','San José de las Lajas','San Nicolás','Santa Cruz del Norte'],
+    'Matanzas': ['Calimete','Cárdenas','Ciénaga de Zapata','Colón','Jagüey Grande','Jovellanos','Limonar','Los Arabos','Martí','Matanzas','Pedro Betancourt','Perico','Unión de Reyes'],
+    'Cienfuegos': ['Abreus','Aguada de Pasajeros','Cienfuegos','Cruces','Cumanayagua','Lajas','Palmira','Rodas'],
+    'Villa Clara': ['Caibarién','Camajuaní','Cifuentes','Corralillo','Encrucijada','Manicaragua','Placetas','Quemado de Güines','Ranchuelo','Remedios','Sagua la Grande','Santa Clara','Santo Domingo'],
+    'Sancti Spíritus': ['Cabaiguán','Fomento','Jatibonico','La Sierpe','Sancti Spíritus','Taguasco','Trinidad','Yaguajay'],
+    'Ciego de Ávila': ['Baraguá','Bolivia','Chambas','Ciego de Ávila','Ciro Redondo','Florencia','Majagua','Morón','Primero de Enero','Venezuela'],
+    'Camagüey': ['Camagüey','Carlos Manuel de Céspedes','Esmeralda','Florida','Guáimaro','Jimaguayú','Minas','Najasa','Nuevitas','Santa Cruz del Sur','Sibanicú','Sierra de Cubitas','Vertientes'],
+    'Las Tunas': ['Amancio','Colombia','Jesús Menéndez','Jobabo','Las Tunas','Majibacoa','Manatí','Puerto Padre'],
+    'Holguín': ['Antilla','Báguanos','Banes','Cacocum','Calixto García','Cueto','Frank País','Gibara','Holguín','Mayarí','Moa','Rafael Freyre','Sagua de Tánamo','Urbano Noris'],
+    'Granma': ['Bartolomé Masó','Bayamo','Buey Arriba','Campechuela','Cauto Cristo','Guisa','Jiguaní','Manzanillo','Media Luna','Niquero','Pilón','Río Cauto','Yara'],
+    'Santiago de Cuba': ['Contramaestre','Guamá','Mella','Palma Soriano','San Luis','Santiago de Cuba','Segundo Frente','Songo-La Maya','Tercer Frente'],
+    'Guantánamo': ['Baracoa','Caimanera','El Salvador','Guantánamo','Imías','Maisí','Manuel Tames','Niceto Pérez','San Antonio del Sur','Yateras'],
+    'Isla de la Juventud': ['Isla de la Juventud'],
+  };
+  const provInput = document.getElementById('host-province');
+  const muniList = document.getElementById('municipios-list');
+  provInput.addEventListener('input', () => {
+    const v = provInput.value.trim().toLowerCase();
+    const key = Object.keys(MUNICIPIOS).find(k => k.toLowerCase() === v);
+    muniList.innerHTML = (key ? MUNICIPIOS[key] : []).map(m => '<option>' + m + '</option>').join('');
+  });
+
+  const required = ['host-name','host-model','host-cc','host-province','host-municipality','host-availability'];
+  const errEl = document.getElementById('host-error');
+  const fieldOf = el => el.closest('.host-field');
+
+  required.concat('host-comment').forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const clear = () => { fieldOf(el).classList.remove('invalid'); errEl.classList.remove('show'); };
+    el.addEventListener('input', clear);
+    el.addEventListener('change', clear);
+  });
+
+  const btn = document.getElementById('host-submit');
+  if (btn) btn.addEventListener('click', () => {
+    let ok = true;
+    required.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el || !el.value.trim()) { if (el) fieldOf(el).classList.add('invalid'); ok = false; }
+    });
+    if (!ok) { errEl.classList.add('show'); return; }
+
+    const val     = id => document.getElementById(id).value.trim();
+    const selText = id => { const s = document.getElementById(id); return s.options[s.selectedIndex].textContent; };
+    const comment = val('host-comment');
+    const year = clampYear(yearInput.value);
+
+    const L = [
+      t('host.wa.hello'), '',
+      `${t('host.f.name')}: ${val('host-name')}`,
+      `${t('host.wa.moto')}: ${val('host-model')}, ${selText('host-cc')}, ${year}`,
+      `${t('host.wa.location')}: ${val('host-municipality')}, ${val('host-province')}`,
+      `${t('host.f.availability')}: ${selText('host-availability')}`,
+    ];
+    if (comment) L.push(`${t('host.wa.comment')}: ${comment}`);
+    L.push('', t('host.wa.confirm'));
+
+    window.open('https://wa.me/5355003336?text=' + encodeURIComponent(L.join('\n')), '_blank');
+  });
+})();
+
+applyLang();
+</script>
+</body>
+</html>
