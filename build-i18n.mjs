@@ -96,4 +96,31 @@ for (const lang of LANGS) {
   console.log(`generado ${lang}/index.html  (lang=${lang}, title="${T.title}")`);
 }
 
-console.log('Listo. Re-ejecuta este script tras editar index.html.');
+// ── Página de hosts (hosts.html) ──────────────────────
+// El <body> se traduce en runtime por JS; aquí solo el <head> (SEO) por idioma.
+const ANF_META = {
+  en: { title: 'List your motorcycle with Bitride · Hosts', desc: 'Put your motorcycle to work with Bitride. You provide the bike; we bring the clients and handle the bookings, payments and delivery. Fill in the form and we contact you.' },
+  fr: { title: 'Proposez votre moto avec Bitride · Hosts', desc: "Mettez votre moto à profit avec Bitride. Vous fournissez la moto ; nous apportons les clients et gérons les réservations, le paiement et la livraison. Remplissez le formulaire." },
+  de: { title: 'Biete dein Motorrad bei Bitride an · Hosts', desc: 'Bring dein Motorrad mit Bitride zum Verdienen. Du stellst das Motorrad; wir bringen die Kunden und kümmern uns um Buchungen, Zahlung und Übergabe. Fülle das Formular aus.' },
+  it: { title: 'Metti la tua moto con Bitride · Hosts', desc: 'Metti la tua moto a rendere con Bitride. Tu fornisci la moto; noi portiamo i clienti e gestiamo prenotazioni, pagamento e consegna. Compila il modulo e ti contattiamo.' },
+};
+
+const anfHtml = fs.readFileSync('hosts.html', 'utf8');
+for (const lang of LANGS) {
+  const meta = ANF_META[lang];
+  let out = anfHtml;
+  out = out.replace('<html lang="es">', `<html lang="${lang}">`);
+  out = out.replace(/<title>[^<]*<\/title>/, `<title>${meta.title}</title>`);
+  out = setMeta(out, /(<meta name="description" content=")[^"]*(">)/, meta.desc);
+  out = setMeta(out, /(<meta property="og:title" content=")[^"]*(">)/, meta.title);
+  out = setMeta(out, /(<meta property="og:description" content=")[^"]*(">)/, meta.desc);
+  out = out.replace('<meta property="og:locale" content="es_ES">', `<meta property="og:locale" content="${META[lang].locale}">`);
+  out = out.replace('<link rel="canonical" href="https://bitride.rent/hosts.html">', `<link rel="canonical" href="${BASE}/${lang}/hosts.html">`);
+  out = out.replace('<meta property="og:url" content="https://bitride.rent/hosts.html">', `<meta property="og:url" content="${BASE}/${lang}/hosts.html">`);
+  out = out.replace(/'assets\//g, "'/assets/").replace(/"assets\//g, '"/assets/');
+  fs.mkdirSync(lang, { recursive: true });
+  fs.writeFileSync(`${lang}/hosts.html`, out);
+  console.log(`generado ${lang}/hosts.html  (lang=${lang}, title="${meta.title}")`);
+}
+
+console.log('Listo. Re-ejecuta este script tras editar index.html o hosts.html.');
