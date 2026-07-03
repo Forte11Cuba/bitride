@@ -50,7 +50,7 @@ const html = fs.readFileSync('index.html', 'utf8');
 // Extraer el objeto TRANSLATIONS del HTML (fuente única de verdad).
 const m = html.match(/const TRANSLATIONS = (\{[\s\S]*?\n\});/);
 if (!m) { console.error('No se encontró TRANSLATIONS en index.html'); process.exit(1); }
-const TRANSLATIONS = eval('(' + m[1] + ')');
+const TRANSLATIONS = new Function('return (' + m[1] + ')')();
 
 const setMeta = (s, re, val) => s.replace(re, (_m, p1, p2) => p1 + val + p2);
 
@@ -59,6 +59,7 @@ const setMeta = (s, re, val) => s.replace(re, (_m, p1, p2) => p1 + val + p2);
 //   data-i18n      → textContent   (texto plano, se escapa)
 //   data-i18n-html → innerHTML     (contenido con markup, se inserta tal cual)
 //   data-i18n-ph   → placeholder   (atributo del <input>)
+//   data-i18n-aria → aria-label    (accesibilidad)
 // Así Googlebot/Bing ven el idioma correcto en la primera lectura del HTML,
 // sin depender de ejecutar JS. El JS sigue re-aplicando en runtime (idempotente).
 const escText = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -86,17 +87,23 @@ function findMatchingClose(str, tag, fromIdx) {
 }
 
 function translateBody(src, T) {
-  // 1) Placeholders: reescribe (o añade) el atributo placeholder del tag.
-  let s = src.replace(/<([a-zA-Z0-9]+)((?:[^>]*?)\bdata-i18n-ph="([^"]+)"(?:[^>]*?))>/g,
-    (full, tag, attrs, key) => {
+  // 1) Atributos: placeholder (data-i18n-ph) y aria-label (data-i18n-aria).
+  //    Reescribe (o añade) el atributo destino en el tag de apertura.
+  let s = src;
+  for (const [dataAttr, targetAttr] of [['data-i18n-ph', 'placeholder'], ['data-i18n-aria', 'aria-label']]) {
+    const hookRe = new RegExp(`<([a-zA-Z0-9]+)((?:[^>]*?)\\b${dataAttr}="([^"]+)"(?:[^>]*?))>`, 'g');
+    const hasAttr = new RegExp(`\\b${targetAttr}="`);
+    const replAttr = new RegExp(`\\b${targetAttr}="[^"]*"`);
+    s = s.replace(hookRe, (full, tag, attrs, key) => {
       const val = T[key];
       if (val === undefined) return full;
-      const ph = escAttr(val);
-      const newAttrs = /\bplaceholder="/.test(attrs)
-        ? attrs.replace(/\bplaceholder="[^"]*"/, `placeholder="${ph}"`)
-        : `${attrs} placeholder="${ph}"`;
+      const v = escAttr(val);
+      const newAttrs = hasAttr.test(attrs)
+        ? attrs.replace(replAttr, `${targetAttr}="${v}"`)
+        : `${attrs} ${targetAttr}="${v}"`;
       return `<${tag}${newAttrs}>`;
     });
+  }
 
   // 2) Contenido interno: data-i18n (texto) y data-i18n-html (markup).
   const attrRe = /<([a-zA-Z0-9]+)[^>]*?\bdata-i18n(-html)?="([^"]+)"[^>]*?>/g;
@@ -199,7 +206,7 @@ const anfHtml = fs.readFileSync('hosts.html', 'utf8');
 // TRANSLATIONS propio de hosts.html (fuente para pre-traducir su <body>).
 const anfM = anfHtml.match(/const TRANSLATIONS = (\{[\s\S]*?\n\});/);
 if (!anfM) { console.error('No se encontró TRANSLATIONS en hosts.html'); process.exit(1); }
-const ANF_TRANSLATIONS = eval('(' + anfM[1] + ')');
+const ANF_TRANSLATIONS = new Function('return (' + anfM[1] + ')')();
 
 for (const lang of LANGS) {
   const meta = ANF_META[lang];
