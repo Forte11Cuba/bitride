@@ -7,8 +7,10 @@
  *  - JSON-LD (descripción del negocio + FAQPage) traducido desde el propio i18n
  *  - hreflang heredado del index.html
  *
- * El contenido del <body> se traduce en runtime por JS (detecta el idioma por la ruta),
- * y Googlebot renderiza JS, así que cada URL indexa su idioma.
+ * El contenido del <body> se PRE-TRADUCE en build (data-i18n / data-i18n-html /
+ * data-i18n-ph), de modo que Googlebot y Bing leen el idioma correcto ya en el HTML,
+ * sin depender de ejecutar JS. El JS sigue re-aplicando en runtime (idempotente),
+ * lo que permite el cambio de idioma dentro de la misma página.
  *
  * Uso:  node build-i18n.mjs   (re-ejecutar tras editar index.html)
  */
@@ -52,6 +54,67 @@ const TRANSLATIONS = eval('(' + m[1] + ')');
 
 const setMeta = (s, re, val) => s.replace(re, (_m, p1, p2) => p1 + val + p2);
 
+// ── Pre-traducción del <body> (SEO) ───────────────────────────────
+// Replica en build lo que el JS hace en runtime (applyLang):
+//   data-i18n      → textContent   (texto plano, se escapa)
+//   data-i18n-html → innerHTML     (contenido con markup, se inserta tal cual)
+//   data-i18n-ph   → placeholder   (atributo del <input>)
+// Así Googlebot/Bing ven el idioma correcto en la primera lectura del HTML,
+// sin depender de ejecutar JS. El JS sigue re-aplicando en runtime (idempotente).
+const escText = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const escAttr = s => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+
+// Busca el cierre </tag> que corresponde a la apertura, contando anidamiento
+// del mismo nombre de tag. Devuelve el índice del '<' de cierre, o -1.
+function findMatchingClose(str, tag, fromIdx) {
+  const lc = str.toLowerCase(), t = tag.toLowerCase();
+  const openTok = '<' + t, closeTok = '</' + t;
+  const isBoundary = c => c === '' || c === ' ' || c === '>' || c === '/' || c === '\n' || c === '\t' || c === '\r';
+  let depth = 1, i = fromIdx;
+  while (i < str.length) {
+    const nOpen = lc.indexOf(openTok, i), nClose = lc.indexOf(closeTok, i);
+    if (nClose === -1) return -1;
+    if (nOpen !== -1 && nOpen < nClose) {
+      if (isBoundary(lc.charAt(nOpen + openTok.length))) depth++;
+      i = nOpen + openTok.length;
+    } else {
+      if (isBoundary(lc.charAt(nClose + closeTok.length))) { if (--depth === 0) return nClose; }
+      i = nClose + closeTok.length;
+    }
+  }
+  return -1;
+}
+
+function translateBody(src, T) {
+  // 1) Placeholders: reescribe (o añade) el atributo placeholder del tag.
+  let s = src.replace(/<([a-zA-Z0-9]+)((?:[^>]*?)\bdata-i18n-ph="([^"]+)"(?:[^>]*?))>/g,
+    (full, tag, attrs, key) => {
+      const val = T[key];
+      if (val === undefined) return full;
+      const ph = escAttr(val);
+      const newAttrs = /\bplaceholder="/.test(attrs)
+        ? attrs.replace(/\bplaceholder="[^"]*"/, `placeholder="${ph}"`)
+        : `${attrs} placeholder="${ph}"`;
+      return `<${tag}${newAttrs}>`;
+    });
+
+  // 2) Contenido interno: data-i18n (texto) y data-i18n-html (markup).
+  const attrRe = /<([a-zA-Z0-9]+)[^>]*?\bdata-i18n(-html)?="([^"]+)"[^>]*?>/g;
+  let outp = '', last = 0, mm;
+  while ((mm = attrRe.exec(s)) !== null) {
+    const tag = mm[1], isHtml = !!mm[2], key = mm[3];
+    const afterOpen = attrRe.lastIndex;
+    const val = T[key];
+    if (val === undefined) continue;
+    const closeIdx = findMatchingClose(s, tag, afterOpen);
+    if (closeIdx === -1) continue;
+    outp += s.slice(last, afterOpen) + (isHtml ? val : escText(val));
+    last = closeIdx;
+    attrRe.lastIndex = closeIdx;  // no re-escanear el interior ya reemplazado
+  }
+  return outp + s.slice(last);
+}
+
 function buildFaqBlock(T) {
   const faq = {
     '@context': 'https://schema.org',
@@ -90,6 +153,9 @@ for (const lang of LANGS) {
 
   // assets relativos → root-absolute (funcionan desde /xx/)
   out = out.replace(/'assets\//g, "'/assets/").replace(/"assets\//g, '"/assets/');
+
+  // Pre-traducir el <body> para que Googlebot/Bing lean el idioma sin ejecutar JS.
+  out = translateBody(out, T);
 
   fs.mkdirSync(lang, { recursive: true });
   fs.writeFileSync(`${lang}/index.html`, out);
@@ -130,6 +196,11 @@ const ANF_META = {
 };
 
 const anfHtml = fs.readFileSync('hosts.html', 'utf8');
+// TRANSLATIONS propio de hosts.html (fuente para pre-traducir su <body>).
+const anfM = anfHtml.match(/const TRANSLATIONS = (\{[\s\S]*?\n\});/);
+if (!anfM) { console.error('No se encontró TRANSLATIONS en hosts.html'); process.exit(1); }
+const ANF_TRANSLATIONS = eval('(' + anfM[1] + ')');
+
 for (const lang of LANGS) {
   const meta = ANF_META[lang];
   let out = anfHtml;
@@ -147,6 +218,8 @@ for (const lang of LANGS) {
   out = out.replace('"description": "Pon tu moto a rentar en Cuba con Bitride. Nosotros ponemos los clientes y gestionamos reservas, cobro y entrega; tú recibes tu parte."', `"description": ${JSON.stringify(meta.svcDesc)}`);
   out = out.replace('"url": "https://bitride.rent/hosts.html"', `"url": "${BASE}/${lang}/hosts.html"`);
   out = out.replace(/'assets\//g, "'/assets/").replace(/"assets\//g, '"/assets/');
+  // Pre-traducir el <body> (incluye placeholders del formulario) para SEO.
+  out = translateBody(out, ANF_TRANSLATIONS[lang]);
   fs.mkdirSync(lang, { recursive: true });
   fs.writeFileSync(`${lang}/hosts.html`, out);
   console.log(`generado ${lang}/hosts.html  (lang=${lang}, title="${meta.title}")`);
