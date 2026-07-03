@@ -138,6 +138,7 @@
     /* Footer */
     .anf-footer { border-top: 1px solid var(--border); padding: 26px 0; text-align: center; color: var(--muted); font-size: 12px; }
 
+
     @media (max-width: 620px) {
       .anf-main { padding: 0 0 64px; }
       .host-card { padding: 26px 18px; }
@@ -210,9 +211,9 @@
         <div class="host-field">
           <label for="host-year-val" data-i18n="host.f.year">Año</label>
           <div class="host-stepper">
-            <button type="button" id="host-year-dec" aria-label="−">−</button>
-            <input type="text" inputmode="numeric" id="host-year-val" value="2026" maxlength="4" aria-label="Año">
-            <button type="button" id="host-year-inc" aria-label="+">+</button>
+            <button type="button" id="host-year-dec" aria-label="menos" data-i18n-aria="aria.less">−</button>
+            <input type="text" inputmode="numeric" id="host-year-val" value="2026" maxlength="4" aria-label="Año" data-i18n-aria="aria.year">
+            <button type="button" id="host-year-inc" aria-label="más" data-i18n-aria="aria.more">+</button>
           </div>
         </div>
         <div class="host-field host-col2">
@@ -278,6 +279,7 @@ const TRANSLATIONS = {
     'host.eyebrow':'¿Tienes una moto?','host.title':'Forma parte<br>de <span class="acc">Bitride</span>',
     'host.desc':'Pon tu moto a rodar con nosotros.<br>Tú aportas la moto; nosotros ponemos los clientes, gestionamos las reservas, el cobro y la entrega.<br>Tú recibes tu parte.',
     'host.f.name':'Nombre','host.f.model':'Marca y modelo','host.f.cc':'Cilindrada','host.f.year':'Año',
+    'aria.more':'más','aria.less':'menos','aria.year':'Año',
     'host.f.province':'Provincia','host.f.municipality':'Municipio','host.f.availability':'Disponibilidad','host.f.comment':'Comentario (opcional)',
     'host.ph.name':'Tu nombre','host.ph.model':'Ej. Suzuki GN 125','host.ph.province':'Escribe o elige…','host.ph.municipality':'Escribe o elige…','host.ph.comment':'Estado de la moto, extras, dudas…',
     'host.opt.select':'Selecciona…',
@@ -290,6 +292,7 @@ const TRANSLATIONS = {
     'host.eyebrow':'Got a motorcycle?','host.title':'Become part<br>of <span class="acc">Bitride</span>',
     'host.desc':'Put your motorcycle to work with us.<br>You provide the bike; we bring the clients and handle the bookings, payments and delivery.<br>You get your share.',
     'host.f.name':'Name','host.f.model':'Make & model','host.f.cc':'Engine size','host.f.year':'Year',
+    'aria.more':'more','aria.less':'less','aria.year':'Year',
     'host.f.province':'Province','host.f.municipality':'Municipality','host.f.availability':'Availability','host.f.comment':'Comment (optional)',
     'host.ph.name':'Your name','host.ph.model':'e.g. Suzuki GN 125','host.ph.province':'Type or choose…','host.ph.municipality':'Type or choose…','host.ph.comment':'Bike condition, extras, questions…',
     'host.opt.select':'Select…',
@@ -302,6 +305,7 @@ const TRANSLATIONS = {
     'host.eyebrow':'Vous avez une moto ?','host.title':'Faites partie<br>de <span class="acc">Bitride</span>',
     'host.desc':"Mettez votre moto à profit avec nous.<br>Vous fournissez la moto ; nous apportons les clients et gérons les réservations, le paiement et la livraison.<br>Vous recevez votre part.",
     'host.f.name':'Nom','host.f.model':'Marque et modèle','host.f.cc':'Cylindrée','host.f.year':'Année',
+    'aria.more':'plus','aria.less':'moins','aria.year':'Année',
     'host.f.province':'Province','host.f.municipality':'Municipalité','host.f.availability':'Disponibilité','host.f.comment':'Commentaire (optionnel)',
     'host.ph.name':'Votre nom','host.ph.model':'Ex. Suzuki GN 125','host.ph.province':'Écrivez ou choisissez…','host.ph.municipality':'Écrivez ou choisissez…','host.ph.comment':'État de la moto, extras, questions…',
     'host.opt.select':'Sélectionner…',
@@ -314,6 +318,7 @@ const TRANSLATIONS = {
     'host.eyebrow':'Hast du ein Motorrad?','host.title':'Werde Teil<br>von <span class="acc">Bitride</span>',
     'host.desc':'Bring dein Motorrad mit uns zum Verdienen.<br>Du stellst das Motorrad; wir bringen die Kunden und kümmern uns um Buchungen, Zahlung und Übergabe.<br>Du bekommst deinen Anteil.',
     'host.f.name':'Name','host.f.model':'Marke & Modell','host.f.cc':'Hubraum','host.f.year':'Baujahr',
+    'aria.more':'mehr','aria.less':'weniger','aria.year':'Baujahr',
     'host.f.province':'Provinz','host.f.municipality':'Gemeinde','host.f.availability':'Verfügbarkeit','host.f.comment':'Kommentar (optional)',
     'host.ph.name':'Dein Name','host.ph.model':'z.B. Suzuki GN 125','host.ph.province':'Tippen oder wählen…','host.ph.municipality':'Tippen oder wählen…','host.ph.comment':'Zustand des Motorrads, Extras, Fragen…',
     'host.opt.select':'Auswählen…',
@@ -326,6 +331,7 @@ const TRANSLATIONS = {
     'host.eyebrow':'Hai una moto?','host.title':'Entra a far parte<br>di <span class="acc">Bitride</span>',
     'host.desc':'Metti la tua moto a rendere con noi.<br>Tu fornisci la moto; noi portiamo i clienti e gestiamo le prenotazioni, il pagamento e la consegna.<br>Tu ricevi la tua parte.',
     'host.f.name':'Nome','host.f.model':'Marca e modello','host.f.cc':'Cilindrata','host.f.year':'Anno',
+    'aria.more':'più','aria.less':'meno','aria.year':'Anno',
     'host.f.province':'Provincia','host.f.municipality':'Comune','host.f.availability':'Disponibilità','host.f.comment':'Commento (facoltativo)',
     'host.ph.name':'Il tuo nome','host.ph.model':'Es. Suzuki GN 125','host.ph.province':'Scrivi o scegli…','host.ph.municipality':'Scrivi o scegli…','host.ph.comment':'Stato della moto, extra, domande…',
     'host.opt.select':'Seleziona…',
@@ -348,6 +354,7 @@ function applyLang() {
   document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
   document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
   document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
   const lbl = document.getElementById('lang-current-label');
   if (lbl) lbl.textContent = currentLang.toUpperCase();
   document.querySelectorAll('.lang-option').forEach(opt => opt.classList.toggle('active', opt.dataset.lang === currentLang));
