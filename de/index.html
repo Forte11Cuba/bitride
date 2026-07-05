@@ -67,10 +67,11 @@
       "offerCount": "3"
     },
     "sameAs": [
-      "https://t.me/bitridego",
       "https://instagram.com/bitridego",
       "https://www.tiktok.com/@bitridego",
-      "https://youtube.com/@bitridego"
+      "https://youtube.com/@bitridego",
+      "https://x.com/bitridego",
+      "https://t.me/bitridego"
     ]
   }
   </script>
@@ -1056,23 +1057,29 @@
 
     /* ── SOCIAL GRID (sección Redes) ─────── */
     .social-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 44px;
     }
     .social-grid > * { min-width: 0; } /* permite que las tarjetas encojan y no desborden */
+    /* Glow naranja difuminado detrás del icono al pasar por encima o enfocarlo */
+    #rrss a svg { transition: filter 0.25s ease, transform 0.25s ease; }
+    #rrss a:hover svg,
+    #rrss a:focus-visible svg {
+      filter: drop-shadow(0 0 10px rgba(247,147,26,0.75)) drop-shadow(0 0 26px rgba(247,147,26,0.5));
+    }
 
     /* ── SOCIAL FOOTER ───────────────────── */
-    .footer-social { display: flex; gap: 16px; align-items: center; }
+    .footer-social { display: flex; gap: 20px; align-items: center; }
     .footer-social a {
-      width: 34px; height: 34px;
-      border: 1px solid var(--border);
       display: flex; align-items: center; justify-content: center;
       color: var(--muted); text-decoration: none;
-      transition: border-color 0.2s, color 0.2s;
+      transition: color 0.2s;
     }
-    .footer-social a:hover { border-color: var(--accent); color: var(--accent); }
-    .footer-social svg { width: 16px; height: 16px; }
+    .footer-social a:hover { color: var(--accent); }
+    .footer-social svg { width: 20px; height: 20px; }
 
     /* ── LANG SWITCHER ──────────────────────── */
     .nav-right { display: flex; align-items: center; gap: 14px; }
@@ -1182,8 +1189,8 @@
         border-bottom: 1px solid var(--border);
       }
       .nav-links li:last-child a { border-bottom: none; }
-      /* Redes: 2 columnas en móvil para que no desborden a la derecha */
-      .social-grid { grid-template-columns: repeat(2, 1fr); }
+      /* Redes: iconos que envuelven y se centran (sin tarjeta huérfana en la última fila) */
+      .social-grid { gap: 28px; }
     }
 
     /* ── PHONE (≤600px) ─────────────────────── */
@@ -1993,38 +2000,42 @@
 
       <!-- Instagram -->
       <a href="https://instagram.com/bitridego" target="_blank" rel="noopener"
-         style="background:var(--card); border:1px solid var(--border); padding:40px 28px; text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:16px; transition:border-color 0.25s, transform 0.25s;"
-         onmouseover="this.style.borderColor='var(--accent)'; this.style.transform='translateY(-4px)'"
-         onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)'">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="var(--accent)" stroke="none"/></svg>
-        <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--white);">Instagram</div>
+         style="padding:8px; text-decoration:none; display:flex; flex-direction:column; align-items:center; transition:transform 0.25s, opacity 0.25s;"
+         onmouseover="this.style.transform='translateY(-4px)'; this.style.opacity='0.85'"
+         onmouseout="this.style.transform='translateY(0)'; this.style.opacity='1'">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="var(--accent)" stroke="none"/></svg>
       </a>
 
       <!-- TikTok -->
       <a href="https://www.tiktok.com/@bitridego" target="_blank" rel="noopener"
-         style="background:var(--card); border:1px solid var(--border); padding:40px 28px; text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:16px; transition:border-color 0.25s, transform 0.25s;"
-         onmouseover="this.style.borderColor='var(--accent)'; this.style.transform='translateY(-4px)'"
-         onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)'">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--accent)"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.84 4.84 0 01-1.01-.07z"/></svg>
-        <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--white);">TikTok</div>
+         style="padding:8px; text-decoration:none; display:flex; flex-direction:column; align-items:center; transition:transform 0.25s, opacity 0.25s;"
+         onmouseover="this.style.transform='translateY(-4px)'; this.style.opacity='0.85'"
+         onmouseout="this.style.transform='translateY(0)'; this.style.opacity='1'">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="var(--accent)"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.84 4.84 0 01-1.01-.07z"/></svg>
       </a>
 
       <!-- YouTube -->
       <a href="https://youtube.com/@bitridego" target="_blank" rel="noopener"
-         style="background:var(--card); border:1px solid var(--border); padding:40px 28px; text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:16px; transition:border-color 0.25s, transform 0.25s;"
-         onmouseover="this.style.borderColor='var(--accent)'; this.style.transform='translateY(-4px)'"
-         onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)'">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--accent)"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--white);">YouTube</div>
+         style="padding:8px; text-decoration:none; display:flex; flex-direction:column; align-items:center; transition:transform 0.25s, opacity 0.25s;"
+         onmouseover="this.style.transform='translateY(-4px)'; this.style.opacity='0.85'"
+         onmouseout="this.style.transform='translateY(0)'; this.style.opacity='1'">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="var(--accent)"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+
+      <!-- X -->
+      <a href="https://x.com/bitridego" target="_blank" rel="noopener"
+         style="padding:8px; text-decoration:none; display:flex; flex-direction:column; align-items:center; transition:transform 0.25s, opacity 0.25s;"
+         onmouseover="this.style.transform='translateY(-4px)'; this.style.opacity='0.85'"
+         onmouseout="this.style.transform='translateY(0)'; this.style.opacity='1'">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="var(--accent)"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
       </a>
 
       <!-- Telegram -->
       <a href="https://t.me/bitridego" target="_blank" rel="noopener"
-         style="background:var(--card); border:1px solid var(--border); padding:40px 28px; text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:16px; transition:border-color 0.25s, transform 0.25s;"
-         onmouseover="this.style.borderColor='var(--accent)'; this.style.transform='translateY(-4px)'"
-         onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)'">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--accent)"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>
-        <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--white);">Telegram</div>
+         style="padding:8px; text-decoration:none; display:flex; flex-direction:column; align-items:center; transition:transform 0.25s, opacity 0.25s;"
+         onmouseover="this.style.transform='translateY(-4px)'; this.style.opacity='0.85'"
+         onmouseout="this.style.transform='translateY(0)'; this.style.opacity='1'">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="var(--accent)"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>
       </a>
 
     </div>
@@ -2032,13 +2043,12 @@
     <!-- Contáctanos -->
     <div class="rev" style="text-align:center; margin-top:72px;">
       <div class="eyebrow" data-i18n="rrss.contact">Kontaktiere uns</div>
-      <p class="sec-desc" style="margin:0 auto 32px; text-align:center;" data-i18n="rrss.contactdesc">Bereit für dein Abenteuer? Schreib uns auf WhatsApp, wir antworten sofort.</p>
+      <p class="sec-desc" style="margin:0 auto 32px; text-align:center;" data-i18n-html="rrss.contactdesc">Bereit für dein Abenteuer?<br>Schreib uns auf WhatsApp, wir antworten sofort.</p>
       <a href="https://wa.me/5355003336" target="_blank" rel="noopener"
-         style="max-width:260px; margin:0 auto; background:var(--card); border:1px solid var(--border); padding:40px 28px; text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:16px; transition:border-color 0.25s, transform 0.25s;"
-         onmouseover="this.style.borderColor='var(--accent)'; this.style.transform='translateY(-4px)'"
-         onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)'">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--accent)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--white);">WhatsApp</div>
+         style="margin:0 auto; padding:8px; text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:12px; transition:transform 0.25s, opacity 0.25s;"
+         onmouseover="this.style.transform='translateY(-4px)'; this.style.opacity='0.85'"
+         onmouseout="this.style.transform='translateY(0)'; this.style.opacity='1'">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="var(--accent)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; letter-spacing:0.04em; color:var(--accent);">+53 55 00 33 36</div>
       </a>
     </div>
@@ -2081,6 +2091,10 @@
     <!-- YouTube -->
     <a href="https://youtube.com/@bitridego" target="_blank" rel="noopener" aria-label="YouTube">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+    </a>
+    <!-- X -->
+    <a href="https://x.com/bitridego" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
     </a>
     <!-- Telegram -->
     <a href="https://t.me/bitridego" target="_blank" rel="noopener" aria-label="Telegram">
@@ -2165,7 +2179,7 @@ const TRANSLATIONS = {
     'rrss.eyebrow':'Síguenos','rrss.title':'Nuestras<br>redes',
     'rrss.desc':'Síguenos y sé parte de la comunidad Bitride. Rutas, aventuras y la vida en dos ruedas desde La Habana.',
     'rrss.follow':'Seguir →','rrss.write':'Escribir →',
-    'rrss.contact':'Contáctanos','rrss.contactdesc':'¿Listo para tu aventura? Escríbenos por WhatsApp y te respondemos al momento.',
+    'rrss.contact':'Contáctanos','rrss.contactdesc':'¿Listo para tu aventura?<br>Escríbenos por WhatsApp y te respondemos al momento.',
     'contact.eyebrow':'Hay rutas esperando','contact.title':'Cuba te<br>está<br><span class="acc">esperando</span>',
     'contact.sub':'Cada calle de La Habana, cada curva en Viñales, cada amanecer en el Malecón. Escríbenos y empieza tu aventura.',
     'footer.fleet':'Nuestra flota','footer.tours':'Tours','footer.prices':'Precios','footer.reviews':'Reseñas','footer.contact':'Contacto',
@@ -2254,7 +2268,7 @@ const TRANSLATIONS = {
     'rrss.eyebrow':'Follow us','rrss.title':'Our<br>networks',
     'rrss.desc':'Follow us and join the Bitride community. Routes, adventures and life on two wheels from Havana.',
     'rrss.follow':'Follow →','rrss.write':'Write →',
-    'rrss.contact':'Contact us','rrss.contactdesc':'Ready for your adventure? Message us on WhatsApp and we reply right away.',
+    'rrss.contact':'Contact us','rrss.contactdesc':'Ready for your adventure?<br>Message us on WhatsApp and we reply right away.',
     'contact.eyebrow':'Routes are waiting','contact.title':'Cuba is<br><span class="acc">waiting</span><br>for you',
     'contact.sub':'Every street in Havana, every curve in Viñales, every sunrise on the Malecón. Write to us and start your adventure.',
     'footer.fleet':'Our fleet','footer.tours':'Tours','footer.prices':'Prices','footer.reviews':'Reviews','footer.contact':'Contact',
@@ -2343,7 +2357,7 @@ const TRANSLATIONS = {
     'rrss.eyebrow':'Suivez-nous','rrss.title':'Nos<br>réseaux',
     'rrss.desc':'Suivez-nous et rejoignez la communauté Bitride. Itinéraires, aventures et la vie sur deux roues depuis La Havane.',
     'rrss.follow':'Suivre →','rrss.write':'Écrire →',
-    'rrss.contact':'Contactez-nous','rrss.contactdesc':"Prêt pour l'aventure ? Écrivez-nous sur WhatsApp, réponse immédiate.",
+    'rrss.contact':'Contactez-nous','rrss.contactdesc':"Prêt pour l'aventure ?<br>Écrivez-nous sur WhatsApp, réponse immédiate.",
     'contact.eyebrow':'Des routes vous attendent','contact.title':'Cuba<br>vous<br><span class="acc">attend</span>',
     'contact.sub':'Chaque rue de La Havane, chaque virage à Viñales, chaque lever de soleil sur le Malecón. Écrivez-nous et commencez votre aventure.',
     'footer.fleet':'Notre flotte','footer.tours':'Tours','footer.prices':'Prix','footer.reviews':'Avis','footer.contact':'Contact',
@@ -2432,7 +2446,7 @@ const TRANSLATIONS = {
     'rrss.eyebrow':'Folge uns','rrss.title':'Unsere<br>Netzwerke',
     'rrss.desc':'Folge uns und werde Teil der Bitride-Community. Routen, Abenteuer und das Leben auf zwei Rädern aus Havanna.',
     'rrss.follow':'Folgen →','rrss.write':'Schreiben →',
-    'rrss.contact':'Kontaktiere uns','rrss.contactdesc':'Bereit für dein Abenteuer? Schreib uns auf WhatsApp, wir antworten sofort.',
+    'rrss.contact':'Kontaktiere uns','rrss.contactdesc':'Bereit für dein Abenteuer?<br>Schreib uns auf WhatsApp, wir antworten sofort.',
     'contact.eyebrow':'Routen warten auf dich','contact.title':'Kuba<br>wartet<br><span class="acc">auf dich</span>',
     'contact.sub':'Jede Straße in Havanna, jede Kurve in Viñales, jeder Sonnenaufgang am Malecón. Schreib uns und beginne dein Abenteuer.',
     'footer.fleet':'Unsere Flotte','footer.tours':'Touren','footer.prices':'Preise','footer.reviews':'Bewertungen','footer.contact':'Kontakt',
@@ -2521,7 +2535,7 @@ const TRANSLATIONS = {
     'rrss.eyebrow':'Seguici','rrss.title':'I nostri<br>social',
     'rrss.desc':'Seguici e fai parte della comunità Bitride. Percorsi, avventure e la vita su due ruote dall\'Avana.',
     'rrss.follow':'Segui →','rrss.write':'Scrivi →',
-    'rrss.contact':'Contattaci','rrss.contactdesc':"Pronto per l'avventura? Scrivici su WhatsApp e ti rispondiamo subito.",
+    'rrss.contact':'Contattaci','rrss.contactdesc':"Pronto per l'avventura?<br>Scrivici su WhatsApp e ti rispondiamo subito.",
     'contact.eyebrow':'Le strade ti aspettano','contact.title':'Cuba ti<br>sta<br><span class="acc">aspettando</span>',
     'contact.sub':'Ogni strada dell\'Avana, ogni curva a Viñales, ogni alba sul Malecón. Scrivici e inizia la tua avventura.',
     'footer.fleet':'La nostra flotta','footer.tours':'Tour','footer.prices':'Prezzi','footer.reviews':'Recensioni','footer.contact':'Contatto',
