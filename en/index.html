@@ -3115,7 +3115,8 @@ function updatePrice() {
   const total    = rent + helmet + DELIVERY_FEE + deposit;
 
   const fmt    = d => d.toLocaleDateString(localeMap[currentLang] || 'es-ES', {day:'numeric', month:'short'});
-  const fmtMsg = d => d.toLocaleDateString('es-ES', {day:'2-digit', month:'2-digit', year:'numeric'});
+  // Fecha con nombre de mes: inambigua para el cliente (cualquier idioma) y para el negocio
+  const fmtMsg = d => d.toLocaleDateString('es-ES', {day:'numeric', month:'short', year:'numeric'});
   const discount = rate < RATE_STD ? `<span class="result-discount">${t('cal.discount')}</span>` : '';
 
   out.innerHTML = `<div class="rb">
@@ -3275,7 +3276,7 @@ function salidaWa(ruta, date) {
   const badge = info.badgeKey ? t(info.badgeKey) : '';
   const L = [t('wa.joinhello'), '',
     `${t('wa.route')}: ${name}${badge ? ' (' + badge + ')' : ''}`,
-    `${t('wa.date')}: ${date.toLocaleDateString('es-ES')}`];
+    `${t('wa.date')}: ${date.toLocaleDateString('es-ES', {day:'numeric', month:'short', year:'numeric'})}`];
   if (info.base) L.push(`- ${t('wa.planbase')}: $${info.base}`);
   if (info.extra) L.push(`- ${t('wa.extraperson')}: +$${info.extra}`);
   L.push('', t('wa.confirm'));
