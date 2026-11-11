@@ -23,27 +23,27 @@ const LANGS = ['en', 'fr', 'de', 'it'];
 const META = {
   en: {
     locale: 'en_US',
-    desc: 'Hurricane 250cc motorcycle rental in Havana, Cuba. Unlimited mileage, helmet included and citywide delivery. Pay with Bitcoin or cash. From 30 USD/day.',
-    bizDesc: 'Hurricane 250cc motorcycle rental in Havana, Cuba. Unlimited mileage and helmet included, delivery across Havana. Pay with Bitcoin (Lightning), cash or crypto.',
+    desc: 'Rent a motorcycle or automatic scooter in Havana and ride all of Cuba. Unlimited mileage, helmet included and citywide delivery. Pay with Bitcoin or cash. From 30 USD/day.',
+    bizDesc: 'Motorcycle (Hurricane 250cc) and automatic scooter (Tank 200) rental in Havana, Cuba. Unlimited mileage and helmet included, delivery across Havana. Pay with Bitcoin (Lightning), cash or crypto.',
   },
   fr: {
     locale: 'fr_FR',
-    desc: "Location de motos Hurricane 250cc à La Havane, Cuba. Kilométrage illimité, casque inclus et livraison dans toute la ville. Payez en Bitcoin ou espèces. Dès 30 USD/jour.",
-    bizDesc: "Location de motos Hurricane 250cc à La Havane, Cuba. Kilométrage illimité et casque inclus, livraison dans toute La Havane. Payez en Bitcoin (Lightning), espèces ou crypto.",
+    desc: 'Louez une moto ou un scooter automatique à La Havane et parcourez Cuba. Kilométrage illimité, casque inclus et livraison en ville. Payez en Bitcoin ou espèces. Dès 30 USD/jour.',
+    bizDesc: 'Location de motos (Hurricane 250cc) et de scooters automatiques (Tank 200) à La Havane, Cuba. Kilométrage illimité et casque inclus, livraison dans toute La Havane. Payez en Bitcoin (Lightning), espèces ou crypto.',
   },
   de: {
     locale: 'de_DE',
-    desc: 'Hurricane 250cc Motorradverleih in Havanna, Kuba. Unbegrenzte Kilometer, Helm inklusive und Lieferung stadtweit. Zahlung per Bitcoin oder bar. Ab 30 USD/Tag.',
-    bizDesc: 'Hurricane 250cc Motorradverleih in Havanna, Kuba. Unbegrenzte Kilometer und Helm inklusive, Lieferung in ganz Havanna. Zahlung per Bitcoin (Lightning), bar oder Krypto.',
+    desc: 'Miete ein Motorrad oder einen Automatik-Roller in Havanna und erkunde Kuba. Unbegrenzte Kilometer, Helm inklusive, Lieferung stadtweit. Zahlung per Bitcoin oder bar. Ab 30 USD/Tag.',
+    bizDesc: 'Verleih von Motorrädern (Hurricane 250cc) und Automatik-Rollern (Tank 200) in Havanna, Kuba. Unbegrenzte Kilometer und Helm inklusive, Lieferung in ganz Havanna. Zahlung per Bitcoin (Lightning), bar oder Krypto.',
   },
   it: {
     locale: 'it_IT',
-    desc: "Noleggio moto Hurricane 250cc a L'Avana, Cuba. Chilometraggio illimitato, casco incluso e consegna in tutta la città. Paga in Bitcoin o contanti. Da 30 USD/giorno.",
-    bizDesc: "Noleggio moto Hurricane 250cc a L'Avana, Cuba. Chilometraggio illimitato e casco incluso, consegna in tutta L'Avana. Paga in Bitcoin (Lightning), contanti o cripto.",
+    desc: "Noleggia una moto o uno scooter automatico a L'Avana e gira tutta Cuba. Chilometri illimitati, casco incluso e consegna in città. Paga in Bitcoin o contanti. Da 30 USD/giorno.",
+    bizDesc: "Noleggio di moto (Hurricane 250cc) e scooter automatici (Tank 200) a L'Avana, Cuba. Chilometraggio illimitato e casco incluso, consegna in tutta L'Avana. Paga in Bitcoin (Lightning), contanti o cripto.",
   },
 };
 
-const ES_BIZ_DESC = 'Alquiler de motos Hurricane 250cc en La Habana, Cuba. Kilometraje ilimitado y casco incluido, entrega en toda La Habana. Paga en Bitcoin (Lightning), efectivo o cripto.';
+const ES_BIZ_DESC = 'Alquiler de motos (Hurricane 250cc) y scooters automáticos (Tank 200) en La Habana, Cuba. Kilometraje ilimitado y casco incluido, entrega en toda La Habana. Paga en Bitcoin (Lightning), efectivo o cripto.';
 
 const html = fs.readFileSync('index.html', 'utf8');
 
@@ -126,7 +126,7 @@ function buildFaqBlock(T) {
   const faq = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: [1, 2, 3, 4].map(i => ({
+    mainEntity: [1, 2, 3, 4, 5].map(i => ({
       '@type': 'Question',
       name: T['faq.q' + i],
       acceptedAnswer: { '@type': 'Answer', text: T['faq.a' + i] },
