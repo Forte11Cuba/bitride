@@ -2398,6 +2398,7 @@ const TRANSLATIONS = {
     'host.cta2':'Quiero sumarme',
     'host.eyebrow':'¿Tienes una moto?','host.title':'Forma parte<br>de <span class="acc">Bitride</span>',
     'host.desc':'Pon tu moto a rodar con nosotros. Tú aportas la moto; nosotros ponemos los clientes, gestionamos las reservas, el cobro y la entrega. Tú recibes tu parte.',
+    'wa.float':'Hola, me interesa alquilar una moto en Bitride','wa.bikehello':'Hola, quiero reservar la {bike}',
   },
   en: {
     'title':'Motorcycle & Scooter Rental in Havana, Cuba · Bitride',
@@ -2505,6 +2506,7 @@ const TRANSLATIONS = {
     'host.cta2':'Count me in',
     'host.eyebrow':'Got a motorcycle?','host.title':'Become part<br>of <span class="acc">Bitride</span>',
     'host.desc':'Put your motorcycle to work with us. You provide the bike; we bring the clients and handle the bookings, payments and delivery. You get your share.',
+    'wa.float':'Hi, I’m interested in renting a motorcycle with Bitride','wa.bikehello':'Hi, I’d like to book the {bike}',
   },
   fr: {
     'title':'Location de Motos et Scooters à La Havane, Cuba · Bitride',
@@ -2612,6 +2614,7 @@ const TRANSLATIONS = {
     'host.cta2':'Je veux participer',
     'host.eyebrow':'Vous avez une moto ?','host.title':'Faites partie<br>de <span class="acc">Bitride</span>',
     'host.desc':"Mettez votre moto à profit avec nous. Vous fournissez la moto ; nous apportons les clients et gérons les réservations, le paiement et la livraison. Vous recevez votre part.",
+    'wa.float':'Bonjour, je souhaite louer une moto chez Bitride','wa.bikehello':'Bonjour, je voudrais réserver la {bike}',
   },
   de: {
     'title':'Motorrad- & Rollerverleih in Havanna, Kuba · Bitride',
@@ -2719,6 +2722,7 @@ const TRANSLATIONS = {
     'host.cta2':'Ich mache mit',
     'host.eyebrow':'Hast du ein Motorrad?','host.title':'Werde Teil<br>von <span class="acc">Bitride</span>',
     'host.desc':'Bring dein Motorrad mit uns zum Verdienen. Du stellst das Motorrad; wir bringen die Kunden und kümmern uns um Buchungen, Zahlung und Übergabe. Du bekommst deinen Anteil.',
+    'wa.float':'Hallo, ich möchte bei Bitride ein Motorrad mieten','wa.bikehello':'Hallo, ich möchte die {bike} buchen',
   },
   it: {
     'title':'Noleggio Moto e Scooter a L\'Avana, Cuba · Bitride',
@@ -2826,6 +2830,7 @@ const TRANSLATIONS = {
     'host.cta2':'Voglio partecipare',
     'host.eyebrow':'Hai una moto?','host.title':'Entra a far parte<br>di <span class="acc">Bitride</span>',
     'host.desc':'Metti la tua moto a rendere con noi. Tu fornisci la moto; noi portiamo i clienti e gestiamo le prenotazioni, il pagamento e la consegna. Tu ricevi la tua parte.',
+    'wa.float':'Ciao, vorrei noleggiare una moto con Bitride','wa.bikehello':'Ciao, vorrei prenotare la {bike}',
   },
   he: {
     'title':'השכרת אופנועים וקטנועים בקובה, הוואנה · Bitride',
@@ -3043,6 +3048,7 @@ const TRANSLATIONS = {
     'cal.pickbike':'בחרו לפחות אופנוע אחד כדי לראות את המחיר',
     'faq.q5':'יש לכם אופנועים אוטומטיים או קטנועים?',
     'faq.a5':'כן. בנוסף ל־Hurricane 250cc (ידני), אנחנו משכירים את הקטנוע האוטומטי Tank 200: בלי הילוכים ובלי קלאץ׳, אידיאלי אם מעולם לא רכבתם על אופנוע עם הילוכים. אותו מחיר ואותם תנאים.',
+    'wa.float':'שלום, אני מעוניין לשכור אופנוע ב־Bitride','wa.bikehello':'שלום, אני רוצה להזמין את ה־{bike}',
   },
   // Árabe estándar moderno (MSA): lo entienden todos los países árabes. Algunos textos
   // incluyen a propósito variantes regionales (موتوسيكل، موتور، دباب) para el SEO.
@@ -3151,6 +3157,7 @@ const TRANSLATIONS = {
     'host.cta2':'أريد الانضمام',
     'host.eyebrow':'لديك دراجة نارية؟','host.title':'انضم<br>إلى <span class="acc">Bitride</span>',
     'host.desc':'شغّل دراجتك معنا. أنت تقدّم الدراجة؛ ونحن نجلب العملاء وندير الحجوزات والدفع والتسليم. وأنت تحصل على حصتك.',
+    'wa.float':'مرحبًا، أرغب في استئجار دراجة نارية من Bitride','wa.bikehello':'مرحبًا، أريد حجز {bike}',
   },
   // Ruso: se trata de «вы». Algunos textos incluyen a propósito los sinónimos que se
   // buscan (аренда/прокат, мотоцикл/байк, скутер/мопед) para el SEO.
@@ -3259,6 +3266,7 @@ const TRANSLATIONS = {
     'host.cta2':'Хочу присоединиться',
     'host.eyebrow':'Есть мотоцикл?','host.title':'Станьте частью<br><span class="acc">Bitride</span>',
     'host.desc':'Пусть ваш мотоцикл работает с нами. Вы предоставляете мотоцикл, мы — клиентов, бронирования, оплату и доставку. Вы получаете свою долю.',
+    'wa.float':'Здравствуйте, хочу взять мотоцикл в аренду в Bitride','wa.bikehello':'Здравствуйте, хочу забронировать {bike}',
   },
 };
 
@@ -3282,6 +3290,9 @@ function applyLang() {
   document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
   document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
   document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+  document.querySelectorAll('[data-i18n-alt]').forEach(el => { el.alt = t(el.dataset.i18nAlt); });
+  const waFloat = document.getElementById('wa-float');
+  if (waFloat) waFloat.href = 'https://wa.me/5355003336?text=' + encodeURIComponent(t('wa.float'));
   document.querySelectorAll('[data-i18n-aria][title]').forEach(el => { el.title = el.getAttribute('aria-label'); });
   const lbl = document.getElementById('lang-current-label');
   if (lbl) lbl.textContent = currentLang.toUpperCase();
@@ -4203,7 +4214,7 @@ function renderStaticFleetModel(idx, fade) {
   const units    = Math.max(1, m.units);
   const unitDots = Array.from({length: Math.min(units, 5)}, () => '<div class="fleet-unit-dot"></div>').join('');
   const availTxt = units === 1 ? t('fleet.unit') : t('fleet.units').replace('{n}', units);
-  const bookUrl  = 'https://wa.me/5355003336?text=' + encodeURIComponent(`Hola, quiero reservar la ${m.name}`);
+  const bookUrl  = 'https://wa.me/5355003336?text=' + encodeURIComponent(t('wa.bikehello').replace('{bike}', m.name));
   wrap.innerHTML = `
     <div class="fleet-showcase${fade ? ' fleet-fade' : ''}">
       <div class="fleet-img-panel">

@@ -193,7 +193,7 @@
 
 <main class="anf-main">
   <div class="anf-hero">
-    <img class="anf-hero-img" src="/assets/entrega-llaves.webp" alt="Entrega de las llaves de una moto a un motorista con casco y guantes" fetchpriority="high" decoding="async">
+    <img class="anf-hero-img" src="/assets/entrega-llaves.webp" data-i18n-alt="host.img.alt" alt="Consegna delle chiavi di una moto a un motociclista con casco e guanti" fetchpriority="high" decoding="async">
     <div class="wrap">
       <div class="anf-hero-copy">
         <div class="eyebrow" data-i18n="host.eyebrow">Hai una moto?</div>
@@ -302,6 +302,7 @@ const TRANSLATIONS = {
     'host.avail.year':'Todo el año','host.avail.season':'Por temporadas','host.avail.months':'Solo algunos meses',
     'host.cta':'Enviar por WhatsApp','host.error':'Completa los campos marcados.',
     'host.wa.hello':'Hola Bitride, quiero poner mi moto a rentar con ustedes','host.wa.moto':'Moto','host.wa.location':'Ubicación','host.wa.comment':'Comentario','host.wa.confirm':'¿Cómo empezamos?',
+    'host.img.alt':'Entrega de las llaves de una moto a un motorista con casco y guantes',
   },
   en: {
     'anf.back':'Back',
@@ -315,6 +316,7 @@ const TRANSLATIONS = {
     'host.avail.year':'All year','host.avail.season':'Seasonal','host.avail.months':'Only some months',
     'host.cta':'Send via WhatsApp','host.error':'Please complete the marked fields.',
     'host.wa.hello':'Hi Bitride, I would like to list my motorcycle with you','host.wa.moto':'Bike','host.wa.location':'Location','host.wa.comment':'Comment','host.wa.confirm':'How do we get started?',
+    'host.img.alt':'Handing over the motorcycle keys to a rider wearing a helmet and gloves',
   },
   fr: {
     'anf.back':'Retour',
@@ -328,6 +330,7 @@ const TRANSLATIONS = {
     'host.avail.year':"Toute l'année",'host.avail.season':'Par saisons','host.avail.months':'Seulement quelques mois',
     'host.cta':'Envoyer par WhatsApp','host.error':'Veuillez remplir les champs indiqués.',
     'host.wa.hello':'Bonjour Bitride, je souhaite proposer ma moto avec vous','host.wa.moto':'Moto','host.wa.location':'Lieu','host.wa.comment':'Commentaire','host.wa.confirm':'Comment commençons-nous ?',
+    'host.img.alt':'Remise des clés d’une moto à un motard portant casque et gants',
   },
   de: {
     'anf.back':'Zurück',
@@ -341,6 +344,7 @@ const TRANSLATIONS = {
     'host.avail.year':'Ganzjährig','host.avail.season':'Saisonal','host.avail.months':'Nur einige Monate',
     'host.cta':'Per WhatsApp senden','host.error':'Bitte die markierten Felder ausfüllen.',
     'host.wa.hello':'Hallo Bitride, ich möchte mein Motorrad bei euch anbieten','host.wa.moto':'Motorrad','host.wa.location':'Standort','host.wa.comment':'Kommentar','host.wa.confirm':'Wie fangen wir an?',
+    'host.img.alt':'Übergabe der Motorradschlüssel an einen Fahrer mit Helm und Handschuhen',
   },
   it: {
     'anf.back':'Indietro',
@@ -354,6 +358,7 @@ const TRANSLATIONS = {
     'host.avail.year':'Tutto l\'anno','host.avail.season':'Stagionale','host.avail.months':'Solo alcuni mesi',
     'host.cta':'Invia su WhatsApp','host.error':'Compila i campi indicati.',
     'host.wa.hello':'Ciao Bitride, vorrei mettere la mia moto con voi','host.wa.moto':'Moto','host.wa.location':'Posizione','host.wa.comment':'Commento','host.wa.confirm':'Come iniziamo?',
+    'host.img.alt':'Consegna delle chiavi di una moto a un motociclista con casco e guanti',
   },
   he: {
     'anf.back':'חזרה',
@@ -387,6 +392,7 @@ const TRANSLATIONS = {
     'host.wa.location':'מיקום',
     'host.wa.comment':'הערה',
     'host.wa.confirm':'איך מתחילים?',
+    'host.img.alt':'מסירת מפתחות האופנוע לרוכב עם קסדה וכפפות',
   },
   ar: {
     'anf.back':'رجوع',
@@ -400,6 +406,7 @@ const TRANSLATIONS = {
     'host.avail.year':'طوال العام','host.avail.season':'حسب المواسم','host.avail.months':'بعض الأشهر فقط',
     'host.cta':'إرسال عبر واتساب','host.error':'أكمل الحقول المحددة.',
     'host.wa.hello':'مرحبًا Bitride، أريد عرض دراجتي للإيجار معكم','host.wa.moto':'الدراجة','host.wa.location':'الموقع','host.wa.comment':'ملاحظة','host.wa.confirm':'كيف نبدأ؟',
+    'host.img.alt':'تسليم مفاتيح الدراجة النارية لراكب يرتدي خوذة وقفازات',
   },
   ru: {
     'anf.back':'Назад',
@@ -413,6 +420,7 @@ const TRANSLATIONS = {
     'host.avail.year':'Круглый год','host.avail.season':'По сезонам','host.avail.months':'Только некоторые месяцы',
     'host.cta':'Отправить в WhatsApp','host.error':'Заполните отмеченные поля.',
     'host.wa.hello':'Здравствуйте, Bitride! Хочу сдавать свой мотоцикл в аренду через вас','host.wa.moto':'Мотоцикл','host.wa.location':'Местоположение','host.wa.comment':'Комментарий','host.wa.confirm':'С чего начнём?',
+    'host.img.alt':'Передача ключей от мотоцикла мотоциклисту в шлеме и перчатках',
   },
 };
 
@@ -432,6 +440,7 @@ function applyLang() {
   document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
   document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
   document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+  document.querySelectorAll('[data-i18n-alt]').forEach(el => { el.alt = t(el.dataset.i18nAlt); });
   const lbl = document.getElementById('lang-current-label');
   if (lbl) lbl.textContent = currentLang.toUpperCase();
   document.querySelectorAll('.lang-option').forEach(opt => opt.classList.toggle('active', opt.dataset.lang === currentLang));

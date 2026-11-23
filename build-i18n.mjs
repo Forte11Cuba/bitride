@@ -88,6 +88,7 @@ const setMeta = (s, re, val) => s.replace(re, (_m, p1, p2) => p1 + val + p2);
 //   data-i18n-html → innerHTML     (contenido con markup, se inserta tal cual)
 //   data-i18n-ph   → placeholder   (atributo del <input>)
 //   data-i18n-aria → aria-label    (accesibilidad)
+//   data-i18n-alt  → alt           (accesibilidad + Google Imágenes)
 // Así Googlebot/Bing ven el idioma correcto en la primera lectura del HTML,
 // sin depender de ejecutar JS. El JS sigue re-aplicando en runtime (idempotente).
 const escText = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -115,13 +116,14 @@ function findMatchingClose(str, tag, fromIdx) {
 }
 
 function translateBody(src, T) {
-  // 1) Atributos: placeholder (data-i18n-ph) y aria-label (data-i18n-aria).
+  // 1) Atributos: placeholder (data-i18n-ph), aria-label (data-i18n-aria) y alt (data-i18n-alt).
   //    Reescribe (o añade) el atributo destino en el tag de apertura.
   let s = src;
-  for (const [dataAttr, targetAttr] of [['data-i18n-ph', 'placeholder'], ['data-i18n-aria', 'aria-label']]) {
+  for (const [dataAttr, targetAttr] of [['data-i18n-ph', 'placeholder'], ['data-i18n-aria', 'aria-label'], ['data-i18n-alt', 'alt']]) {
     const hookRe = new RegExp(`<([a-zA-Z0-9]+)((?:[^>]*?)\\b${dataAttr}="([^"]+)"(?:[^>]*?))>`, 'g');
-    const hasAttr = new RegExp(`\\b${targetAttr}="`);
-    const replAttr = new RegExp(`\\b${targetAttr}="[^"]*"`);
+    // (?<![\\w-]): que "alt" no coincida dentro de "data-i18n-alt"
+    const hasAttr = new RegExp(`(?<![\\w-])${targetAttr}="`);
+    const replAttr = new RegExp(`(?<![\\w-])${targetAttr}="[^"]*"`);
     s = s.replace(hookRe, (full, tag, attrs, key) => {
       const val = T[key];
       if (val === undefined) return full;
@@ -190,6 +192,9 @@ for (const lang of LANGS) {
 
   // assets relativos → root-absolute (funcionan desde /xx/)
   out = out.replace(/'assets\//g, "'/assets/").replace(/"assets\//g, '"/assets/');
+
+  // Botón flotante de WhatsApp: mensaje inicial en el idioma de la página (el JS lo re-aplica).
+  out = out.replace('https://wa.me/5355003336?text=Hola%2C+me+interesa+alquilar+una+moto+en+Bitride', 'https://wa.me/5355003336?text=' + encodeURIComponent(T['wa.float']));
 
   // Pre-traducir el <body> para que Googlebot/Bing lean el idioma sin ejecutar JS.
   out = translateBody(out, T);
