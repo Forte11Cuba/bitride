@@ -1,8 +1,8 @@
 /**
  * build-i18n.mjs — genera las versiones por idioma del sitio para SEO.
  *
- * Lee index.html (fuente única, en español) y produce en/, fr/, de/, it/ con:
- *  - <html lang> correcto y <head> traducido (title, description, og, twitter, canonical, og:url)
+ * Lee index.html (fuente única, en español) y produce en/, fr/, de/, it/, he/ con:
+ *  - <html lang> correcto (+ dir="rtl" en hebreo) y <head> traducido (title, description, og, twitter, canonical, og:url)
  *  - rutas de assets root-absolute (/assets/...) para que funcionen desde subdirectorios
  *  - JSON-LD (descripción del negocio + FAQPage) traducido desde el propio i18n
  *  - hreflang heredado del index.html
@@ -17,7 +17,9 @@
 import fs from 'fs';
 
 const BASE = 'https://bitride.rent';
-const LANGS = ['en', 'fr', 'de', 'it'];
+const LANGS = ['en', 'fr', 'de', 'it', 'he'];
+const RTL_LANGS = ['he'];
+const htmlOpen = lang => `<html lang="${lang}"${RTL_LANGS.includes(lang) ? ' dir="rtl"' : ''}>`;
 
 // Metadatos del <head> y descripciones del negocio por idioma (el title sale del i18n).
 const META = {
@@ -40,6 +42,11 @@ const META = {
     locale: 'it_IT',
     desc: "Noleggia una moto o uno scooter automatico a L'Avana e gira tutta Cuba. Chilometri illimitati, casco incluso e consegna in città. Paga in Bitcoin o contanti. Da 30 USD/giorno.",
     bizDesc: "Noleggio di moto (Hurricane 250cc) e scooter automatici (Tank 200) a L'Avana, Cuba. Chilometraggio illimitato e casco incluso, consegna in tutta L'Avana. Paga in Bitcoin (Lightning), contanti o cripto.",
+  },
+  he: {
+    locale: 'he_IL',
+    desc: 'שכרו אופנוע או קטנוע אוטומטי בהוואנה וטיילו בכל קובה. קילומטראז׳ ללא הגבלה, קסדה כלולה ומסירה בכל העיר. תשלום בביטקוין או במזומן. החל מ־30 USD ליום.',
+    bizDesc: 'השכרת אופנועים (Hurricane 250cc) וקטנועים אוטומטיים (Tank 200) בהוואנה, קובה. קילומטראז׳ ללא הגבלה וקסדה כלולה, מסירה בכל הוואנה. תשלום בביטקוין (Lightning), במזומן או בקריפטו.',
   },
 };
 
@@ -141,7 +148,7 @@ for (const lang of LANGS) {
   const meta = META[lang];
   let out = html;
 
-  out = out.replace('<html lang="es">', `<html lang="${lang}">`);
+  out = out.replace('<html lang="es">', htmlOpen(lang));
   out = out.replace(/<title>[^<]*<\/title>/, `<title>${T.title}</title>`);
   out = setMeta(out, /(<meta name="description" content=")[^"]*(">)/, meta.desc);
   out = setMeta(out, /(<meta property="og:title" content=")[^"]*(">)/, T.title);
@@ -200,6 +207,13 @@ const ANF_META = {
     svcType: 'Gestione del noleggio di moto per proprietari',
     svcDesc: "Metti la tua moto a rendere a Cuba con Bitride. Noi portiamo i clienti e gestiamo prenotazioni, pagamento e consegna; tu ricevi la tua parte.",
   },
+  he: {
+    title: 'השכירו את האופנוע שלכם בקובה והרוויחו · Bitride',
+    desc: 'השכירו את האופנוע שלכם בקובה עם Bitride והרוויחו. אתם מביאים את האופנוע; אנחנו מביאים את הלקוחות ומטפלים בהזמנות, בתשלום ובמסירה. מלאו את הטופס וניצור קשר.',
+    svcName: 'השכירו את האופנוע שלכם עם Bitride',
+    svcType: 'ניהול השכרת אופנועים לבעלים',
+    svcDesc: 'הציעו את האופנוע שלכם בקובה עם Bitride. אנחנו מביאים את הלקוחות ומטפלים בהזמנות, בתשלום ובמסירה; אתם מקבלים את החלק שלכם.',
+  },
 };
 
 const anfHtml = fs.readFileSync('hosts.html', 'utf8');
@@ -211,7 +225,7 @@ const ANF_TRANSLATIONS = new Function('return (' + anfM[1] + ')')();
 for (const lang of LANGS) {
   const meta = ANF_META[lang];
   let out = anfHtml;
-  out = out.replace('<html lang="es">', `<html lang="${lang}">`);
+  out = out.replace('<html lang="es">', htmlOpen(lang));
   out = out.replace(/<title>[^<]*<\/title>/, `<title>${meta.title}</title>`);
   out = setMeta(out, /(<meta name="description" content=")[^"]*(">)/, meta.desc);
   out = setMeta(out, /(<meta property="og:title" content=")[^"]*(">)/, meta.title);
