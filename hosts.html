@@ -16,6 +16,7 @@
   <link rel="alternate" hreflang="fr" href="https://bitride.rent/fr/hosts.html">
   <link rel="alternate" hreflang="de" href="https://bitride.rent/de/hosts.html">
   <link rel="alternate" hreflang="it" href="https://bitride.rent/it/hosts.html">
+  <link rel="alternate" hreflang="he" href="https://bitride.rent/he/hosts.html">
   <link rel="alternate" hreflang="x-default" href="https://bitride.rent/hosts.html">
 
   <meta property="og:type" content="website">
@@ -50,7 +51,7 @@
   <link rel="apple-touch-icon" href="assets/logo/bitride-logo-transparent.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,700;1,800&family=Barlow:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,700;1,800&family=Barlow:wght@400;500;600&family=Space+Mono:wght@400;700&family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -59,7 +60,7 @@
       --accent: #f7931a; --white: #ffffff; --muted: rgba(255,255,255,0.42);
     }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--white); overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
+    body { font-family: 'Barlow', 'Heebo', sans-serif; background: var(--bg); color: var(--white); overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
     .acc { color: var(--accent); }
     .wrap { max-width: 820px; margin: 0 auto; padding: 0 24px; width: 100%; }
 
@@ -67,15 +68,15 @@
     .topbar { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 15px 24px; background: rgba(8,8,6,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
     .topbar-logo img { height: 26px; display: block; }
     .topbar-right { display: flex; align-items: center; gap: 18px; }
-    .back-link { display: inline-flex; align-items: center; gap: 6px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; font-family: 'Barlow Condensed', 'Heebo', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .back-link:hover { color: var(--white); }
 
     /* Language switcher */
     .lang-switcher { position: relative; }
-    .lang-current { display: flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); color: var(--white); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.06em; padding: 8px 12px; cursor: pointer; }
+    .lang-current { display: flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); color: var(--white); font-family: 'Barlow Condensed', 'Heebo', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.06em; padding: 8px 12px; cursor: pointer; }
     .lang-dropdown { position: absolute; right: 0; top: calc(100% + 6px); background: var(--card); border: 1px solid var(--border); min-width: 150px; display: none; flex-direction: column; z-index: 200; }
     .lang-switcher.open .lang-dropdown { display: flex; }
-    .lang-option { background: none; border: none; color: var(--white); text-align: left; padding: 10px 14px; font-family: 'Barlow', sans-serif; font-size: 13px; cursor: pointer; }
+    .lang-option { background: none; border: none; color: var(--white); text-align: left; padding: 10px 14px; font-family: 'Barlow', 'Heebo', sans-serif; font-size: 13px; cursor: pointer; }
     .lang-option:hover, .lang-option.active { background: var(--bg2); color: var(--accent); }
 
     /* Main */
@@ -101,11 +102,11 @@
       .anf-hero-copy { padding: 24px 0 4px; max-width: none; }
     }
     .eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
-    .anf-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(40px, 7vw, 68px); font-weight: 800; line-height: 0.92; text-transform: uppercase; letter-spacing: -0.015em; margin-bottom: 20px; }
+    .anf-title { font-family: 'Barlow Condensed', 'Heebo', sans-serif; font-size: clamp(40px, 7vw, 68px); font-weight: 800; line-height: 0.92; text-transform: uppercase; letter-spacing: -0.015em; margin-bottom: 20px; }
     .anf-desc { font-size: 16px; color: var(--muted); line-height: 1.72; max-width: 560px; }
 
     /* Buttons */
-    .btn-solid { display: inline-flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 16px; letter-spacing: 0.09em; text-transform: uppercase; padding: 14px 32px; background: var(--accent); color: var(--bg); text-decoration: none; border: none; cursor: pointer; transition: opacity 0.2s, transform 0.15s; }
+    .btn-solid { display: inline-flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', 'Heebo', sans-serif; font-weight: 800; font-size: 16px; letter-spacing: 0.09em; text-transform: uppercase; padding: 14px 32px; background: var(--accent); color: var(--bg); text-decoration: none; border: none; cursor: pointer; transition: opacity 0.2s, transform 0.15s; }
     .btn-solid:hover { opacity: 0.88; transform: translateY(-2px); }
 
     /* Form */
@@ -114,8 +115,8 @@
     .host-field { display: flex; flex-direction: column; gap: 8px; }
     .host-field.full { grid-column: 1 / -1; }
     .host-col2 { grid-column: span 2; }
-    .host-field label { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-    .host-field input, .host-field select, .host-field textarea { background: var(--bg); border: 1px solid var(--border); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 15px; padding: 12px 14px; width: 100%; transition: border-color 0.2s; }
+    .host-field label { font-family: 'Barlow Condensed', 'Heebo', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .host-field input, .host-field select, .host-field textarea { background: var(--bg); border: 1px solid var(--border); color: var(--white); font-family: 'Barlow', 'Heebo', sans-serif; font-size: 15px; padding: 12px 14px; width: 100%; transition: border-color 0.2s; }
     .host-field textarea { resize: vertical; min-height: 84px; }
     .host-field input:focus, .host-field select:focus, .host-field textarea:focus { outline: none; border-color: var(--accent); }
     .host-field input::placeholder, .host-field textarea::placeholder { color: rgba(255,255,255,0.3); }
@@ -129,7 +130,7 @@
     .host-stepper { display: inline-flex; align-items: center; border: 1px solid var(--border); background: var(--bg); width: 100%; }
     .host-stepper button { width: 46px; height: 46px; flex-shrink: 0; border: none; background: transparent; color: var(--white); font-size: 20px; line-height: 1; cursor: pointer; transition: color 0.2s; }
     .host-stepper button:hover { color: var(--accent); }
-    .host-stepper input { flex: 1; min-width: 0; height: 46px; border: none; background: transparent; color: var(--white); text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; -moz-appearance: textfield; }
+    .host-stepper input { flex: 1; min-width: 0; height: 46px; border: none; background: transparent; color: var(--white); text-align: center; font-family: 'Barlow Condensed', 'Heebo', sans-serif; font-size: 20px; font-weight: 700; -moz-appearance: textfield; }
     .host-stepper input:focus { outline: none; }
 
     /* Botón de envío en verde WhatsApp (blanco sobre verde, ancho completo) */
@@ -146,6 +147,13 @@
       .host-col2 { grid-column: auto; }
       .topbar-right { gap: 12px; }
     }
+    /* ── RTL (hebreo) ────────────────────── */
+    html[lang="he"] * { letter-spacing: normal !important; }
+    [dir="rtl"] .lang-dropdown { right: auto; left: 0; }
+    [dir="rtl"] .lang-option { text-align: right; }
+    [dir="rtl"] .host-field select { background-position: left 14px center; padding-right: 14px; padding-left: 38px; }
+    [dir="rtl"] .anf-hero-img { right: auto; left: 30%; }
+    [dir="rtl"] svg:has(polyline[points="15 18 9 12 15 6"]) { transform: scaleX(-1); }
   </style>
 </head>
 <body>
@@ -170,6 +178,7 @@
         <button class="lang-option" data-lang="fr">FR · Français</button>
         <button class="lang-option" data-lang="de">DE · Deutsch</button>
         <button class="lang-option" data-lang="it">IT · Italiano</button>
+        <button class="lang-option" data-lang="he">HE · עברית</button>
       </div>
     </div>
   </div>
@@ -339,10 +348,44 @@ const TRANSLATIONS = {
     'host.cta':'Invia su WhatsApp','host.error':'Compila i campi indicati.',
     'host.wa.hello':'Ciao Bitride, vorrei mettere la mia moto con voi','host.wa.moto':'Moto','host.wa.location':'Posizione','host.wa.comment':'Commento','host.wa.confirm':'Come iniziamo?',
   },
+  he: {
+    'anf.back':'חזרה',
+    'host.eyebrow':'יש לכם אופנוע?',
+    'host.title':'הצטרפו<br>ל־<span class="acc">Bitride</span>',
+    'host.desc':'שימו את האופנוע שלכם לעבוד איתנו.<br>אתם מביאים את האופנוע; אנחנו מביאים את הלקוחות ומטפלים בהזמנות, בתשלום ובמסירה.<br>אתם מקבלים את החלק שלכם.',
+    'host.f.name':'שם',
+    'host.f.model':'יצרן ודגם',
+    'host.f.cc':'נפח מנוע',
+    'host.f.year':'שנה',
+    'aria.more':'עוד',
+    'aria.less':'פחות',
+    'aria.year':'שנה',
+    'host.f.province':'מחוז',
+    'host.f.municipality':'עירייה',
+    'host.f.availability':'זמינות',
+    'host.f.comment':'הערה (לא חובה)',
+    'host.ph.name':'השם שלכם',
+    'host.ph.model':'לדוגמה Suzuki GN 125',
+    'host.ph.province':'הקלידו או בחרו…',
+    'host.ph.municipality':'הקלידו או בחרו…',
+    'host.ph.comment':'מצב האופנוע, תוספות, שאלות…',
+    'host.opt.select':'בחרו…',
+    'host.avail.year':'כל השנה',
+    'host.avail.season':'עונתי',
+    'host.avail.months':'רק בחלק מהחודשים',
+    'host.cta':'שליחה בוואטסאפ',
+    'host.error':'נא למלא את השדות המסומנים.',
+    'host.wa.hello':'שלום Bitride, אני רוצה להציע את האופנוע שלי אצלכם',
+    'host.wa.moto':'אופנוע',
+    'host.wa.location':'מיקום',
+    'host.wa.comment':'הערה',
+    'host.wa.confirm':'איך מתחילים?',
+  },
 };
 
-const PATH_LANG = (location.pathname.match(/^\/(en|fr|de|it)(\/|$)/) || [])[1];
+const PATH_LANG = (location.pathname.match(/^\/(en|fr|de|it|he)(\/|$)/) || [])[1];
 let currentLang = PATH_LANG || localStorage.getItem('bitride_lang') || 'es';
+const RTL_LANGS = ['he'];
 
 function t(key) {
   return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key])
@@ -351,6 +394,7 @@ function t(key) {
 
 function applyLang() {
   document.documentElement.lang = currentLang;
+  document.documentElement.dir = RTL_LANGS.includes(currentLang) ? 'rtl' : 'ltr';
   document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
   document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
   document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
@@ -363,7 +407,7 @@ function applyLang() {
 /* Language switcher — cada idioma tiene su URL */
 const sw = document.getElementById('lang-switcher');
 document.getElementById('lang-current').addEventListener('click', e => { e.stopPropagation(); sw.classList.toggle('open'); });
-const ANF_URLS = { es:'/hosts.html', en:'/en/hosts.html', fr:'/fr/hosts.html', de:'/de/hosts.html', it:'/it/hosts.html' };
+const ANF_URLS = { es:'/hosts.html', en:'/en/hosts.html', fr:'/fr/hosts.html', de:'/de/hosts.html', it:'/it/hosts.html', he:'/he/hosts.html' };
 document.querySelectorAll('.lang-option').forEach(opt => {
   opt.addEventListener('click', () => {
     const lang = opt.dataset.lang;

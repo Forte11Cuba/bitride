@@ -6,7 +6,7 @@ Sitio de una sola página (`index.html`, HTML + CSS + JS inline, sin dependencia
 
 ## Características
 - Diseño responsive, tema oscuro estilo Bitcoin.
-- **i18n** en 5 idiomas (ES / EN / FR / DE / IT) mediante atributos `data-i18n`.
+- **i18n** en 6 idiomas (ES / EN / FR / DE / IT / HE) mediante atributos `data-i18n`; el hebreo se sirve en RTL (`dir="rtl"`).
 - **Flota en vivo** desde la API de Rentaria (`app.rentaria.app`), con flota estática de respaldo (`FLEET` en `index.html`: 3 Hurricane + 1 Tank 200).
 - Calculadora de precios por días (40 / 35 / 30 USD según duración).
 - Sección "Todo incluido", requisitos y FAQ.
