@@ -2832,7 +2832,7 @@ const TRANSLATIONS = {
     'host.desc':'Metti la tua moto a rendere con noi. Tu fornisci la moto; noi portiamo i clienti e gestiamo le prenotazioni, il pagamento e la consegna. Tu ricevi la tua parte.',
   },
   he: {
-    'title':'השכרת אופנועים וקטנועים בהוואנה, קובה · Bitride',
+    'title':'השכרת אופנועים וקטנועים בקובה, הוואנה · Bitride',
     'nav.fleet':'הצי שלנו',
     'nav.plans':'מסלולים',
     'nav.prices':'מחירים',
@@ -3446,14 +3446,14 @@ function updatePrice() {
 
   out.innerHTML = `<div class="rb">
     <div class="rb-head">
-      <span class="rb-date">${fmt(selStart)} → ${fmt(selEnd)} · ${days}${t('cal.days')}</span>
+      <span class="rb-date">${fmt(selStart)} ${RTL_LANGS.includes(currentLang) ? '←' : '→'} ${fmt(selEnd)} · ${days}${t('cal.days')}</span>
       ${discount}
     </div>
     <div class="rb-line"><span>${t('cal.rent')} ($${rate} × ${days} × ${qMotos})</span><span>$${rent}</span></div>
     ${qCascos > 0 ? `<div class="rb-line"><span>${t('cal.helmet')} ($${HELMET_DAY} × ${days} × ${qCascos})</span><span>$${helmet}</span></div>` : ''}
     <div class="rb-line"><span>${t('cal.delivery')}</span><span>$${DELIVERY_FEE}</span></div>
     <div class="rb-line muted"><span>${t('cal.deposit')} ($${DEPOSIT_MOTO} × ${qMotos})</span><span>$${deposit}</span></div>
-    <div class="rb-total"><span>Total</span><span>$${total.toLocaleString()} USD</span></div>
+    <div class="rb-total"><span>${t('wa.total')}</span><span>$${total.toLocaleString()} USD</span></div>
     <div class="rb-note">${t('cal.fuelnote')}</div>
   </div>`;
   btn.disabled = false;

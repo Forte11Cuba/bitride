@@ -45,7 +45,9 @@ const META = {
   },
   he: {
     locale: 'he_IL',
-    desc: 'שכרו אופנוע או קטנוע אוטומטי בהוואנה וטיילו בכל קובה. קילומטראז׳ ללא הגבלה, קסדה כלולה ומסירה בכל העיר. תשלום בביטקוין או במזומן. החל מ־30 USD ליום.',
+    desc: 'השכרת אופנועים וקטנועים אוטומטיים בקובה: מסירה בהוואנה וקילומטראז׳ ללא הגבלה לטייל בכל האי. קסדה כלולה, תשלום בביטקוין או במזומן. החל מ־30 USD ליום.',
+    keywords: 'השכרת אופנועים בקובה, השכרת אופנוע בהוואנה, השכרת קטנועים בקובה, השכרת קטנוע בהוואנה, קטנוע אוטומטי בקובה, השכרת טוסטוס בקובה, טיול אופנועים בקובה, טיול לקובה על אופנוע, אופנוע בהאוואנה, Hurricane 250cc, Tank 200, ביטקוין',
+    offerName: 'השכרת אופנועים וקטנועים אוטומטיים ליום (Hurricane 250cc, Tank 200)',
     bizDesc: 'השכרת אופנועים (Hurricane 250cc) וקטנועים אוטומטיים (Tank 200) בהוואנה, קובה. קילומטראז׳ ללא הגבלה וקסדה כלולה, מסירה בכל הוואנה. תשלום בביטקוין (Lightning), במזומן או בקריפטו.',
   },
 };
@@ -151,6 +153,7 @@ for (const lang of LANGS) {
   out = out.replace('<html lang="es">', htmlOpen(lang));
   out = out.replace(/<title>[^<]*<\/title>/, `<title>${T.title}</title>`);
   out = setMeta(out, /(<meta name="description" content=")[^"]*(">)/, meta.desc);
+  if (meta.keywords) out = setMeta(out, /(<meta name="keywords" content=")[^"]*(">)/, meta.keywords);
   out = setMeta(out, /(<meta property="og:title" content=")[^"]*(">)/, T.title);
   out = setMeta(out, /(<meta property="og:description" content=")[^"]*(">)/, meta.desc);
   out = out.replace('<meta property="og:locale" content="es_ES">', `<meta property="og:locale" content="${meta.locale}">`);
@@ -163,6 +166,7 @@ for (const lang of LANGS) {
 
   // JSON-LD: descripción del negocio + FAQPage traducidos
   out = out.replace(ES_BIZ_DESC, meta.bizDesc);
+  if (meta.offerName) out = out.replace(/("makesOffer": \{\s*"@type": "AggregateOffer",\s*"name": )"[^"]*"/, `$1${JSON.stringify(meta.offerName)}`);
   out = out.replace(/  <!-- FAQ structured data \(rich results\) -->\n  <script type="application\/ld\+json">[\s\S]*?<\/script>/, buildFaqBlock(T));
 
   // assets relativos → root-absolute (funcionan desde /xx/)

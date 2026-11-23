@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>השכרת אופנועים וקטנועים בהוואנה, קובה · Bitride</title>
-  <meta name="description" content="שכרו אופנוע או קטנוע אוטומטי בהוואנה וטיילו בכל קובה. קילומטראז׳ ללא הגבלה, קסדה כלולה ומסירה בכל העיר. תשלום בביטקוין או במזומן. החל מ־30 USD ליום.">
-  <meta name="keywords" content="alquiler de motos en Cuba, alquilar moto La Habana, renta de motos Cuba, alquiler de scooter Cuba, alquilar scooter La Habana, moto automática Cuba, alquiler moto automática La Habana, scooter rental Havana, motorcycle rental Cuba, Hurricane 250cc, Tank 200, tours en moto Cuba, Bitcoin">
+  <title>השכרת אופנועים וקטנועים בקובה, הוואנה · Bitride</title>
+  <meta name="description" content="השכרת אופנועים וקטנועים אוטומטיים בקובה: מסירה בהוואנה וקילומטראז׳ ללא הגבלה לטייל בכל האי. קסדה כלולה, תשלום בביטקוין או במזומן. החל מ־30 USD ליום.">
+  <meta name="keywords" content="השכרת אופנועים בקובה, השכרת אופנוע בהוואנה, השכרת קטנועים בקובה, השכרת קטנוע בהוואנה, קטנוע אוטומטי בקובה, השכרת טוסטוס בקובה, טיול אופנועים בקובה, טיול לקובה על אופנוע, אופנוע בהאוואנה, Hurricane 250cc, Tank 200, ביטקוין">
   <meta name="author" content="Bitride">
   <meta name="theme-color" content="#f7931a">
   <link rel="canonical" href="https://bitride.rent/he/">
@@ -23,13 +23,13 @@
   <meta property="og:type" content="website">
   <meta property="og:locale" content="he_IL">
   <meta property="og:site_name" content="Bitride">
-  <meta property="og:title" content="השכרת אופנועים וקטנועים בהוואנה, קובה · Bitride">
-  <meta property="og:description" content="שכרו אופנוע או קטנוע אוטומטי בהוואנה וטיילו בכל קובה. קילומטראז׳ ללא הגבלה, קסדה כלולה ומסירה בכל העיר. תשלום בביטקוין או במזומן. החל מ־30 USD ליום.">
+  <meta property="og:title" content="השכרת אופנועים וקטנועים בקובה, הוואנה · Bitride">
+  <meta property="og:description" content="השכרת אופנועים וקטנועים אוטומטיים בקובה: מסירה בהוואנה וקילומטראז׳ ללא הגבלה לטייל בכל האי. קסדה כלולה, תשלום בביטקוין או במזומן. החל מ־30 USD ליום.">
   <meta property="og:url" content="https://bitride.rent/he/">
   <meta property="og:image" content="https://bitride.rent/assets/lugares/habana-capitolio.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="השכרת אופנועים וקטנועים בהוואנה, קובה · Bitride">
-  <meta name="twitter:description" content="שכרו אופנוע או קטנוע אוטומטי בהוואנה וטיילו בכל קובה. קילומטראז׳ ללא הגבלה, קסדה כלולה ומסירה בכל העיר. תשלום בביטקוין או במזומן. החל מ־30 USD ליום.">
+  <meta name="twitter:title" content="השכרת אופנועים וקטנועים בקובה, הוואנה · Bitride">
+  <meta name="twitter:description" content="השכרת אופנועים וקטנועים אוטומטיים בקובה: מסירה בהוואנה וקילומטראז׳ ללא הגבלה לטייל בכל האי. קסדה כלולה, תשלום בביטקוין או במזומן. החל מ־30 USD ליום.">
   <meta name="twitter:image" content="https://bitride.rent/assets/lugares/habana-capitolio.jpg">
 
   <link rel="icon" type="image/png" href="/assets/logo/bitride-logo-transparent.png">
@@ -61,7 +61,7 @@
     },
     "makesOffer": {
       "@type": "AggregateOffer",
-      "name": "Alquiler de motos y scooters automáticos por día (Hurricane 250cc, Tank 200)",
+      "name": "השכרת אופנועים וקטנועים אוטומטיים ליום (Hurricane 250cc, Tank 200)",
       "priceCurrency": "USD",
       "lowPrice": "30",
       "highPrice": "40",
@@ -2832,7 +2832,7 @@ const TRANSLATIONS = {
     'host.desc':'Metti la tua moto a rendere con noi. Tu fornisci la moto; noi portiamo i clienti e gestiamo le prenotazioni, il pagamento e la consegna. Tu ricevi la tua parte.',
   },
   he: {
-    'title':'השכרת אופנועים וקטנועים בהוואנה, קובה · Bitride',
+    'title':'השכרת אופנועים וקטנועים בקובה, הוואנה · Bitride',
     'nav.fleet':'הצי שלנו',
     'nav.plans':'מסלולים',
     'nav.prices':'מחירים',
@@ -3446,14 +3446,14 @@ function updatePrice() {
 
   out.innerHTML = `<div class="rb">
     <div class="rb-head">
-      <span class="rb-date">${fmt(selStart)} → ${fmt(selEnd)} · ${days}${t('cal.days')}</span>
+      <span class="rb-date">${fmt(selStart)} ${RTL_LANGS.includes(currentLang) ? '←' : '→'} ${fmt(selEnd)} · ${days}${t('cal.days')}</span>
       ${discount}
     </div>
     <div class="rb-line"><span>${t('cal.rent')} ($${rate} × ${days} × ${qMotos})</span><span>$${rent}</span></div>
     ${qCascos > 0 ? `<div class="rb-line"><span>${t('cal.helmet')} ($${HELMET_DAY} × ${days} × ${qCascos})</span><span>$${helmet}</span></div>` : ''}
     <div class="rb-line"><span>${t('cal.delivery')}</span><span>$${DELIVERY_FEE}</span></div>
     <div class="rb-line muted"><span>${t('cal.deposit')} ($${DEPOSIT_MOTO} × ${qMotos})</span><span>$${deposit}</span></div>
-    <div class="rb-total"><span>Total</span><span>$${total.toLocaleString()} USD</span></div>
+    <div class="rb-total"><span>${t('wa.total')}</span><span>$${total.toLocaleString()} USD</span></div>
     <div class="rb-note">${t('cal.fuelnote')}</div>
   </div>`;
   btn.disabled = false;
