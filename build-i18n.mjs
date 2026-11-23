@@ -1,7 +1,7 @@
 /**
  * build-i18n.mjs — genera las versiones por idioma del sitio para SEO.
  *
- * Lee index.html (fuente única, en español) y produce en/, fr/, de/, it/, he/, ar/ con:
+ * Lee index.html (fuente única, en español) y produce en/, fr/, de/, it/, he/, ar/, ru/ con:
  *  - <html lang> correcto (+ dir="rtl" en hebreo y árabe) y <head> traducido (title, description, og, twitter, canonical, og:url)
  *  - rutas de assets root-absolute (/assets/...) para que funcionen desde subdirectorios
  *  - JSON-LD (descripción del negocio + FAQPage) traducido desde el propio i18n
@@ -17,7 +17,7 @@
 import fs from 'fs';
 
 const BASE = 'https://bitride.rent';
-const LANGS = ['en', 'fr', 'de', 'it', 'he', 'ar'];
+const LANGS = ['en', 'fr', 'de', 'it', 'he', 'ar', 'ru'];
 const RTL_LANGS = ['he', 'ar'];
 const htmlOpen = lang => `<html lang="${lang}"${RTL_LANGS.includes(lang) ? ' dir="rtl"' : ''}>`;
 
@@ -60,6 +60,15 @@ const META = {
     offerName: 'تأجير يومي لدراجات نارية وسكوتر أوتوماتيك (Hurricane 250cc، Tank 200)',
     bizDesc: 'تأجير دراجات نارية (Hurricane 250cc) وسكوتر أوتوماتيك (Tank 200) في هافانا، كوبا. كيلومترات غير محدودة وخوذة مشمولة، وتوصيل في كل أنحاء هافانا. الدفع بالبيتكوين (Lightning) أو نقدًا أو بالعملات المشفرة.',
   },
+  // Ruso: Google y Yandex (este último sí usa la meta keywords). Cubre аренда/прокат/напрокат,
+  // мотоцикл/байк/скутер/мопед, el sufijo «на Кубе» y la búsqueda de скутер с автоматом.
+  ru: {
+    locale: 'ru_RU',
+    desc: 'Аренда мотоцикла или скутера-автомата на Кубе: доставка по Гаване и безлимитный пробег по всему острову. Шлем включён, оплата биткоином или наличными. От 30 USD в день.',
+    keywords: 'аренда мотоцикла на Кубе, прокат мотоциклов Куба, аренда мотоцикла в Гаване, мотоцикл напрокат Гавана, аренда скутера на Кубе, прокат скутера в Гаване, аренда мопеда на Кубе, прокат мопеда Гавана, скутер с автоматом Куба, аренда байка на Кубе, мототур по Кубе, путешествие по Кубе на мотоцикле, Гавана Варадеро на мотоцикле, Hurricane 250cc, Tank 200, оплата биткоином',
+    offerName: 'Аренда мотоциклов и скутеров-автоматов посуточно (Hurricane 250cc, Tank 200)',
+    bizDesc: 'Аренда мотоциклов (Hurricane 250cc) и скутеров-автоматов (Tank 200) в Гаване, Куба. Безлимитный пробег и шлем включены, доставка по всей Гаване. Оплата биткоином (Lightning), наличными или криптовалютой.',
+  },
 };
 
 const ES_BIZ_DESC = 'Alquiler de motos (Hurricane 250cc) y scooters automáticos (Tank 200) en La Habana, Cuba. Kilometraje ilimitado y casco incluido, entrega en toda La Habana. Paga en Bitcoin (Lightning), efectivo o cripto.';
@@ -79,6 +88,7 @@ const setMeta = (s, re, val) => s.replace(re, (_m, p1, p2) => p1 + val + p2);
 //   data-i18n-html → innerHTML     (contenido con markup, se inserta tal cual)
 //   data-i18n-ph   → placeholder   (atributo del <input>)
 //   data-i18n-aria → aria-label    (accesibilidad)
+//   data-i18n-alt  → alt           (accesibilidad + Google Imágenes)
 // Así Googlebot/Bing ven el idioma correcto en la primera lectura del HTML,
 // sin depender de ejecutar JS. El JS sigue re-aplicando en runtime (idempotente).
 const escText = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -106,13 +116,14 @@ function findMatchingClose(str, tag, fromIdx) {
 }
 
 function translateBody(src, T) {
-  // 1) Atributos: placeholder (data-i18n-ph) y aria-label (data-i18n-aria).
+  // 1) Atributos: placeholder (data-i18n-ph), aria-label (data-i18n-aria) y alt (data-i18n-alt).
   //    Reescribe (o añade) el atributo destino en el tag de apertura.
   let s = src;
-  for (const [dataAttr, targetAttr] of [['data-i18n-ph', 'placeholder'], ['data-i18n-aria', 'aria-label']]) {
+  for (const [dataAttr, targetAttr] of [['data-i18n-ph', 'placeholder'], ['data-i18n-aria', 'aria-label'], ['data-i18n-alt', 'alt']]) {
     const hookRe = new RegExp(`<([a-zA-Z0-9]+)((?:[^>]*?)\\b${dataAttr}="([^"]+)"(?:[^>]*?))>`, 'g');
-    const hasAttr = new RegExp(`\\b${targetAttr}="`);
-    const replAttr = new RegExp(`\\b${targetAttr}="[^"]*"`);
+    // (?<![\\w-]): que "alt" no coincida dentro de "data-i18n-alt"
+    const hasAttr = new RegExp(`(?<![\\w-])${targetAttr}="`);
+    const replAttr = new RegExp(`(?<![\\w-])${targetAttr}="[^"]*"`);
     s = s.replace(hookRe, (full, tag, attrs, key) => {
       const val = T[key];
       if (val === undefined) return full;
@@ -182,6 +193,9 @@ for (const lang of LANGS) {
   // assets relativos → root-absolute (funcionan desde /xx/)
   out = out.replace(/'assets\//g, "'/assets/").replace(/"assets\//g, '"/assets/');
 
+  // Botón flotante de WhatsApp: mensaje inicial en el idioma de la página (el JS lo re-aplica).
+  out = out.replace('https://wa.me/5355003336?text=Hola%2C+me+interesa+alquilar+una+moto+en+Bitride', 'https://wa.me/5355003336?text=' + encodeURIComponent(T['wa.float']));
+
   // Pre-traducir el <body> para que Googlebot/Bing lean el idioma sin ejecutar JS.
   out = translateBody(out, T);
 
@@ -234,6 +248,13 @@ const ANF_META = {
     svcName: 'أجّر دراجتك النارية مع Bitride',
     svcType: 'إدارة تأجير الدراجات النارية للمُلّاك',
     svcDesc: 'اعرض دراجتك النارية في كوبا مع Bitride. نحن نجلب العملاء وندير الحجوزات والدفع والتسليم؛ وأنت تحصل على حصتك.',
+  },
+  ru: {
+    title: 'Сдайте свой мотоцикл в аренду на Кубе и зарабатывайте · Bitride',
+    desc: 'Сдавайте свой мотоцикл в аренду на Кубе с Bitride и зарабатывайте. Вы предоставляете мотоцикл; мы находим клиентов и берём на себя бронирования, оплату и доставку. Заполните форму, и мы свяжемся с вами.',
+    svcName: 'Сдайте свой мотоцикл в аренду с Bitride',
+    svcType: 'Управление арендой мотоциклов для владельцев',
+    svcDesc: 'Разместите свой мотоцикл на Кубе в Bitride. Мы находим клиентов и берём на себя бронирования, оплату и доставку; вы получаете свою долю.',
   },
 };
 
