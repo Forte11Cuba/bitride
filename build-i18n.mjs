@@ -1,8 +1,8 @@
 /**
  * build-i18n.mjs — genera las versiones por idioma del sitio para SEO.
  *
- * Lee index.html (fuente única, en español) y produce en/, fr/, de/, it/, he/ con:
- *  - <html lang> correcto (+ dir="rtl" en hebreo) y <head> traducido (title, description, og, twitter, canonical, og:url)
+ * Lee index.html (fuente única, en español) y produce en/, fr/, de/, it/, he/, ar/ con:
+ *  - <html lang> correcto (+ dir="rtl" en hebreo y árabe) y <head> traducido (title, description, og, twitter, canonical, og:url)
  *  - rutas de assets root-absolute (/assets/...) para que funcionen desde subdirectorios
  *  - JSON-LD (descripción del negocio + FAQPage) traducido desde el propio i18n
  *  - hreflang heredado del index.html
@@ -17,8 +17,8 @@
 import fs from 'fs';
 
 const BASE = 'https://bitride.rent';
-const LANGS = ['en', 'fr', 'de', 'it', 'he'];
-const RTL_LANGS = ['he'];
+const LANGS = ['en', 'fr', 'de', 'it', 'he', 'ar'];
+const RTL_LANGS = ['he', 'ar'];
 const htmlOpen = lang => `<html lang="${lang}"${RTL_LANGS.includes(lang) ? ' dir="rtl"' : ''}>`;
 
 // Metadatos del <head> y descripciones del negocio por idioma (el title sale del i18n).
@@ -49,6 +49,16 @@ const META = {
     keywords: 'השכרת אופנועים בקובה, השכרת אופנוע בהוואנה, השכרת קטנועים בקובה, השכרת קטנוע בהוואנה, קטנוע אוטומטי בקובה, השכרת טוסטוס בקובה, טיול אופנועים בקובה, טיול לקובה על אופנוע, אופנוע בהאוואנה, Hurricane 250cc, Tank 200, ביטקוין',
     offerName: 'השכרת אופנועים וקטנועים אוטומטיים ליום (Hurricane 250cc, Tank 200)',
     bizDesc: 'השכרת אופנועים (Hurricane 250cc) וקטנועים אוטומטיים (Tank 200) בהוואנה, קובה. קילומטראז׳ ללא הגבלה וקסדה כלולה, מסירה בכל הוואנה. תשלום בביטקוין (Lightning), במזומן או בקריפטו.',
+  },
+  // Árabe estándar (MSA) para todos los países árabes. keywords cubre los sinónimos
+  // regionales: دراجة نارية (MSA), موتوسيكل (Egipto), موتور (Levante), دباب (Golfo),
+  // كراء/موطور (Magreb) y los verbos تأجير / إيجار / استئجار.
+  ar: {
+    locale: 'ar_AR',
+    desc: 'تأجير دراجات نارية وسكوتر أوتوماتيك في كوبا: توصيل في هافانا وكيلومترات غير محدودة لتجوب الجزيرة كلها. خوذة مشمولة، والدفع بالبيتكوين أو نقدًا. ابتداءً من 30 USD لليوم.',
+    keywords: 'تأجير دراجات نارية في كوبا, استئجار دراجة نارية في هافانا, إيجار دراجة نارية في كوبا, تأجير موتوسيكل في كوبا, إيجار موتوسيكل في هافانا, تأجير موتور في كوبا, تأجير دباب في كوبا, تأجير سكوتر في كوبا, استئجار سكوتر في هافانا, سكوتر أوتوماتيك كوبا, دراجة نارية أوتوماتيك هافانا, كراء دراجة نارية في كوبا, كراء موطور في كوبا, جولة بالدراجة النارية في كوبا, السياحة في كوبا, Hurricane 250cc, Tank 200, بيتكوين',
+    offerName: 'تأجير يومي لدراجات نارية وسكوتر أوتوماتيك (Hurricane 250cc، Tank 200)',
+    bizDesc: 'تأجير دراجات نارية (Hurricane 250cc) وسكوتر أوتوماتيك (Tank 200) في هافانا، كوبا. كيلومترات غير محدودة وخوذة مشمولة، وتوصيل في كل أنحاء هافانا. الدفع بالبيتكوين (Lightning) أو نقدًا أو بالعملات المشفرة.',
   },
 };
 
@@ -217,6 +227,13 @@ const ANF_META = {
     svcName: 'השכירו את האופנוע שלכם עם Bitride',
     svcType: 'ניהול השכרת אופנועים לבעלים',
     svcDesc: 'הציעו את האופנוע שלכם בקובה עם Bitride. אנחנו מביאים את הלקוחות ומטפלים בהזמנות, בתשלום ובמסירה; אתם מקבלים את החלק שלכם.',
+  },
+  ar: {
+    title: 'أجّر دراجتك النارية في كوبا واربح · Bitride',
+    desc: 'أجّر دراجتك النارية في كوبا مع Bitride واربح. أنت تقدّم الدراجة؛ ونحن نجلب العملاء وندير الحجوزات والدفع والتسليم. املأ النموذج وسنتواصل معك.',
+    svcName: 'أجّر دراجتك النارية مع Bitride',
+    svcType: 'إدارة تأجير الدراجات النارية للمُلّاك',
+    svcDesc: 'اعرض دراجتك النارية في كوبا مع Bitride. نحن نجلب العملاء وندير الحجوزات والدفع والتسليم؛ وأنت تحصل على حصتك.',
   },
 };
 
